@@ -13,6 +13,8 @@ let peerConfiguration = {
 };
 export const createPeerConnection = (offerObj) => {
   const socket = store.getState().sockets.socket;
+  const loggedUser = store.getState().currentUser.loggedUser;
+  const chattedUser = store.getState().messages.chattedUser;
   return new Promise(async (resolve, reject) => {
     const peerConnection = new RTCPeerConnection(peerConfiguration);
     //Create media stream for remote
@@ -25,7 +27,7 @@ export const createPeerConnection = (offerObj) => {
       if (e.candidate) {
         socket.emit("iceToServer", {
           iceCandidate: e.candidate,
-          iceUsername: "username",
+          target: chattedUser?._id,
         });
       }
     });
@@ -37,9 +39,7 @@ export const createPeerConnection = (offerObj) => {
       });
     });
     if (offerObj) {
-      //console.log("Before", peerConnection.signalingState);
       await peerConnection.setRemoteDescription(offerObj.offer);
-      //console.log("After", peerConnection.signalingState);
     }
     resolve();
   });

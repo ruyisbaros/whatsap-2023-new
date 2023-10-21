@@ -14,6 +14,8 @@ import {
 } from "./redux/currentUserSlice";
 
 import { createSocket } from "./redux/socketSlicer";
+import { reduxUpdateCallStatus } from "./redux/callingsSlice";
+import { reduxSetAnswer, reduxSetOffer } from "./redux/callStreamSlicer";
 let socket;
 
 export const connectToSocketServer = () => {
@@ -50,6 +52,16 @@ export const connectToSocketServer = () => {
   });
   socket.on("closeTypingToClient", ({ convo, message }) => {
     store.dispatch(reduxStopTyping({ situation: false, convo, message }));
+  });
+  socket.on("newOfferCame", (offer) => {
+    store.dispatch(
+      reduxUpdateCallStatus({ cst: "receivingCall", value: true })
+    );
+    store.dispatch(reduxSetOffer(offer));
+  });
+  socket.on("newAnswerCame", (answer) => {
+    store.dispatch(reduxUpdateCallStatus({ cst: "callAccepted", value: true }));
+    store.dispatch(reduxSetAnswer(answer));
   });
 };
 //Emit user activities

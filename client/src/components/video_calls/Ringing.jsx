@@ -5,11 +5,13 @@ import { GoUnmute } from "react-icons/go";
 import { TiCancel } from "react-icons/ti";
 import { ValidIcon } from "../../assets/svg/Valid";
 import sendCall from "../../assets/audio/ringtone.mp3";
+import { reduxUpdateCallStatus } from "../../redux/callingsSlice";
 
-const Ringing = ({ call, setCall, handleEndCall }) => {
+const Ringing = ({ handleEndCall }) => {
   const dispatch = useDispatch();
-  //const { loggedUser } = useSelector((store) => store.currentUser);
-  //const { callingUser } = useSelector((store) => store.videos);
+  const { picture, name, ringingMuted } = useSelector(
+    (store) => store.callStatuses
+  );
   const [ringTimer, setRingTimer] = useState(0);
 
   let interval;
@@ -25,7 +27,7 @@ const Ringing = ({ call, setCall, handleEndCall }) => {
       handleTimer();
     } else if (ringTimer > 20) {
       console.log("Inside else block");
-      setCall((prev) => ({ ...prev, receivingCall: false }));
+      dispatch(reduxUpdateCallStatus({ cst: "receivingCall", value: false }));
     }
     return () => {
       clearInterval(interval);
@@ -42,13 +44,13 @@ const Ringing = ({ call, setCall, handleEndCall }) => {
         {/* Call infos */}
         <div className="flex items-center gap-x-2 ">
           <img
-            src={call?.picture}
+            src={picture}
             alt="called user"
             className="w-20 h-20 rounded-full "
           />
           <div>
             <h1 className="dark:text-white">
-              <b>{call?.name}</b>
+              <b>{name}</b>
             </h1>
             <span className="dark:text-dark_text_2">Whatsapp video...</span>
           </div>
@@ -57,11 +59,16 @@ const Ringing = ({ call, setCall, handleEndCall }) => {
         <ul className="flex items-center gap-x-3 ">
           <li
             onClick={() =>
-              setCall((prev) => ({ ...prev, ringingMuted: !prev.ringingMuted }))
+              dispatch(
+                reduxUpdateCallStatus({
+                  cst: "ringingMuted",
+                  value: ringingMuted ? false : true,
+                })
+              )
             }
           >
             <button className="w-8 h-8 rounded-full flex items-center justify-center bg-red-500">
-              {call.ringingMuted ? (
+              {ringingMuted ? (
                 <BiSolidVolumeMute size={25} color="white" />
               ) : (
                 <GoUnmute size={25} color="white" />
@@ -85,7 +92,7 @@ const Ringing = ({ call, setCall, handleEndCall }) => {
       <audio
         src={sendCall}
         autoPlay
-        muted={call.ringingMuted ? true : false}
+        muted={ringingMuted ? true : false}
         loop
       ></audio>
     </div>

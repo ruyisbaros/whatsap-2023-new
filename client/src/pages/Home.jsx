@@ -12,18 +12,10 @@ import { createPeerConnection, fetchUserMedia } from "../utils/webRTCUtils";
 import {
   reduxAddPeerConnection,
   reduxAddRemoteStream,
+  reduxUpdateHaveOffer,
 } from "../redux/callStreamSlicer";
-const callData = {
-  receivingCall: false,
-  callEnded: false,
-  callAccepted: false,
-  videoScreen: false,
-  name: "",
-  picture: "",
-  callerSocketId: "",
-  signal: "",
-  ringingMuted: false,
-};
+import { reduxUpdateCallStatus } from "../redux/callingsSlice";
+
 const Home = () => {
   const myVideo = useRef(null);
   const inComingVideo = useRef(null);
@@ -33,11 +25,11 @@ const Home = () => {
   );
   const { socket } = useSelector((store) => store.sockets);
   const { loggedUser, mySocketId } = useSelector((store) => store.currentUser);
-  const { localStream, offerObject, peerConnection } = useSelector(
+  const { videoScreen } = useSelector((store) => store.callStatuses);
+  const { localStream, offerObject, peerConnection, haveOffer } = useSelector(
     (store) => store.streams
   );
 
-  const [call, setCall] = useState(callData);
   const fetchMyConversations = useCallback(async () => {
     try {
       const { data } = await axios.get("/conversation/my_conversations");
@@ -57,9 +49,17 @@ const Home = () => {
     fetchMyConversations();
   }, [fetchMyConversations]);
 
+  useEffect(() => {
+    if (socket) {
+      socket.on("iceToClient", (iceCandidate) => {
+        peerConnection.addIceCandidate(iceCandidate);
+      });
+    }
+  }, [socket, peerConnection]);
+
   const startVideoCall = async () => {
     try {
-      setCall((prev) => ({ ...prev, videoScreen: true }));
+      dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));
       await fetchUserMedia();
       await createPeerConnection();
     } catch (error) {
@@ -80,21 +80,18 @@ const Home = () => {
     const createOffers = async () => {
       const offer = await peerConnection.createOffer();
       peerConnection.setLocalDescription(offer);
+      dispatch(reduxUpdateHaveOffer({ have: "haveOffer", value: true }));
+      socket.emit("newOffer", { offer });
     };
-    if (peerConnection) {
+    if (peerConnection && !haveOffer) {
       createOffers();
     }
-  }, [peerConnection]);
+  }, [peerConnection, socket, dispatch, haveOffer]);
 
   const answerVideoCall = async () => {
     try {
       await fetchUserMedia();
-      const { peerConnection, remoteStream } = await createPeerConnection(
-        offerObject
-      );
-      dispatch(reduxAddRemoteStream(remoteStream));
-      dispatch(reduxAddPeerConnection(peerConnection));
-      myVideo.current.srcObject = localStream;
+      await createPeerConnection(offerObject);
 
       const answer = await peerConnection.createAnswer({});
       //console.log(answer);
@@ -120,15 +117,7 @@ const Home = () => {
         </div>
       </div>
       {/* Calls */}
-      {call.videoScreen && (
-        <Calls
-          myVideo={myVideo}
-          inComingVideo={inComingVideo}
-          call={call}
-          setCall={setCall}
-          localStream={localStream}
-        />
-      )}
+      {videoScreen && <Calls myVideo={myVideo} inComingVideo={inComingVideo} />}
     </>
   );
 };

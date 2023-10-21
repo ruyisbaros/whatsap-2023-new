@@ -4,7 +4,8 @@ const initialState = {
   localStream: null,
   remoteStream: null,
   peerConnection: null,
-  offerObject: null,
+  offerObject: { offer: "", answer: "" },
+  haveOffer: false,
 };
 
 const makeStreams = createSlice({
@@ -14,6 +15,9 @@ const makeStreams = createSlice({
     reduxAddLocalStream: (state, action) => {
       state.localStream = action.payload;
     },
+    reduxUpdateHaveOffer: (state, action) => {
+      state[action.payload.have] = action.payload.value;
+    },
     reduxAddRemoteStream: (state, action) => {
       state.remoteStream = action.payload;
     },
@@ -21,22 +25,11 @@ const makeStreams = createSlice({
       state.peerConnection = action.payload;
     },
     reduxRemoveStream: (state, action) => {},
-    reduxSetOfferObject: (state, action) => {
-      state.offerObject = action.payload;
+    reduxSetOffer: (state, action) => {
+      state.offerObject = { ...state.offerObject, offer: action.payload };
     },
-    reduxUpdateOfferer: (state, action) => {
-      state.offerObject = {
-        ...state.offerObject,
-        offer: action.payload.offer,
-        offererFullName: action.payload.fullName,
-      };
-    },
-    reduxUpdateOfferObject: (state, action) => {
-      state.offerObject = {
-        ...state.offerObject,
-        answer: action.payload.answer,
-        answererFullName: action.payload.loggedUser.fullName,
-      };
+    reduxSetAnswer: (state, action) => {
+      state.offerObject = { ...state.offerObject, answer: action.payload };
     },
   },
 });
@@ -46,8 +39,8 @@ export const {
   reduxRemoveStream,
   reduxAddRemoteStream,
   reduxAddPeerConnection,
-  reduxSetOfferObject,
-  reduxUpdateOfferObject,
-  reduxUpdateOfferer,
+  reduxUpdateHaveOffer,
+  reduxSetOffer,
+  reduxSetAnswer,
 } = makeStreams.actions;
 export default makeStreams.reducer;

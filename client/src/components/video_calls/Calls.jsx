@@ -5,15 +5,12 @@ import CallAreaInfo from "./CallAreaInfo";
 import CallAreaActions from "./CallAreaActions";
 import { useSelector } from "react-redux";
 
-const Calls = ({
-  inComingVideo,
-  myVideo,
-  call,
-  setCall,
-  localStream,
-  handleEndCall,
-}) => {
+const Calls = ({ inComingVideo, myVideo, handleEndCall }) => {
   const { chattedUser } = useSelector((store) => store.messages);
+  const { callEnded, callAccepted, receivingCall } = useSelector(
+    (store) => store.callStatuses
+  );
+  const { localStream } = useSelector((store) => store.streams);
   const [showCallActions, setShowCallActions] = useState(false);
   const [toggleVideo, setToggleVideo] = useState(false);
 
@@ -28,19 +25,15 @@ const Calls = ({
         <div>
           <div>
             <Header />
-            <CallAreaInfo name={chattedUser?.name} call={call} />
+            <CallAreaInfo name={chattedUser?.name} />
             {showCallActions && (
-              <CallAreaActions
-                setCall={setCall}
-                call={call}
-                handleEndCall={handleEndCall}
-              />
+              <CallAreaActions handleEndCall={handleEndCall} />
             )}
           </div>
           {/* Show videos */}
           <div>
             {/* In coming video */}
-            {call.callAccepted && !call.callEnded ? (
+            {callAccepted && !callEnded ? (
               <div>
                 <video
                   ref={inComingVideo}
@@ -70,8 +63,8 @@ const Calls = ({
           </div>
         </div>
       </div>
-      {call.receivingCall && !call.callAccepted && (
-        <Ringing call={call} setCall={setCall} handleEndCall={handleEndCall} />
+      {receivingCall && !callAccepted && (
+        <Ringing handleEndCall={handleEndCall} />
       )}
     </>
   );

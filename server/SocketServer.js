@@ -93,8 +93,14 @@ exports.socketServer = (socket, io) => {
     }
   });
 
-  //Calls
-  socket.on("call user", ({ userToCall, signal, from, name, picture }) => {
+  //Video Calls
+  socket.on("newOffer", () => {});
+  socket.on("newAnswer", () => {});
+  socket.on("iceToServer", ({ iceCandidate, target }) => {
+    const user = users.find((user) => user.id === target);
+    socket.to(user.socketId).emit("iceToClient", iceCandidate);
+  });
+  /* socket.on("call user", ({ userToCall, signal, from, name, picture }) => {
     const user = users.find((user) => user.id === userToCall);
     //console.log(user);
     if (user) {
@@ -117,5 +123,5 @@ exports.socketServer = (socket, io) => {
     } else {
       io.to(`${id}`).emit("end call user");
     }
-  });
+  }); */
 };
