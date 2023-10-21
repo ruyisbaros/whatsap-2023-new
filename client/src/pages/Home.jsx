@@ -17,18 +17,17 @@ const callData = {
   picture: "",
   callerSocketId: "",
   signal: "",
+  ringingMuted: false,
 };
 const Home = () => {
   const myVideo = useRef(null);
   const inComingVideo = useRef(null);
-  const connectionRef = useRef(null);
   const dispatch = useDispatch();
   const { activeConversation, chattedUser } = useSelector(
     (store) => store.messages
   );
   const { socket } = useSelector((store) => store.sockets);
   const { loggedUser, mySocketId } = useSelector((store) => store.currentUser);
-  //const { loggedUser } = useSelector((store) => store.currentUser);
 
   const [stream, setStream] = useState();
   const [call, setCall] = useState(callData);
@@ -61,13 +60,15 @@ const Home = () => {
         </div>
       </div>
       {/* Calls */}
-      <Calls
-        myVideo={myVideo}
-        inComingVideo={inComingVideo}
-        call={call}
-        setCall={setCall}
-        stream={stream}
-      />
+      {!call.videoScreen && (
+        <Calls
+          myVideo={myVideo}
+          inComingVideo={inComingVideo}
+          call={call}
+          setCall={setCall}
+          stream={stream}
+        />
+      )}
     </>
   );
 };

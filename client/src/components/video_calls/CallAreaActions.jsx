@@ -5,13 +5,10 @@ import { VideoDialIcon } from "./../../assets/svg/VideoDeal";
 import { DialIcon } from "./../../assets/svg/Dial";
 import { useDispatch, useSelector } from "react-redux";
 
-const CallAreaActions = () => {
+const CallAreaActions = ({ handleEndCall }) => {
   const dispatch = useDispatch();
   const { chattedUser } = useSelector((store) => store.messages);
-  const handleEndCall = () => {
-    //endCallUserSocket(chattedUser._id);
-    //dispatch(reduxShowVideoFalse());
-  };
+
   return (
     <div className="absolute bottom-0 h-22 w-full z40 px-1">
       <div className="relative bg-[#222] px-4 pt-6 pb-12 rounded-xl">

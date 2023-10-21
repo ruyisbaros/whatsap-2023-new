@@ -50,3 +50,21 @@ export const createPeerConnection = (offerObj) => {
     resolve();
   });
 };
+
+export const fetchUserMedia = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const options = {
+        video: true,
+        audio: false,
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(options);
+
+      resolve(stream);
+    } catch (error) {
+      console.log("Offer Error: ", error);
+      reject();
+    }
+  });
+};

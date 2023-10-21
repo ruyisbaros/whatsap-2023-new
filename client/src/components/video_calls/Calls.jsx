@@ -15,15 +15,13 @@ const Calls = ({
 }) => {
   const { chattedUser } = useSelector((store) => store.messages);
   const [showCallActions, setShowCallActions] = useState(false);
-  const [toggleVide, setToggleVide] = useState(false);
+  const [toggleVideo, setToggleVideo] = useState(false);
 
   return (
     <>
       <div
         className={`fixed top-1/2 left-1/2 
-  -translate-x-1/2 -translate-y-1/2 z30 w-[360px] h-[550px] rounded-2xl overflow-hidden callBg shadow-lg ${
-    !call.videoScreen ? "hidden" : ""
-  }`}
+  -translate-x-1/2 -translate-y-1/2 z30 w-[360px] h-[550px] rounded-2xl overflow-hidden callBg shadow-lg `}
         onMouseOver={() => setShowCallActions(true)}
         onMouseLeave={() => setShowCallActions(false)}
       >
@@ -49,8 +47,8 @@ const Calls = ({
                   playsInline
                   muted
                   autoPlay
-                  className={toggleVide ? "SmallVideoCall" : "largeVideoCall"}
-                  onClick={() => setToggleVide((prev) => !prev)}
+                  className={toggleVideo ? "SmallVideoCall" : "largeVideoCall"}
+                  onClick={() => setToggleVideo((prev) => !prev)}
                 ></video>
               </div>
             ) : null}
@@ -63,9 +61,9 @@ const Calls = ({
                   muted
                   autoPlay
                   className={`${
-                    toggleVide ? "largeVideoCall" : "SmallVideoCall"
+                    toggleVideo ? "largeVideoCall" : "SmallVideoCall"
                   } ${showCallActions ? "moveVideoCall" : ""}`}
-                  onClick={() => setToggleVide((prev) => !prev)}
+                  onClick={() => setToggleVideo((prev) => !prev)}
                 ></video>
               </div>
             ) : null}

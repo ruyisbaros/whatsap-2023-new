@@ -25,7 +25,7 @@ const ChatMessages = () => {
                 msg.sender._id === loggedUser?.id
             )
             .map((message) => (
-              <>
+              <div key={message.createdAt}>
                 {message.files.length > 0
                   ? message.files.map((f, i) => (
                       <ShowFileInMessage
@@ -38,12 +38,11 @@ const ChatMessages = () => {
                   : null}
                 {message.message.length > 0 ? (
                   <SingleMessage
-                    key={message.createdAt}
                     msg={message}
                     me={loggedUser.id === message.sender?._id}
                   />
                 ) : null}
-              </>
+              </div>
             ))}
         {isTyping && typeTo === chattedUser._id ? <Typing /> : ""}
         <div ref={endRef} className="h-[40px]"></div>

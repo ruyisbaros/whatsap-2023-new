@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowIcon, ContactIcon, LockIcon } from "../../assets/svg";
+import { ArrowIcon, LockIcon } from "../../assets/svg";
 import { AddContactIcon } from "../../assets/svg/AddContact";
 
 const Header = () => {

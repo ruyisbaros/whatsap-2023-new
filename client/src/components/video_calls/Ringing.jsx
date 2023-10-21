@@ -20,10 +20,10 @@ const Ringing = ({ call, setCall, handleEndCall }) => {
   };
 
   useEffect(() => {
-    if (ringTimer <= 30) {
+    if (ringTimer <= 20) {
       //setCall((prev) => ({ ...prev, getCall: true }));
       handleTimer();
-    } else if (ringTimer > 10) {
+    } else if (ringTimer > 20) {
       console.log("Inside else block");
       setCall((prev) => ({ ...prev, receivingCall: false }));
     }
