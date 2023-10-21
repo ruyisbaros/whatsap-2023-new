@@ -11,7 +11,7 @@ import {
 import ChatActions from "./ChatActions";
 import FilePreview from "../previews/file/FilePreview";
 
-const ActiveChat = ({ callUser }) => {
+const ActiveChat = () => {
   const dispatch = useDispatch();
   const { activeConversation, files } = useSelector((store) => store.messages);
   const { loggedUser } = useSelector((store) => store.currentUser);
@@ -61,7 +61,7 @@ const ActiveChat = ({ callUser }) => {
 
   return (
     <div className="relative w-full h-full  ">
-      <ChatHeader callUser={callUser} />
+      <ChatHeader />
       {files.length > 0 ? (
         <FilePreview />
       ) : (

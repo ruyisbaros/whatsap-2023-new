@@ -1,6 +1,7 @@
 require("dotenv").config();
 const routes = require("./routes/index");
 const express = require("express");
+const fs = require("fs");
 const cookieSession = require("cookie-session");
 const cors = require("cors");
 const helmet = require("helmet");

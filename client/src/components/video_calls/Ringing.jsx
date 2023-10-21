@@ -6,7 +6,7 @@ import { TiCancel } from "react-icons/ti";
 import { ValidIcon } from "../../assets/svg/Valid";
 import sendCall from "../../assets/audio/ringtone.mp3";
 
-const Ringing = ({ answerCall, call, setCall, handleEndCall }) => {
+const Ringing = ({ call, setCall, handleEndCall }) => {
   const dispatch = useDispatch();
   //const { loggedUser } = useSelector((store) => store.currentUser);
   //const { callingUser } = useSelector((store) => store.videos);
@@ -57,11 +57,7 @@ const Ringing = ({ answerCall, call, setCall, handleEndCall }) => {
         <ul className="flex items-center gap-x-3 ">
           <li
             onClick={() =>
-<<<<<<< HEAD:client/src/components/video_calls/Ringing.js
               setCall((prev) => ({ ...prev, ringingMuted: !prev.ringingMuted }))
-=======
-              setCall({ ...call, ringingMuted: !call.ringingMuted })
->>>>>>> 33252567d30fab28dde4870e3e20c58e9fa5acf7:client/src/components/video_calls/Ringing.jsx
             }
           >
             <button className="w-8 h-8 rounded-full flex items-center justify-center bg-red-500">
@@ -72,16 +68,13 @@ const Ringing = ({ answerCall, call, setCall, handleEndCall }) => {
               )}
             </button>
           </li>
-<<<<<<< HEAD:client/src/components/video_calls/Ringing.js
+
           <li onClick={handleEndCall}>
-=======
-          <li onChange={handleEndCall}>
->>>>>>> 33252567d30fab28dde4870e3e20c58e9fa5acf7:client/src/components/video_calls/Ringing.jsx
             <button className="w-8 h-8 rounded-full flex items-center justify-center bg-red-500">
               <TiCancel size={25} color="white" />
             </button>
           </li>
-          <li onClick={answerCall}>
+          <li>
             <button className="w-8 h-8 rounded-full flex items-center justify-center bg-green_1">
               <ValidIcon className="w-7 fill-white mt-2" />
             </button>

@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 const Calls = ({
   inComingVideo,
   myVideo,
-  answerCall,
   call,
   setCall,
   stream,
@@ -74,12 +73,7 @@ const Calls = ({
         </div>
       </div>
       {call.receivingCall && !call.callAccepted && (
-        <Ringing
-          answerCall={answerCall}
-          call={call}
-          setCall={setCall}
-          handleEndCall={handleEndCall}
-        />
+        <Ringing call={call} setCall={setCall} handleEndCall={handleEndCall} />
       )}
     </>
   );

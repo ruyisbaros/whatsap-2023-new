@@ -44,7 +44,7 @@ const App = () => {
     if (loggedUser) {
       reFreshToken();
     }
-  }, [reFreshToken, loggedUser]);
+  }, [reFreshToken]);
   return (
     <div className="dark ">
       <ToastContainer position="bottom-center" limit={1} />
