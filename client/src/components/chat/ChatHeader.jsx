@@ -7,7 +7,7 @@ import { VideoCallIcon } from "../../assets/svg/VideoCall";
 import { CallIcon } from "../../assets/svg";
 import { DialIcon } from "../../assets/svg/Dial";
 
-const ChatHeader = () => {
+const ChatHeader = ({ startVideoCall }) => {
   const { activeConversation, chattedUser } = useSelector(
     (store) => store.messages
   );
@@ -56,7 +56,7 @@ const ChatHeader = () => {
         <ul className="flex items-center gap-x-2.5">
           {onLineUsers.find((usr) => usr.id === chattedUser?._id) ? (
             <li>
-              <button className="btn">
+              <button className="btn" onClick={startVideoCall}>
                 <VideoCallIcon />
               </button>
             </li>

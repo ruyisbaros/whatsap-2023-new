@@ -1,3 +1,8 @@
+import {
+  reduxAddLocalStream,
+  reduxAddPeerConnection,
+  reduxAddRemoteStream,
+} from "../redux/callStreamSlicer";
 import { store } from "./../redux/store";
 let peerConfiguration = {
   iceServers: [
@@ -12,24 +17,13 @@ export const createPeerConnection = (offerObj) => {
     const peerConnection = new RTCPeerConnection(peerConfiguration);
     //Create media stream for remote
     const remoteStream = new MediaStream();
-    /* remoteVideoEl.srcObject = remoteStream;
-
-    localStream.getTracks().forEach((track) => {
-      peerConnection.addTrack(track, localStream);
-    }); */
-
-    //Catch errors
-    peerConnection.addEventListener("signalingstatechange", (e) => {
-      //console.log(e);
-      //console.log(peerConnection.signalingState);
-    });
-
+    store.dispatch(reduxAddRemoteStream(remoteStream));
+    store.dispatch(reduxAddPeerConnection(peerConnection));
     //3. Find local ICE Candidate
     peerConnection.addEventListener("icecandidate", (e) => {
-      //console.log("candidate offer...");
       //console.log(e);
       if (e.candidate) {
-        socket.emit("sendIceCandidateToSignalingServer", {
+        socket.emit("iceToServer", {
           iceCandidate: e.candidate,
           iceUsername: "username",
         });
@@ -60,8 +54,8 @@ export const fetchUserMedia = () => {
       };
 
       const stream = await navigator.mediaDevices.getUserMedia(options);
-
-      resolve(stream);
+      store.dispatch(reduxAddLocalStream(stream));
+      resolve();
     } catch (error) {
       console.log("Offer Error: ", error);
       reject();

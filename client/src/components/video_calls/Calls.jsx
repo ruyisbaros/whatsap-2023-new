@@ -10,7 +10,7 @@ const Calls = ({
   myVideo,
   call,
   setCall,
-  stream,
+  localStream,
   handleEndCall,
 }) => {
   const { chattedUser } = useSelector((store) => store.messages);
@@ -53,7 +53,7 @@ const Calls = ({
               </div>
             ) : null}
             {/* My video */}
-            {stream ? (
+            {localStream ? (
               <div>
                 <video
                   ref={myVideo}
