@@ -19,7 +19,6 @@ export const createPeerConnection = (offerObj) => {
     const peerConnection = new RTCPeerConnection(peerConfiguration);
     //Create media stream for remote
     const remoteStream = new MediaStream();
-    store.dispatch(reduxAddRemoteStream(remoteStream));
     store.dispatch(reduxAddPeerConnection(peerConnection));
     //3. Find local ICE Candidate
     peerConnection.addEventListener("icecandidate", (e) => {
@@ -39,9 +38,9 @@ export const createPeerConnection = (offerObj) => {
       });
     });
     if (offerObj) {
-      await peerConnection.setRemoteDescription(offerObj.offer);
+      await peerConnection.setRemoteDescription(offerObj?.offer);
     }
-    resolve();
+    resolve({ remoteStream });
   });
 };
 

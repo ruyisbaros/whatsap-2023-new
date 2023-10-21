@@ -15,7 +15,11 @@ import {
 
 import { createSocket } from "./redux/socketSlicer";
 import { reduxUpdateCallStatus } from "./redux/callingsSlice";
-import { reduxSetAnswer, reduxSetOffer } from "./redux/callStreamSlicer";
+import {
+  reduxAddIceCandidate,
+  reduxSetAnswer,
+  reduxSetOffer,
+} from "./redux/callStreamSlicer";
 let socket;
 
 export const connectToSocketServer = () => {
@@ -26,7 +30,7 @@ export const connectToSocketServer = () => {
     store.dispatch(createSocket(socket));
   });
   socket.on("setup socketId", (id) => {
-    console.log("remote socket id ", id);
+    //console.log("remote socket id ", id);
     store.dispatch(reduxSetMySocketId(id));
   });
   socket.on("new message", (msg) => {
@@ -54,16 +58,23 @@ export const connectToSocketServer = () => {
     store.dispatch(reduxStopTyping({ situation: false, convo, message }));
   });
   socket.on("newOfferCame", (offer) => {
+    console.log("new offer received");
     store.dispatch(
       reduxUpdateCallStatus({ cst: "receivingCall", value: true })
     );
     store.dispatch(reduxSetOffer(offer));
   });
   socket.on("newAnswerCame", (answer) => {
+    console.log("new answer received");
     store.dispatch(reduxUpdateCallStatus({ cst: "callAccepted", value: true }));
     store.dispatch(reduxSetAnswer(answer));
   });
+  socket.on("iceToClient", (iceCandidate) => {
+    console.log("ice candidate received");
+    store.dispatch(reduxAddIceCandidate(iceCandidate));
+  });
 };
+
 //Emit user activities
 export const joinUser = (id) => {
   socket?.emit("joinUser", id);

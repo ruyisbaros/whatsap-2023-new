@@ -24,11 +24,10 @@ const Home = () => {
     (store) => store.messages
   );
   const { socket } = useSelector((store) => store.sockets);
-  const { loggedUser, mySocketId } = useSelector((store) => store.currentUser);
+  const { loggedUser } = useSelector((store) => store.currentUser);
   const { videoScreen } = useSelector((store) => store.callStatuses);
-  const { localStream, offerObject, peerConnection, haveOffer } = useSelector(
-    (store) => store.streams
-  );
+  const { localStream, offerObject, peerConnection, haveOffer, iceCandidates } =
+    useSelector((store) => store.streams);
 
   const fetchMyConversations = useCallback(async () => {
     try {
@@ -49,19 +48,12 @@ const Home = () => {
     fetchMyConversations();
   }, [fetchMyConversations]);
 
-  useEffect(() => {
-    if (socket) {
-      socket.on("iceToClient", (iceCandidate) => {
-        peerConnection.addIceCandidate(iceCandidate);
-      });
-    }
-  }, [socket, peerConnection]);
-
   const startVideoCall = async () => {
     try {
       dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));
       await fetchUserMedia();
-      await createPeerConnection();
+      const { remoteStream } = await createPeerConnection();
+      dispatch(reduxAddRemoteStream(remoteStream));
     } catch (error) {
       toast.error("Calling Error", error.message);
     }
@@ -91,8 +83,8 @@ const Home = () => {
   const answerVideoCall = async () => {
     try {
       await fetchUserMedia();
-      await createPeerConnection(offerObject);
-
+      const { remoteStream } = await createPeerConnection(offerObject);
+      dispatch(reduxAddRemoteStream(remoteStream));
       const answer = await peerConnection.createAnswer({});
       //console.log(answer);
       await peerConnection.setLocalDescription(answer);
@@ -102,6 +94,35 @@ const Home = () => {
       toast.error("Something went wrong! Try again");
     }
   };
+
+  useEffect(() => {
+    const createAnswers = async () => {
+      const answer = await peerConnection.createAnswer({});
+      peerConnection.setLocalDescription(answer);
+      dispatch(reduxUpdateHaveOffer({ have: "haveOffer", value: true }));
+      socket.emit("newAnswer", { answer });
+    };
+    if (peerConnection && offerObject.offer !== "") {
+      createAnswers();
+    }
+  }, [peerConnection, socket, dispatch, offerObject.offer]);
+  const stopVideoCall = async () => {
+    try {
+      //socket.emit("newAnswer", offerObj);
+    } catch (error) {
+      toast.error("Something went wrong! Try again");
+    }
+  };
+
+  useEffect(() => {
+    if (iceCandidates.length > 0 && peerConnection) {
+      iceCandidates.forEach((candidate) => {
+        peerConnection.addIceCandidate(candidate);
+      });
+
+      console.log("all candidates added");
+    }
+  }, [dispatch, iceCandidates, peerConnection]);
 
   return (
     <>
@@ -117,7 +138,14 @@ const Home = () => {
         </div>
       </div>
       {/* Calls */}
-      {videoScreen && <Calls myVideo={myVideo} inComingVideo={inComingVideo} />}
+      {videoScreen && (
+        <Calls
+          stopVideoCall={stopVideoCall}
+          answerVideoCall={answerVideoCall}
+          myVideo={myVideo}
+          inComingVideo={inComingVideo}
+        />
+      )}
     </>
   );
 };

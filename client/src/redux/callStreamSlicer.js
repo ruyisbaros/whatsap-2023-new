@@ -6,6 +6,7 @@ const initialState = {
   peerConnection: null,
   offerObject: { offer: "", answer: "" },
   haveOffer: false,
+  iceCandidates: [],
 };
 
 const makeStreams = createSlice({
@@ -31,6 +32,9 @@ const makeStreams = createSlice({
     reduxSetAnswer: (state, action) => {
       state.offerObject = { ...state.offerObject, answer: action.payload };
     },
+    reduxAddIceCandidate: (state, action) => {
+      state.iceCandidates.push(action.payload);
+    },
   },
 });
 
@@ -42,5 +46,6 @@ export const {
   reduxUpdateHaveOffer,
   reduxSetOffer,
   reduxSetAnswer,
+  reduxAddIceCandidate,
 } = makeStreams.actions;
 export default makeStreams.reducer;

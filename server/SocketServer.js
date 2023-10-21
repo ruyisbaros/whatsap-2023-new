@@ -97,8 +97,11 @@ exports.socketServer = (socket, io) => {
   socket.on("newOffer", () => {});
   socket.on("newAnswer", () => {});
   socket.on("iceToServer", ({ iceCandidate, target }) => {
+    console.log("candidate: ", target);
     const user = users.find((user) => user.id === target);
-    socket.to(user.socketId).emit("iceToClient", iceCandidate);
+    if (user) {
+      io.to(user.socketId).emit("iceToClient", iceCandidate);
+    }
   });
   /* socket.on("call user", ({ userToCall, signal, from, name, picture }) => {
     const user = users.find((user) => user.id === userToCall);

@@ -5,7 +5,7 @@ import CallAreaInfo from "./CallAreaInfo";
 import CallAreaActions from "./CallAreaActions";
 import { useSelector } from "react-redux";
 
-const Calls = ({ inComingVideo, myVideo, handleEndCall }) => {
+const Calls = ({ inComingVideo, myVideo, stopVideoCall, answerVideoCall }) => {
   const { chattedUser } = useSelector((store) => store.messages);
   const { callEnded, callAccepted, receivingCall } = useSelector(
     (store) => store.callStatuses
@@ -27,7 +27,7 @@ const Calls = ({ inComingVideo, myVideo, handleEndCall }) => {
             <Header />
             <CallAreaInfo name={chattedUser?.name} />
             {showCallActions && (
-              <CallAreaActions handleEndCall={handleEndCall} />
+              <CallAreaActions stopVideoCall={stopVideoCall} />
             )}
           </div>
           {/* Show videos */}
@@ -64,7 +64,7 @@ const Calls = ({ inComingVideo, myVideo, handleEndCall }) => {
         </div>
       </div>
       {receivingCall && !callAccepted && (
-        <Ringing handleEndCall={handleEndCall} />
+        <Ringing stopVideoCall={stopVideoCall} />
       )}
     </>
   );
