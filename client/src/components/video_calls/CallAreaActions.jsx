@@ -3,12 +3,19 @@ import { ArrowIcon, MuteIcon } from "../../assets/svg";
 import { SpeakerIcon } from "./../../assets/svg/SpeakerIcon";
 import { VideoDialIcon } from "./../../assets/svg/VideoDeal";
 import { DialIcon } from "./../../assets/svg/Dial";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-const CallAreaActions = ({ handleEndCall }) => {
-  const dispatch = useDispatch();
-  const { chattedUser } = useSelector((store) => store.messages);
-
+const CallAreaActions = ({ stopVideoCall, cancelVideoCall }) => {
+  const { callRejected, callAccepted, receivingCall } = useSelector(
+    (store) => store.callStatuses
+  );
+  const handleStopCancel = () => {
+    if (!callRejected && !callAccepted) {
+      cancelVideoCall();
+    } else {
+      stopVideoCall();
+    }
+  };
   return (
     <div className="absolute bottom-0 h-22 w-full z40 px-1">
       <div className="relative bg-[#222] px-4 pt-6 pb-12 rounded-xl">
@@ -31,8 +38,12 @@ const CallAreaActions = ({ handleEndCall }) => {
               <MuteIcon className="fill-white w-5" />
             </button>
           </li>
-          <li onClick={handleEndCall}>
-            <button className="btn_secondary bg-red-600 rotate-[135deg]">
+          <li>
+            <button
+              className="btn_secondary bg-red-600 rotate-[135deg]"
+              onClick={handleStopCancel}
+              disabled={receivingCall && !callAccepted}
+            >
               <DialIcon className="fill-white w-6" />
             </button>
           </li>

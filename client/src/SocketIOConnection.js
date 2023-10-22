@@ -17,6 +17,7 @@ import { createSocket } from "./redux/socketSlicer";
 import { reduxUpdateCallStatus } from "./redux/callingsSlice";
 import {
   reduxAddIceCandidate,
+  reduxRemoveStreamPeer,
   reduxSetAnswer,
   reduxSetOffer,
 } from "./redux/callStreamSlicer";
@@ -57,11 +58,15 @@ export const connectToSocketServer = () => {
   socket.on("closeTypingToClient", ({ convo, message }) => {
     store.dispatch(reduxStopTyping({ situation: false, convo, message }));
   });
-  socket.on("newOfferCame", (offer) => {
+  socket.on("newOfferCame", ({ offer, name, picture, offerer }) => {
     console.log("new offer received");
+    store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));
     store.dispatch(
       reduxUpdateCallStatus({ cst: "receivingCall", value: true })
     );
+    store.dispatch(reduxUpdateCallStatus({ cst: "name", value: name }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "picture", value: picture }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "offerer", value: offerer }));
     store.dispatch(reduxSetOffer(offer));
   });
   socket.on("newAnswerCame", (answer) => {
@@ -72,6 +77,49 @@ export const connectToSocketServer = () => {
   socket.on("iceToClient", (iceCandidate) => {
     console.log("ice candidate received");
     store.dispatch(reduxAddIceCandidate(iceCandidate));
+  });
+  socket.on("callRejected", () => {
+    store.dispatch(reduxUpdateCallStatus({ cst: "callRejected", value: true }));
+  });
+  socket.on("callEnded", () => {
+    const peerConnection = store.getState().streams.peerConnection;
+    const localStream = store.getState().streams.localStream;
+    peerConnection.close();
+    peerConnection.onicecandidate = null;
+    peerConnection.onaddstream = null;
+    localStream.getVideoTracks().forEach((track) => {
+      track.stop();
+    });
+    store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: false }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "callEnded", value: true }));
+    store.dispatch(
+      reduxUpdateCallStatus({ cst: "callRejected", value: false })
+    );
+    store.dispatch(reduxUpdateCallStatus({ cst: "caller", value: false }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "callee", value: false }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "cstOffer", value: false }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "offerer", value: "" }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "name", value: "" }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "picture", value: "" }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "current", value: "idle" }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "haveOffer", value: false }));
+    store.dispatch(
+      reduxUpdateCallStatus({ cst: "receivingCall", value: false })
+    );
+    store.dispatch(
+      reduxUpdateCallStatus({ cst: "callAccepted", value: false })
+    );
+    store.dispatch(reduxRemoveStreamPeer());
+  });
+
+  socket.on("cancelCall", () => {
+    store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: false }));
+    store.dispatch(
+      reduxUpdateCallStatus({ cst: "receivingCall", value: false })
+    );
+    store.dispatch(reduxUpdateCallStatus({ cst: "name", value: "" }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "picture", value: "" }));
+    store.dispatch(reduxUpdateCallStatus({ cst: "offerer", value: "" }));
   });
 };
 

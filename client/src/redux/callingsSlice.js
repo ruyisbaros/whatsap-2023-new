@@ -7,9 +7,13 @@ let initialState = {
   videoScreen: false,
   name: "",
   picture: "",
-  callerSocketId: "",
-  signal: "",
   ringingMuted: false,
+  offerer: "",
+  caller: false,
+  callee: false,
+  current: "idle",
+  callRejected: false,
+  haveOffer: false,
 };
 
 const calls = createSlice({

@@ -3,6 +3,7 @@ import {
   reduxAddPeerConnection,
   reduxAddRemoteStream,
 } from "../redux/callStreamSlicer";
+import { reduxUpdateCallStatus } from "../redux/callingsSlice";
 import { store } from "./../redux/store";
 let peerConfiguration = {
   iceServers: [
@@ -13,7 +14,7 @@ let peerConfiguration = {
 };
 export const createPeerConnection = (offerObj) => {
   const socket = store.getState().sockets.socket;
-  const loggedUser = store.getState().currentUser.loggedUser;
+  const offerer = store.getState().callStatuses.offerer;
   const chattedUser = store.getState().messages.chattedUser;
   return new Promise(async (resolve, reject) => {
     const peerConnection = new RTCPeerConnection(peerConfiguration);
@@ -26,7 +27,7 @@ export const createPeerConnection = (offerObj) => {
       if (e.candidate) {
         socket.emit("iceToServer", {
           iceCandidate: e.candidate,
-          target: chattedUser?._id,
+          target: offerer ? offerer : chattedUser?._id,
         });
       }
     });
@@ -36,8 +37,11 @@ export const createPeerConnection = (offerObj) => {
       e.streams[0].getTracks().forEach((tr) => {
         remoteStream.addTrack(tr, remoteStream);
       });
+      store.dispatch(
+        reduxUpdateCallStatus({ cst: "current", value: "enabled" })
+      );
     });
-    if (offerObj) {
+    if (offerObj && offerObj.offer !== "") {
       await peerConnection.setRemoteDescription(offerObj?.offer);
     }
     resolve({ remoteStream });

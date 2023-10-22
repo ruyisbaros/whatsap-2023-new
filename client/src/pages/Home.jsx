@@ -10,9 +10,8 @@ import Calls from "../components/video_calls/Calls";
 import { reduxMakeTokenExpired } from "../redux/currentUserSlice";
 import { createPeerConnection, fetchUserMedia } from "../utils/webRTCUtils";
 import {
-  reduxAddPeerConnection,
   reduxAddRemoteStream,
-  reduxUpdateHaveOffer,
+  reduxRemoveStreamPeer,
 } from "../redux/callStreamSlicer";
 import { reduxUpdateCallStatus } from "../redux/callingsSlice";
 
@@ -25,9 +24,23 @@ const Home = () => {
   );
   const { socket } = useSelector((store) => store.sockets);
   const { loggedUser } = useSelector((store) => store.currentUser);
-  const { videoScreen } = useSelector((store) => store.callStatuses);
-  const { localStream, offerObject, peerConnection, haveOffer, iceCandidates } =
-    useSelector((store) => store.streams);
+  const {
+    videoScreen,
+    offerer,
+    caller,
+    callee,
+    current,
+    haveOffer,
+    callRejected,
+    callAccepted,
+  } = useSelector((store) => store.callStatuses);
+  const {
+    localStream,
+    offerObject,
+    peerConnection,
+    iceCandidates,
+    remoteStream,
+  } = useSelector((store) => store.streams);
 
   const fetchMyConversations = useCallback(async () => {
     try {
@@ -51,6 +64,8 @@ const Home = () => {
   const startVideoCall = async () => {
     try {
       dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));
+      dispatch(reduxUpdateCallStatus({ cst: "caller", value: true }));
+      dispatch(reduxUpdateCallStatus({ cst: "callEnded", value: false }));
       await fetchUserMedia();
       const { remoteStream } = await createPeerConnection();
       dispatch(reduxAddRemoteStream(remoteStream));
@@ -67,53 +82,135 @@ const Home = () => {
       myVideo.current.srcObject = localStream;
     }
   }, [localStream, peerConnection]);
-
+  //Create offer
   useEffect(() => {
     const createOffers = async () => {
       const offer = await peerConnection.createOffer();
       peerConnection.setLocalDescription(offer);
-      dispatch(reduxUpdateHaveOffer({ have: "haveOffer", value: true }));
-      socket.emit("newOffer", { offer });
+      dispatch(reduxUpdateCallStatus({ cst: "haveOffer", value: true }));
+      socket.emit("newOffer", {
+        offer,
+        target: chattedUser?._id,
+        name: chattedUser?.name,
+        picture: chattedUser?.picture,
+        offerer: loggedUser.id,
+      });
     };
-    if (peerConnection && !haveOffer) {
+    if (socket && peerConnection && !haveOffer && caller) {
       createOffers();
     }
-  }, [peerConnection, socket, dispatch, haveOffer]);
+  }, [
+    peerConnection,
+    socket,
+    dispatch,
+    haveOffer,
+    loggedUser,
+    chattedUser,
+    caller,
+  ]);
 
   const answerVideoCall = async () => {
     try {
+      dispatch(reduxUpdateCallStatus({ cst: "callAccepted", value: true }));
+      dispatch(reduxUpdateCallStatus({ cst: "callee", value: true }));
+      dispatch(reduxUpdateCallStatus({ cst: "callEnded", value: false }));
       await fetchUserMedia();
       const { remoteStream } = await createPeerConnection(offerObject);
       dispatch(reduxAddRemoteStream(remoteStream));
-      const answer = await peerConnection.createAnswer({});
-      //console.log(answer);
-      await peerConnection.setLocalDescription(answer);
-
-      //socket.emit("newAnswer", offerObj);
     } catch (error) {
       toast.error("Something went wrong! Try again");
     }
   };
-
+  //Create answer
   useEffect(() => {
     const createAnswers = async () => {
       const answer = await peerConnection.createAnswer({});
-      peerConnection.setLocalDescription(answer);
-      dispatch(reduxUpdateHaveOffer({ have: "haveOffer", value: true }));
-      socket.emit("newAnswer", { answer });
+      if (answer) {
+        peerConnection.setLocalDescription(answer);
+      }
+      socket.emit("newAnswer", { answer, offerer });
     };
-    if (peerConnection && offerObject.offer !== "") {
+    if (
+      socket &&
+      peerConnection &&
+      offerObject?.offer !== "" &&
+      offerer &&
+      callee
+    ) {
       createAnswers();
     }
-  }, [peerConnection, socket, dispatch, offerObject.offer]);
+  }, [peerConnection, socket, dispatch, offerObject.offer, offerer, callee]);
+
+  //Reject incoming call!
+  const rejectVideoCall = async () => {
+    dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: false }));
+    dispatch(reduxUpdateCallStatus({ cst: "haveOffer", value: false }));
+    dispatch(reduxUpdateCallStatus({ cst: "receivingCall", value: false }));
+    dispatch(reduxUpdateCallStatus({ cst: "offerer", value: "" }));
+    dispatch(reduxUpdateCallStatus({ cst: "name", value: "" }));
+    dispatch(reduxUpdateCallStatus({ cst: "picture", value: "" }));
+    dispatch(reduxRemoveStreamPeer());
+
+    socket.emit("callRejected", offerer);
+  };
+  //Stop...
   const stopVideoCall = async () => {
     try {
-      //socket.emit("newAnswer", offerObj);
+      peerConnection.close();
+      peerConnection.onicecandidate = null;
+      peerConnection.onaddstream = null;
+      localStream.getVideoTracks().forEach((track) => {
+        track.stop();
+      });
+      const to = offerer ? offerer : chattedUser?._id;
+      if (!callRejected && callAccepted) {
+        socket.emit("callEnded", to);
+      }
+      dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: false }));
+      dispatch(reduxUpdateCallStatus({ cst: "callEnded", value: true }));
+      dispatch(reduxUpdateCallStatus({ cst: "callRejected", value: false }));
+      dispatch(reduxUpdateCallStatus({ cst: "caller", value: false }));
+      dispatch(reduxUpdateCallStatus({ cst: "callee", value: false }));
+      dispatch(reduxUpdateCallStatus({ cst: "cstOffer", value: false }));
+      dispatch(reduxUpdateCallStatus({ cst: "offerer", value: "" }));
+      dispatch(reduxUpdateCallStatus({ cst: "name", value: "" }));
+      dispatch(reduxUpdateCallStatus({ cst: "picture", value: "" }));
+      dispatch(reduxUpdateCallStatus({ cst: "current", value: "idle" }));
+      dispatch(reduxUpdateCallStatus({ cst: "receivingCall", value: false }));
+      dispatch(reduxUpdateCallStatus({ cst: "callAccepted", value: false }));
+      dispatch(reduxUpdateCallStatus({ cst: "haveOffer", value: false }));
+      dispatch(reduxRemoveStreamPeer());
     } catch (error) {
       toast.error("Something went wrong! Try again");
     }
   };
 
+  const cancelVideoCall = () => {
+    //peerConnection.close();
+    peerConnection.onicecandidate = null;
+    peerConnection.onaddstream = null;
+    localStream.getVideoTracks().forEach((track) => {
+      track.stop();
+    });
+    if (!callRejected && !callAccepted) {
+      socket.emit("cancelCall", chattedUser?._id);
+    }
+    dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: false }));
+    dispatch(reduxUpdateCallStatus({ cst: "caller", value: false }));
+    dispatch(reduxUpdateCallStatus({ cst: "haveOffer", value: false }));
+    dispatch(reduxRemoveStreamPeer());
+  };
+
+  //Set remote Description for Caller
+  useEffect(() => {
+    const setRemote = async () => {
+      await peerConnection.setRemoteDescription(offerObject?.answer);
+    };
+    if (offerObject?.answer !== "" && peerConnection) {
+      setRemote();
+    }
+  }, [offerObject.answer, peerConnection]);
+  //Add Ice Candidates
   useEffect(() => {
     if (iceCandidates.length > 0 && peerConnection) {
       iceCandidates.forEach((candidate) => {
@@ -123,6 +220,13 @@ const Home = () => {
       console.log("all candidates added");
     }
   }, [dispatch, iceCandidates, peerConnection]);
+
+  //The magic Users connected:)
+  useEffect(() => {
+    if (current === "enabled") {
+      inComingVideo.current.srcObject = remoteStream;
+    }
+  }, [current, remoteStream]);
 
   return (
     <>
@@ -140,8 +244,10 @@ const Home = () => {
       {/* Calls */}
       {videoScreen && (
         <Calls
+          rejectVideoCall={rejectVideoCall}
           stopVideoCall={stopVideoCall}
           answerVideoCall={answerVideoCall}
+          cancelVideoCall={cancelVideoCall}
           myVideo={myVideo}
           inComingVideo={inComingVideo}
         />

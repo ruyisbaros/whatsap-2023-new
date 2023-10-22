@@ -5,9 +5,16 @@ import CallAreaInfo from "./CallAreaInfo";
 import CallAreaActions from "./CallAreaActions";
 import { useSelector } from "react-redux";
 
-const Calls = ({ inComingVideo, myVideo, stopVideoCall, answerVideoCall }) => {
+const Calls = ({
+  inComingVideo,
+  myVideo,
+  stopVideoCall,
+  answerVideoCall,
+  rejectVideoCall,
+  cancelVideoCall,
+}) => {
   const { chattedUser } = useSelector((store) => store.messages);
-  const { callEnded, callAccepted, receivingCall } = useSelector(
+  const { callEnded, callAccepted, receivingCall, current } = useSelector(
     (store) => store.callStatuses
   );
   const { localStream } = useSelector((store) => store.streams);
@@ -27,7 +34,10 @@ const Calls = ({ inComingVideo, myVideo, stopVideoCall, answerVideoCall }) => {
             <Header />
             <CallAreaInfo name={chattedUser?.name} />
             {showCallActions && (
-              <CallAreaActions stopVideoCall={stopVideoCall} />
+              <CallAreaActions
+                stopVideoCall={stopVideoCall}
+                cancelVideoCall={cancelVideoCall}
+              />
             )}
           </div>
           {/* Show videos */}
@@ -40,7 +50,9 @@ const Calls = ({ inComingVideo, myVideo, stopVideoCall, answerVideoCall }) => {
                   playsInline
                   muted
                   autoPlay
-                  className={toggleVideo ? "SmallVideoCall" : "largeVideoCall"}
+                  className={`largeVideoCall${
+                    showCallActions ? "moveVideoCall" : ""
+                  }`}
                   onClick={() => setToggleVideo((prev) => !prev)}
                 ></video>
               </div>
@@ -53,9 +65,13 @@ const Calls = ({ inComingVideo, myVideo, stopVideoCall, answerVideoCall }) => {
                   playsInline
                   muted
                   autoPlay
-                  className={`${
-                    toggleVideo ? "largeVideoCall" : "SmallVideoCall"
-                  } ${showCallActions ? "moveVideoCall" : ""}`}
+                  className={
+                    current === "enabled"
+                      ? "SmallVideoCall"
+                      : current === "idle"
+                      ? "largeVideoCall"
+                      : ""
+                  }
                   onClick={() => setToggleVideo((prev) => !prev)}
                 ></video>
               </div>
@@ -64,7 +80,10 @@ const Calls = ({ inComingVideo, myVideo, stopVideoCall, answerVideoCall }) => {
         </div>
       </div>
       {receivingCall && !callAccepted && (
-        <Ringing stopVideoCall={stopVideoCall} />
+        <Ringing
+          rejectVideoCall={rejectVideoCall}
+          answerVideoCall={answerVideoCall}
+        />
       )}
     </>
   );

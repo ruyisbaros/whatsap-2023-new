@@ -7,7 +7,7 @@ import { ValidIcon } from "../../assets/svg/Valid";
 import sendCall from "../../assets/audio/ringtone.mp3";
 import { reduxUpdateCallStatus } from "../../redux/callingsSlice";
 
-const Ringing = ({ handleEndCall }) => {
+const Ringing = ({ rejectVideoCall, answerVideoCall }) => {
   const dispatch = useDispatch();
   const { picture, name, ringingMuted } = useSelector(
     (store) => store.callStatuses
@@ -76,13 +76,19 @@ const Ringing = ({ handleEndCall }) => {
             </button>
           </li>
 
-          <li onClick={handleEndCall}>
-            <button className="w-8 h-8 rounded-full flex items-center justify-center bg-red-500">
+          <li>
+            <button
+              className="w-8 h-8 rounded-full flex items-center justify-center bg-red-500"
+              onClick={rejectVideoCall}
+            >
               <TiCancel size={25} color="white" />
             </button>
           </li>
           <li>
-            <button className="w-8 h-8 rounded-full flex items-center justify-center bg-green_1">
+            <button
+              className="w-8 h-8 rounded-full flex items-center justify-center bg-green_1"
+              onClick={answerVideoCall}
+            >
               <ValidIcon className="w-7 fill-white mt-2" />
             </button>
           </li>

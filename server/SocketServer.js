@@ -94,37 +94,47 @@ exports.socketServer = (socket, io) => {
   });
 
   //Video Calls
-  socket.on("newOffer", () => {});
-  socket.on("newAnswer", () => {});
+  socket.on("newOffer", ({ target, offer, name, picture, offerer }) => {
+    const user = users.find((user) => user.id === target);
+    if (user) {
+      io.to(user.socketId).emit("newOfferCame", {
+        offer,
+        name,
+        picture,
+        offerer,
+      });
+    }
+  });
+  socket.on("newAnswer", ({ offerer, answer }) => {
+    const user = users.find((user) => user.id === offerer);
+    if (user) {
+      io.to(user.socketId).emit("newAnswerCame", answer);
+    }
+  });
   socket.on("iceToServer", ({ iceCandidate, target }) => {
-    console.log("candidate: ", target);
+    //console.log("candidate: ", target);
     const user = users.find((user) => user.id === target);
     if (user) {
       io.to(user.socketId).emit("iceToClient", iceCandidate);
     }
   });
-  /* socket.on("call user", ({ userToCall, signal, from, name, picture }) => {
-    const user = users.find((user) => user.id === userToCall);
-    //console.log(user);
+  socket.on("callRejected", (offerer) => {
+    const user = users.find((user) => user.id === offerer);
     if (user) {
-      io.to(`${user.socketId}`).emit("call user", {
-        signal,
-        from,
-        name,
-        picture,
-      });
+      io.to(user.socketId).emit("callRejected");
     }
   });
-  socket.on("answer call user", ({ signal, to }) => {
-    io.to(`${to}`).emit("answer call user", signal);
-  });
-  socket.on("end call user", ({ calle, id }) => {
-    console.log("end call", calle, id);
-    if (calle) {
-      const user = users.find((user) => user.id === id);
-      io.to(`${user.socketId}`).emit("end call user");
-    } else {
-      io.to(`${id}`).emit("end call user");
+
+  socket.on("callEnded", (userTo) => {
+    const user = users.find((user) => user.id === userTo);
+    if (user) {
+      io.to(user.socketId).emit("callEnded");
     }
-  }); */
+  });
+  socket.on("cancelCall", (userTo) => {
+    const user = users.find((user) => user.id === userTo);
+    if (user) {
+      io.to(user.socketId).emit("cancelCall");
+    }
+  });
 };
