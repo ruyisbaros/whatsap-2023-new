@@ -13,6 +13,7 @@ import {
   reduxAddMyMessages,
   reduxGetMyConversations,
   reduxSetChattedUser,
+  reduxSetGroupChatUsers,
 } from "../../redux/chatSlice";
 import EmojiPicker from "emoji-picker-react";
 import AttachmentMenu from "./AttachmentMenu";
@@ -37,10 +38,20 @@ const ChatActions = () => {
   const [showAttachment, setShowAttachment] = useState(false);
 
   useEffect(() => {
-    const usr = activeConversation.users.find(
-      (usr) => usr._id !== loggedUser.id
-    );
-    dispatch(reduxSetChattedUser(usr));
+    if (!activeConversation.isGroup) {
+      const usr = activeConversation.users.find(
+        (usr) => usr._id !== loggedUser.id
+      );
+      dispatch(reduxSetChattedUser(usr));
+      dispatch(reduxSetGroupChatUsers([]));
+    } else {
+      dispatch(reduxSetChattedUser(null));
+      dispatch(
+        reduxSetGroupChatUsers(
+          activeConversation.users.filter((usr) => usr._id !== loggedUser.id)
+        )
+      );
+    }
   }, [activeConversation, loggedUser, dispatch]);
   //console.log(chattedUser);
   const handleSendMessage = async (e) => {

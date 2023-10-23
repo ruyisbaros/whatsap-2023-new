@@ -7,6 +7,7 @@ const initialState = {
   notifications: [],
   userStatuses: [],
   chattedUser: null,
+  grpChatUsers: [],
   isTyping: false,
   typeTo: null,
   files: [],
@@ -25,6 +26,9 @@ const chatSlicer = createSlice({
     },
     reduxSetChattedUser: (state, action) => {
       state.chattedUser = action.payload;
+    },
+    reduxSetGroupChatUsers: (state, action) => {
+      state.grpChatUsers = action.payload;
     },
     reduxGetMyConversations: (state, action) => {
       state.conversations = action.payload;
@@ -158,6 +162,7 @@ export const {
   reduxAddFile,
   reduxMakeFilesEmpty,
   reduxRemoveFile,
+  reduxSetGroupChatUsers,
 } = chatSlicer.actions;
 
 export default chatSlicer.reducer;

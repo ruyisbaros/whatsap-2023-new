@@ -69,6 +69,18 @@ exports.socketServer = (socket, io) => {
     }
   });
 
+  //New Chat Group
+  socket.on("new group", ({ data, id }) => {
+    data.users.forEach((user) => {
+      if (user._id !== id) {
+        let socketTo = users.find((usr) => usr.id === user._id);
+        if (socketTo) {
+          socket.to(socketTo.socketId).emit("new Group", data);
+        }
+      }
+    });
+  });
+
   //OPEN Typing
   socket.on("typing", ({ chattedUserId, typeTo, convo }) => {
     //console.log(id, id2);

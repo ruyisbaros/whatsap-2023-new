@@ -46,8 +46,12 @@ const Home = () => {
     try {
       const { data } = await axios.get("/conversation/my_conversations");
       console.log(data);
-      console.log(data.filter((dt) => dt.latestMessage));
-      dispatch(reduxGetMyConversations(data.filter((dt) => dt.latestMessage)));
+      //console.log(data.filter((dt) => dt.latestMessage));
+      dispatch(
+        reduxGetMyConversations(
+          data.filter((dt) => (dt.isGroup ? dt : dt.latestMessage))
+        )
+      );
     } catch (error) {
       if (error.response.data.message === "jwt expired") {
         dispatch(reduxMakeTokenExpired());

@@ -40,6 +40,9 @@ export const connectToSocketServer = () => {
   socket.on("update conversationList", (convo) => {
     store.dispatch(reduxAddMyConversations(convo));
   });
+  socket.on("new Group", (convo) => {
+    store.dispatch(reduxAddMyConversations(convo));
+  });
   socket.on("onlineUsers", (users) => {
     window.localStorage.setItem("onlineUsers", JSON.stringify(users));
     store.dispatch(reduxSetOnlineUsers(users));
@@ -138,6 +141,9 @@ export const sendNewMessage = (msg, id) => {
 //first time chat means other user's conversation list should include me real time
 export const createNewConversation = (newConversation, id) => {
   socket?.emit("update conversationList", { newConversation, id });
+};
+export const createNewGroup = (data, id) => {
+  socket?.emit("new group", { data, id });
 };
 export const logoutDisconnect = (id) => {
   socket?.emit("logout", id);

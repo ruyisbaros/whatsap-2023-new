@@ -13,26 +13,26 @@ const SingleConversation = ({ convo }) => {
     (store) => store.messages
   );
 
-  const [ME, setME] = useState("");
   const [YOU, setYOU] = useState("");
   const [countOfNotReadMessage, setCountOfNotReadMessage] = useState(0);
 
   const findMeAndYou = useCallback(() => {
-    const me = convo.users.find((usr) => usr._id === loggedUser.id);
-    setME(me);
     const you = convo.users.find((usr) => usr._id !== loggedUser.id);
     setYOU(you);
   }, [loggedUser, convo]);
 
   useEffect(() => {
-    findMeAndYou();
-  }, [findMeAndYou]);
+    if (!convo.isGroup) {
+      findMeAndYou();
+    }
+  }, [findMeAndYou, convo.isGroup]);
   //console.log(ME, YOU);
-
+  //console.log(convo.users.map((usr) => usr._id));
   const open_create_conversation = async () => {
     try {
       const { data } = await axios.post("/conversation/open_create", {
         receiver_id: YOU._id,
+        isGroup: convo.isGroup ? convo._id : false,
       });
       //console.log(data);
       await dispatch(reduxSetActiveConversation(data));
@@ -70,14 +70,14 @@ const SingleConversation = ({ convo }) => {
         <div className="flex items-center gap-x-3">
           <div className="relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden">
             <img
-              src={YOU.picture}
+              src={convo.isGroup ? convo.picture : YOU.picture}
               alt=""
               className="w-full h-full object-cover"
             />
           </div>
           <div className="w-full flex flex-col">
             <h1 className="font-bold capitalize flex items-center gap-x-2">
-              {YOU.name}
+              {convo.isGroup ? convo.name : YOU.name}
             </h1>
             <div>
               <div className="flex items-center gap-x-1 dark:text-dark_text_2">
