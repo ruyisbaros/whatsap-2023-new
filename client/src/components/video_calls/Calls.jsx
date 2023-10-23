@@ -50,9 +50,7 @@ const Calls = ({
                   playsInline
                   muted
                   autoPlay
-                  className={`largeVideoCall${
-                    showCallActions ? "moveVideoCall" : ""
-                  }`}
+                  className={`largeVideoCall`}
                   onClick={() => setToggleVideo((prev) => !prev)}
                 ></video>
               </div>
@@ -65,13 +63,13 @@ const Calls = ({
                   playsInline
                   muted
                   autoPlay
-                  className={
+                  className={`${
                     current === "enabled"
                       ? "SmallVideoCall"
                       : current === "idle"
                       ? "largeVideoCall"
                       : ""
-                  }
+                  } ${showCallActions ? "moveVideoCall" : ""}`}
                   onClick={() => setToggleVideo((prev) => !prev)}
                 ></video>
               </div>
