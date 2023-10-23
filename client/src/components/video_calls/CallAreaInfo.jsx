@@ -4,7 +4,6 @@ import { makeCapital } from "../../utils/helpers";
 
 const CallAreaInfo = ({ name }) => {
   const [callSeconds, setCallSeconds] = useState(0);
-  const [callMinutes, setCallMinutes] = useState(0);
   const { callAccepted, callRejected, videoScreen, current } = useSelector(
     (store) => store.callStatuses
   );

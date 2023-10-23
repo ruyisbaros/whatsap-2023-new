@@ -1,14 +1,20 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import CommunityIcon from "../../assets/svg/Community";
 import StoryIcon from "../../assets/svg/Story";
 import ChatIcon from "../../assets/svg/Chat";
 import DotsIcon from "../../assets/svg/Dots";
 import Menu from "./Menu";
+import { useOutsideClick } from "../../utils/helpers";
 
 const SideBarHeader = () => {
+  const menuRef = useRef(null);
   const { loggedUser } = useSelector((store) => store.currentUser);
   const [showMenu, setShowMenu] = useState(false);
+
+  useOutsideClick(menuRef, () => {
+    setShowMenu(false);
+  });
   return (
     <div className="h-[59px] dark:bg-dark_bg_2 flex items-center p16">
       <div className="w-full flex items-center justify-between ">
@@ -42,7 +48,7 @@ const SideBarHeader = () => {
             >
               <DotsIcon className="dark:fill-dark_svg_1" />
             </button>
-            {showMenu && <Menu />}
+            {showMenu && <Menu menuRef={menuRef} />}
           </li>
         </ul>
       </div>

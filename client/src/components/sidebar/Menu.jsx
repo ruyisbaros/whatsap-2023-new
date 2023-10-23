@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import axios from "../../axios";
 import { reduxRemoveActiveConversation } from "../../redux/chatSlice";
 import { logoutDisconnect } from "../../SocketIOConnection";
-const Menu = () => {
+const Menu = ({ menuRef }) => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
   const handleLogout = async () => {
@@ -21,7 +21,10 @@ const Menu = () => {
     }
   };
   return (
-    <div className="absolute right-0 z-50 dark:bg-dark_bg_2 dark:text-dark_text_1 shadow-md w-52">
+    <div
+      ref={menuRef}
+      className="absolute right-0 z-50 dark:bg-dark_bg_2 dark:text-dark_text_1 shadow-md w-52"
+    >
       <ul>
         <li className="list-none py-3 pl-5 cursor-pointer hover:bg-dark_bg_3">
           <span>New group</span>
