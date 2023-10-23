@@ -51,12 +51,24 @@ const ChatHeader = ({ startVideoCall }) => {
             <h1 className="dark:text-white capitalize text-sm font-bold">
               {activeConversation.isGroup ? activeConversation.name : YOU.name}
             </h1>
-            {!activeConversation.isGroup && (
+            {!activeConversation.isGroup ? (
               <span className="text-xs dark:text-dark_svg_2">
                 {onLineUsers.find((usr) => usr.id === chattedUser?._id)
                   ? "online"
                   : "Last online " + dateHandler2(chattedUser?.lastSeen)}
               </span>
+            ) : (
+              <div className="flex grpInfo" data-info="Tab here for group info">
+                {activeConversation.users.map((usr, i) => (
+                  <span
+                    key={usr._id}
+                    className="flex capitalize  text-xs dark:text-dark_svg_2 pr-1 cursor-pointer "
+                  >
+                    {usr.name}
+                    {i < activeConversation.users.length - 1 ? `,  ` : ""}
+                  </span>
+                ))}
+              </div>
             )}
           </div>
         </div>

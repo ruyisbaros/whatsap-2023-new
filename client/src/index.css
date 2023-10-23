@@ -422,3 +422,25 @@ button:disabled {
   height: 20px !important;
   border-radius: 50%;
 }
+
+/* Group info */
+.grpInfo {
+  position: relative;
+}
+.grpInfo::before {
+  content: attr(data-info);
+  position: absolute;
+  top: 100%;
+  width: 150px;
+  height: 20px;
+  background: #ddd;
+  color: #000;
+  font-size: 12px;
+  display: none;
+  border-radius: 3px;
+}
+.grpInfo:hover::before {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

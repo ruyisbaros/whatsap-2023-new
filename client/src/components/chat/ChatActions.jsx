@@ -28,9 +28,8 @@ const ChatActions = () => {
   const dispatch = useDispatch();
   const messageRef = useRef(null);
 
-  const { activeConversation, chattedUser, isTyping } = useSelector(
-    (store) => store.messages
-  );
+  const { activeConversation, chattedUser, isTyping, grpChatUsers } =
+    useSelector((store) => store.messages);
   const { loggedUser } = useSelector((store) => store.currentUser);
   const [message, setMessage] = useState("");
   const [status, setStatus] = useState(false);
@@ -62,7 +61,9 @@ const ChatActions = () => {
         const { data } = await axios.post("/message/send", {
           message,
           convo_id: activeConversation._id,
-          recipient: chattedUser._id,
+          recipient: activeConversation.isGroup
+            ? grpChatUsers
+            : chattedUser._id,
         });
         console.log(data);
         //Means first time chat

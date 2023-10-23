@@ -40,8 +40,12 @@ const conversationCtrl = {
         }
       } else {
         let groupChat = await ConversationModel.findOne({ _id: isGroup });
-        groupChat = await groupChat.populate("users admin", "-password");
-        res.status(200).json(groupChat);
+        if (groupChat) {
+          groupChat = await groupChat.populate("users admin", "-password");
+          res.status(200).json(groupChat);
+        } else {
+          res.status(500).json({ message: "No group found!" });
+        }
       }
     } catch (error) {
       res.status(500).json({ message: error.message });
