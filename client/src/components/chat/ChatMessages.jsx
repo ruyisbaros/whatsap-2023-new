@@ -4,8 +4,13 @@ import SingleMessage from "./SingleMessage";
 import Typing from "./Typing";
 import ShowFileInMessage from "./ShowFileInMessage";
 
-const ChatMessages = () => {
+const ChatMessages = ({
+  setShowMessageActions,
+  setClickedCount,
+  clickedCount,
+}) => {
   const endRef = useRef();
+
   const { messages, chattedUser, isTyping, typeTo, grpChatUsers } = useSelector(
     (store) => store.messages
   );
@@ -18,33 +23,43 @@ const ChatMessages = () => {
       <div className="scrollBar overflow-scrollbar overflow-auto py-2 px-[5%]">
         {/* Messages */}
         {messages.length > 0 &&
-          messages
+          /*  messages
             .filter(
               (msg) =>
                 msg.sender._id === chattedUser?._id ||
                 msg.sender._id === loggedUser?.id ||
                 msg.recipients.find((usr) => usr._id === loggedUser.id)
-            )
-            .map((message) => (
-              <div key={message.createdAt}>
-                {message.files.length > 0
-                  ? message.files.map((f, i) => (
-                      <ShowFileInMessage
-                        key={f.public_id}
-                        file={f}
-                        me={loggedUser.id === message.sender?._id}
-                        msg={message}
-                      />
-                    ))
-                  : null}
-                {message.message.length > 0 ? (
-                  <SingleMessage
-                    msg={message}
-                    me={loggedUser.id === message.sender?._id}
-                  />
-                ) : null}
-              </div>
-            ))}
+            ) */
+          messages.map((message, index) => (
+            <div key={message.createdAt}>
+              {message.files.length > 0
+                ? message.files.map((f, i) => (
+                    <ShowFileInMessage
+                      key={f.public_id}
+                      file={f}
+                      me={loggedUser.id === message.sender?._id}
+                      msg={message}
+                      /* sameUser={
+                          message[index].sender._id ===
+                          message[index - 1].sender._id
+                        } */
+                    />
+                  ))
+                : null}
+              <SingleMessage
+                msg={message}
+                me={loggedUser.id === message.sender?._id}
+                sameUser={
+                  messages[index]?.sender._id ===
+                  messages[index - 1]?.sender._id
+                }
+                setShowMessageActions={setShowMessageActions}
+                index={index}
+                setClickedCount={setClickedCount}
+                clickedCount={clickedCount}
+              />
+            </div>
+          ))}
         {isTyping &&
         (typeTo === chattedUser?._id ||
           grpChatUsers.find((gu) => gu._id === typeTo)) ? (

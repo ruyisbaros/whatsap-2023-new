@@ -1,19 +1,112 @@
 import moment from "moment/moment";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { TriangleIcon } from "../../assets/svg";
+import { useSelector } from "react-redux";
+import { makeCapital } from "./../../utils/helpers";
+import angry from "../../assets/emojies/angry.png";
+import dede from "../../assets/emojies/dede.png";
+import eyeHeart from "../../assets/emojies/eyeHeart.png";
+import haha from "../../assets/emojies/haha.png";
+import heart from "../../assets/emojies/heart.png";
+import shy from "../../assets/emojies/shy.png";
+import simarik from "../../assets/emojies/simarik.png";
+
+let emojies = [
+  {
+    id: 1,
+    image: haha,
+  },
+  {
+    id: 2,
+    image: shy,
+  },
+  {
+    id: 3,
+    image: simarik,
+  },
+  {
+    id: 4,
+    image: eyeHeart,
+  },
+  {
+    id: 5,
+    image: dede,
+  },
+  {
+    id: 6,
+    image: heart,
+  },
+  {
+    id: 7,
+    image: angry,
+  },
+];
 /* Image of sender missing */
-const SingleMessage = ({ msg, me }) => {
+const SingleMessage = ({
+  msg,
+  me,
+  sameUser,
+  setShowMessageActions,
+  index,
+  clickedCount,
+  setClickedCount,
+}) => {
+  const msgRef = useRef(null);
+  const { activeConversation } = useSelector((store) => store.messages);
+  const { loggedUser } = useSelector((store) => store.currentUser);
+  //console.log(typer);
+  const [changeBg, setChangeBg] = useState(false);
+  const [clickedIndex, setClickedIndex] = useState(null);
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [animTrigger, setAnimTrigger] = useState(false);
+  const [hoveredIndex, setHoveredIndex] = useState(false);
+  const handleActions = (e) => {
+    if (clickedIndex === index) {
+      setChangeBg(false);
+      setClickedIndex(null);
+      setClickedCount((prev) => prev - 1);
+    } else {
+      setShowMessageActions(true);
+      setChangeBg(true);
+      setClickedIndex(index);
+      setClickedCount((prev) => prev + 1);
+      setShowEmoji(true);
+    }
+  };
+
   return (
     <div
-      className={`w-full flex mt-2 mb-2 space-x-3 max-w-lg ${
+      ref={msgRef}
+      className={`relative w-full flex mt-2 mb-3 space-x-3  ${
         me ? "ml-auto justify-end" : ""
-      }`}
+      } ${changeBg ? "newBg" : ""}`}
+      onClick={(e) => handleActions(e)}
     >
+      {activeConversation.isGroup && !me && !sameUser ? (
+        <div>
+          <img
+            src={msg?.sender?.picture}
+            alt=""
+            className="w-[40px] h-[40px] rounded-full object-cover"
+          />
+        </div>
+      ) : (
+        <div>
+          <span className="w-[40px] h-[40px] rounded-full object-cover ml-10 "></span>
+        </div>
+      )}
       <div
         className={`relative  p-2 rounded-lg
       ${me ? "bg-green_5 text-black" : "dark:bg-dark_bg_5 text-dark_text_1"}`}
       >
-        <p className="float-left h-full text-sm pb-4 pr-8">{msg.message}</p>
+        <p className="float-left h-full text-sm pb-4 pr-8">
+          {activeConversation.isGroup && !me && !sameUser && (
+            <span className="flex text-red-600">
+              {makeCapital(msg?.sender.name)}
+            </span>
+          )}
+          {msg.message}
+        </p>
         <span className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_3 leading-none">
           {moment(msg.createdAt).format("HH:mm")}
         </span>
@@ -28,6 +121,29 @@ const SingleMessage = ({ msg, me }) => {
           />
         </span>
       </div>
+      {clickedIndex === index && clickedCount === 1 && (
+        <div className={`emoji-box `}>
+          {emojies.map((em, idx) => (
+            <button key={em.id} className="emoji-item">
+              <img
+                onMouseOver={() => {
+                  setAnimTrigger(true);
+                  setHoveredIndex(idx);
+                }}
+                onMouseLeave={() => {
+                  setAnimTrigger(false);
+                  setHoveredIndex(null);
+                }}
+                src={em.image}
+                alt=""
+                className={`emoji-img ${
+                  animTrigger && hoveredIndex === idx ? "emojiAnim" : ""
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
