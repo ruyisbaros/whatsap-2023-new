@@ -6,7 +6,7 @@ import ShowFileInMessage from "./ShowFileInMessage";
 
 const ChatMessages = () => {
   const endRef = useRef();
-  const { messages, chattedUser, isTyping, typeTo } = useSelector(
+  const { messages, chattedUser, isTyping, typeTo, grpChatUsers } = useSelector(
     (store) => store.messages
   );
   const { loggedUser } = useSelector((store) => store.currentUser);
@@ -22,7 +22,8 @@ const ChatMessages = () => {
             .filter(
               (msg) =>
                 msg.sender._id === chattedUser?._id ||
-                msg.sender._id === loggedUser?.id
+                msg.sender._id === loggedUser?.id ||
+                msg.recipients.find((usr) => usr._id === loggedUser.id)
             )
             .map((message) => (
               <div key={message.createdAt}>

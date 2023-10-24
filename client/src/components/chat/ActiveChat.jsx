@@ -20,7 +20,7 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
     if (activeConversation.latestMessage) {
       try {
         const { data } = await axios.get(
-          `/message/get_messages/${activeConversation.latestMessage.conversation}`
+          `/message/get_messages/${activeConversation._id}`
         );
         console.log(data);
         dispatch(reduxGetMyMessages(data));
@@ -35,29 +35,6 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   useEffect(() => {
     fetchRelevantMessages();
   }, [fetchRelevantMessages]);
-
-  const makeMessagesSeen = useCallback(async () => {
-    if (activeConversation.latestMessage) {
-      try {
-        const { data } = await axios.get(
-          `/message/make_seen/${activeConversation.latestMessage.conversation}`
-        );
-        //console.log(data);
-        dispatch(
-          reduxMakeMessagesSeen({
-            logId: loggedUser.id,
-            convoId: activeConversation.latestMessage.conversation,
-          })
-        );
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    }
-  }, [activeConversation, dispatch, loggedUser]);
-
-  useEffect(() => {
-    makeMessagesSeen();
-  }, [makeMessagesSeen]);
 
   return (
     <div className="relative w-full h-full  ">

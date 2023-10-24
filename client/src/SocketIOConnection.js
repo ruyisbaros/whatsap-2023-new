@@ -138,6 +138,9 @@ export const joinAConversation = (convo) => {
 export const sendNewMessage = (msg, id) => {
   socket?.emit("new message", { msg, id });
 };
+export const sendNewMessageToGroup = (msg, recipients) => {
+  socket?.emit("new message group", { msg, recipients });
+};
 //first time chat means other user's conversation list should include me real time
 export const createNewConversation = (newConversation, id) => {
   socket?.emit("update conversationList", { newConversation, id });
@@ -155,4 +158,11 @@ export const userStartMessageTyping = (chattedUserId, typeTo, convo) => {
 
 export const userStopMessageTyping = (chattedUserId, convo, message) => {
   socket?.emit("stop typing", { chattedUserId, convo, message });
+};
+export const groupStartMessageTyping = (recipients, typer, convo) => {
+  socket?.emit("typing group", { recipients, typer, convo });
+};
+
+export const groupStopMessageTyping = (recipients, convo, message) => {
+  socket?.emit("stop typing group", { recipients, convo, message });
 };

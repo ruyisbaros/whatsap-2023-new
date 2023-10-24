@@ -1,5 +1,4 @@
 import React from "react";
-import { TriangleIcon } from "../../assets/svg";
 import { BeatLoader } from "react-spinners";
 
 const Typing = () => {

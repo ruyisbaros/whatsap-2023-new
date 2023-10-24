@@ -19,7 +19,10 @@ import EmojiPicker from "emoji-picker-react";
 import AttachmentMenu from "./AttachmentMenu";
 import {
   createNewConversation,
+  groupStartMessageTyping,
+  groupStopMessageTyping,
   sendNewMessage,
+  sendNewMessageToGroup,
   userStartMessageTyping,
   userStopMessageTyping,
 } from "../../SocketIOConnection";
@@ -56,52 +59,82 @@ const ChatActions = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (message) {
-      try {
-        setStatus(true);
-        const { data } = await axios.post("/message/send", {
-          message,
-          convo_id: activeConversation._id,
-          recipient: activeConversation.isGroup
-            ? grpChatUsers
-            : chattedUser._id,
-        });
-        console.log(data);
-        //Means first time chat
-        if (data.conversations) {
-          dispatch(
-            reduxGetMyConversations(
-              data.conversations.filter((dt) => dt.latestMessage)
-            )
-          );
-          //socket create conversation for fresh chatters
-          const convo = data.conversations.find(
-            (cnv) => cnv._id === activeConversation._id
-          );
-          createNewConversation(convo, chattedUser._id);
+      if (!activeConversation.isGroup) {
+        try {
+          setStatus(true);
+          const { data } = await axios.post("/message/send", {
+            message,
+            convo_id: activeConversation._id,
+            recipient: chattedUser._id,
+          });
+          console.log(data);
+          //Means first time chat
+          if (data.conversations) {
+            dispatch(
+              reduxGetMyConversations(
+                data.conversations.filter((dt) => dt.latestMessage)
+              )
+            );
+            //socket create conversation for fresh chatters
+            const convo = data.conversations.find(
+              (cnv) => cnv._id === activeConversation._id
+            );
+            createNewConversation(convo, chattedUser._id);
+          }
+
+          dispatch(reduxAddMyMessages(data.populatedMessage));
+
+          //Socket send message convo,message
+          sendNewMessage(data.populatedMessage, chattedUser._id);
+          userStopMessageTyping(chattedUser._id, null, data.populatedMessage);
+
+          setMessage("");
+          setStatus(false);
+        } catch (error) {
+          setStatus(false);
+          toast.error(error.response.data.message);
         }
+      } else {
+        try {
+          setStatus(true);
+          const { data } = await axios.post("/message/send_group", {
+            message,
+            convo_id: activeConversation._id,
+            recipients: grpChatUsers,
+          });
+          console.log(data);
 
-        dispatch(reduxAddMyMessages(data.populatedMessage));
+          dispatch(reduxAddMyMessages(data.populatedMessage));
 
-        //Socket send message convo,message
-        sendNewMessage(data.populatedMessage, chattedUser._id);
-        userStopMessageTyping(chattedUser._id, null, data.populatedMessage);
+          //Socket send message convo,message
+          sendNewMessageToGroup(data.populatedMessage, grpChatUsers);
+          groupStopMessageTyping(grpChatUsers, null, data.populatedMessage);
 
-        setMessage("");
-        setStatus(false);
-      } catch (error) {
-        setStatus(false);
-        toast.error(error.response.data.message);
+          setMessage("");
+          setStatus(false);
+        } catch (error) {
+          setStatus(false);
+          toast.error(error.response.data.message);
+        }
       }
     }
   };
   const handleMessageType = (e) => {
     setMessage(e.target.value);
     if (!isTyping) {
-      userStartMessageTyping(
-        chattedUser._id,
-        loggedUser.id,
-        activeConversation
-      );
+      if (!activeConversation.isGroup) {
+        userStartMessageTyping(
+          chattedUser._id,
+          loggedUser.id,
+          activeConversation
+        );
+      } else {
+        groupStartMessageTyping(
+          grpChatUsers,
+          loggedUser.id,
+          activeConversation
+        );
+      }
     }
     let lastTypeTime = new Date().getTime();
     let timer = 1000;
@@ -109,7 +142,9 @@ const ChatActions = () => {
       let timeNow = new Date().getTime();
       let tDifference = timeNow - lastTypeTime;
       if (tDifference >= timer && isTyping) {
-        userStopMessageTyping(chattedUser._id, activeConversation, null);
+        !activeConversation.isGroup
+          ? userStopMessageTyping(chattedUser._id, activeConversation, null)
+          : groupStopMessageTyping(grpChatUsers, activeConversation, null);
       }
     }, timer);
   };
@@ -185,7 +220,13 @@ const ChatActions = () => {
             onChange={handleMessageType}
             ref={messageRef}
             onBlur={() =>
-              userStopMessageTyping(chattedUser._id, activeConversation, null)
+              !activeConversation.isGroup
+                ? userStopMessageTyping(
+                    chattedUser._id,
+                    activeConversation,
+                    null
+                  )
+                : groupStopMessageTyping(grpChatUsers, activeConversation, null)
             }
           />
         </div>

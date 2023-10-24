@@ -85,6 +85,58 @@ const messageCtrl = {
       res.status(500).json({ message: error.message });
     }
   },
+  send_create_message_group: async (req, res) => {
+    try {
+      const my_id = req.user._id;
+      const { message, convo_id, recipients, files } = req.body;
+
+      //1- If there is files first upload them to cloud
+      let uploadedFiles = [];
+      if (files && files.length > 0) {
+        const urls = files.map(async (file) => {
+          const res = await uploadImageToCloduinary(
+            file.data,
+            "whatsapp_api",
+            file.type === "IMAGE"
+              ? "image"
+              : file.type === "VIDEO"
+              ? "video"
+              : "raw"
+          );
+          return { ...res, type: file.type };
+        });
+        uploadedFiles = await Promise.all(urls);
+      }
+      //2-Create message document in DB
+      const createdMessage = await MessageModel.create({
+        message,
+        sender: my_id,
+        recipients,
+        conversation: convo_id,
+        files: files && files.length > 0 ? uploadedFiles : [],
+      });
+      //3. Update relevant conversation's latestMessage (each new message will be the latestMessage)
+      await ConversationModel.findByIdAndUpdate(convo_id, {
+        latestMessage: createdMessage,
+      });
+
+      //4 -Populate newly created message before send
+      const populatedMessage = await MessageModel.findById(createdMessage._id)
+        .populate("sender", "-password")
+        .populate("recipients", "-password")
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
+      res.status(201).json({ populatedMessage });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
   get_messages: async (req, res) => {
     try {
       const { convId } = req.params;
@@ -93,9 +145,7 @@ const messageCtrl = {
       }
       const messages = await MessageModel.find({
         conversation: convId,
-      })
-        .populate("sender", "-password")
-        .populate("recipient", "-password");
+      }).populate("sender recipient recipients", "-password");
       res.status(200).json(messages);
     } catch (error) {
       res.status(500).json({ message: error.message });

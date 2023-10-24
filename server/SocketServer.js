@@ -57,6 +57,15 @@ exports.socketServer = (socket, io) => {
       socket.to(`${user.socketId}`).emit("new message", msg);
     }
   });
+  socket.on("new message group", ({ msg, recipients }) => {
+    let usersToSend = users.map((usr) =>
+      recipients.filter((rcp) => rcp._id === usr.id)
+    );
+    console.log(usersToSend);
+    /*  if (user) {
+      socket.to(`${user.socketId}`).emit("new message group", msg);
+    } */
+  });
 
   //Updated conversation list for fresh chat users
   socket.on("update conversationList", ({ newConversation, id }) => {
@@ -92,6 +101,7 @@ exports.socketServer = (socket, io) => {
         .emit("openTypingToClient", { typeTo, convo });
     }
   });
+  socket.on("typing group", ({ recipients, typer, convo }) => {});
   //Stop Typing
   socket.on("stop typing", ({ chattedUserId, convo, message }) => {
     //console.log(userId);
@@ -104,6 +114,7 @@ exports.socketServer = (socket, io) => {
         .emit("closeTypingToClient", { convo, message });
     }
   });
+  socket.on("stop typing group", ({ recipients, convo, message }) => {});
 
   //Video Calls
   socket.on("newOffer", ({ target, offer, name, picture, offerer }) => {
