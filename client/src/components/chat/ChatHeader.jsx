@@ -4,10 +4,9 @@ import SearchLargeIcon from "../../assets/svg/SearchLarge";
 import DotsIcon from "../../assets/svg/Dots";
 import { dateHandler2 } from "../../utils/momentHandler";
 import { VideoCallIcon } from "../../assets/svg/VideoCall";
-import { CallIcon } from "../../assets/svg";
 import { DialIcon } from "../../assets/svg/Dial";
 
-const ChatHeader = ({ startVideoCall }) => {
+const ChatHeader = ({ startVideoCall, setShowGroupInfo }) => {
   const { activeConversation, chattedUser } = useSelector(
     (store) => store.messages
   );
@@ -58,13 +57,17 @@ const ChatHeader = ({ startVideoCall }) => {
                   : "Last online " + dateHandler2(chattedUser?.lastSeen)}
               </span>
             ) : (
-              <div className="flex grpInfo" data-info="Tab here for group info">
+              <div
+                className="flex grpInfo"
+                data-info="Tab here for group info"
+                onClick={() => setShowGroupInfo(true)}
+              >
                 {activeConversation.users.map((usr, i) => (
                   <span
                     key={usr._id}
                     className="flex capitalize  text-xs dark:text-dark_svg_2 pr-1 cursor-pointer "
                   >
-                    {usr.name}
+                    {usr.name === loggedUser.name ? "You" : usr.name}
                     {i < activeConversation.users.length - 1 ? `,  ` : ""}
                   </span>
                 ))}

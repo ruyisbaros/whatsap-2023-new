@@ -20,6 +20,16 @@
     z-index: 25;
     border: 0.5px solid #222d34;
   }
+  .group-info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 38px);
+    max-width: 1600px;
+    z-index: 45;
+    border: 0.5px solid #222d34;
+  }
   .borderC {
     border-right: 1px solid #222d34;
   }

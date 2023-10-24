@@ -14,6 +14,7 @@ import {
   reduxRemoveStreamPeer,
 } from "../redux/callStreamSlicer";
 import { reduxUpdateCallStatus } from "../redux/callingsSlice";
+import GroupInfo from "../components/groupChat/GroupInfo";
 
 const Home = () => {
   const myVideo = useRef(null);
@@ -41,6 +42,8 @@ const Home = () => {
     iceCandidates,
     remoteStream,
   } = useSelector((store) => store.streams);
+
+  const [showGroupInfo, setShowGroupInfo] = useState(false);
 
   const fetchMyConversations = useCallback(async () => {
     try {
@@ -239,7 +242,10 @@ const Home = () => {
         <div className="container h-[95%] pt-[19px] flex dark:bg-dark_bg_1">
           <SidebarLeft />
           {activeConversation ? (
-            <ActiveChat startVideoCall={startVideoCall} />
+            <ActiveChat
+              startVideoCall={startVideoCall}
+              setShowGroupInfo={setShowGroupInfo}
+            />
           ) : (
             <WhatsappHome />
           )}
@@ -256,6 +262,7 @@ const Home = () => {
           inComingVideo={inComingVideo}
         />
       )}
+      {showGroupInfo && <GroupInfo setShowGroupInfo={setShowGroupInfo} />}
     </>
   );
 };

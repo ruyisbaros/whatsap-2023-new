@@ -11,7 +11,7 @@ import {
 import ChatActions from "./ChatActions";
 import FilePreview from "../previews/file/FilePreview";
 
-const ActiveChat = ({ startVideoCall }) => {
+const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   const dispatch = useDispatch();
   const { activeConversation, files } = useSelector((store) => store.messages);
   const { loggedUser } = useSelector((store) => store.currentUser);
@@ -61,7 +61,10 @@ const ActiveChat = ({ startVideoCall }) => {
 
   return (
     <div className="relative w-full h-full  ">
-      <ChatHeader startVideoCall={startVideoCall} />
+      <ChatHeader
+        startVideoCall={startVideoCall}
+        setShowGroupInfo={setShowGroupInfo}
+      />
       {files.length > 0 ? (
         <FilePreview />
       ) : (
