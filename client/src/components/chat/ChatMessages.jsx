@@ -45,7 +45,13 @@ const ChatMessages = () => {
                 ) : null}
               </div>
             ))}
-        {isTyping && typeTo === chattedUser._id ? <Typing /> : ""}
+        {isTyping &&
+        (typeTo === chattedUser?._id ||
+          grpChatUsers.find((gu) => gu._id === typeTo)) ? (
+          <Typing />
+        ) : (
+          ""
+        )}
         <div ref={endRef} className="h-[40px]"></div>
       </div>
     </div>

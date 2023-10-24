@@ -9,23 +9,32 @@ import { MdPermMedia } from "react-icons/md";
 const SingleConversation = ({ convo }) => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
-  const { activeConversation, messages, isTyping, typeTo } = useSelector(
-    (store) => store.messages
-  );
+  const {
+    activeConversation,
+    messages,
+    isTyping,
+    typeTo,
+    grpChatUsers,
+    typedConversation,
+  } = useSelector((store) => store.messages);
 
   const [YOU, setYOU] = useState("");
+  const [typer, setTyper] = useState("");
   const [countOfNotReadMessage, setCountOfNotReadMessage] = useState(0);
 
   const findMeAndYou = useCallback(() => {
-    const you = convo.users.find((usr) => usr._id !== loggedUser.id);
-    setYOU(you);
-  }, [loggedUser, convo]);
+    if (!convo.isGroup) {
+      const you = convo.users.find((usr) => usr._id !== loggedUser.id);
+      setYOU(you);
+    } else {
+      const you = grpChatUsers.find((usr) => usr._id === typeTo);
+      setTyper(you);
+    }
+  }, [loggedUser, convo, grpChatUsers, typeTo]);
 
   useEffect(() => {
-    if (!convo.isGroup) {
-      findMeAndYou();
-    }
-  }, [findMeAndYou, convo.isGroup]);
+    findMeAndYou();
+  }, [findMeAndYou]);
   //console.log(ME, YOU);
   //console.log(convo.users.map((usr) => usr._id));
   const open_create_conversation = async () => {
@@ -34,7 +43,7 @@ const SingleConversation = ({ convo }) => {
         receiver_id: YOU._id,
         isGroup: convo.isGroup ? convo._id : false,
       });
-      //console.log(data);
+      console.log(data);
       await dispatch(reduxSetActiveConversation(data));
       //socket
       joinAConversation(data._id);
@@ -60,7 +69,7 @@ const SingleConversation = ({ convo }) => {
   // console.log(countOfNotReadMessage);
   return (
     <li
-      className={`list-none h-[72px] w-full dark:bg-dark_bg_1 hover:dark:bg-dark_bg_2 cursor-pointer dark:text-dark_text_1 px-[10px] rounded-lg ${
+      className={`list-none h-[72px] w-full dark:bg-dark_bg_1 hover:dark:bg-dark_bg_2 cursor-pointer dark:text-dark_text_1 px-[10px] rounded-lg mb-1 ${
         activeConversation?._id === convo._id ? "dark:bg-dark_bg_2" : ""
       }`}
       onClick={open_create_conversation}
@@ -84,7 +93,9 @@ const SingleConversation = ({ convo }) => {
                 <div className="flex-1 items-center gap-x-1">
                   <div
                     className={`w-full ${
-                      isTyping && typeTo === YOU._id ? "text-green-300" : ""
+                      isTyping && typedConversation?._id === convo._id
+                        ? "text-green-300"
+                        : ""
                     }`}
                   >
                     {convo.latestMessage &&
@@ -120,7 +131,7 @@ const SingleConversation = ({ convo }) => {
                     ) : (
                       convo.latestMessage &&
                       !convo.latestMessage?.message &&
-                      convo.latestMessage?.files.length > 0 && (
+                      convo.latestMessage?.files?.length > 0 && (
                         <p className="mt-2">
                           <span>
                             <MdPermMedia color="#00a884" />

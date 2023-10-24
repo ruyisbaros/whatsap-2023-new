@@ -121,21 +121,17 @@ const ChatActions = () => {
   };
   const handleMessageType = (e) => {
     setMessage(e.target.value);
-    if (!isTyping) {
-      if (!activeConversation.isGroup) {
-        userStartMessageTyping(
-          chattedUser._id,
-          loggedUser.id,
-          activeConversation
-        );
-      } else {
-        groupStartMessageTyping(
-          grpChatUsers,
-          loggedUser.id,
-          activeConversation
-        );
-      }
+    if (!isTyping && activeConversation.isGroup) {
+      groupStartMessageTyping(grpChatUsers, loggedUser.id, activeConversation);
+      console.log("group typing triggered");
+    } else if (!isTyping && !activeConversation.isGroup) {
+      userStartMessageTyping(
+        chattedUser._id,
+        loggedUser.id,
+        activeConversation
+      );
     }
+
     let lastTypeTime = new Date().getTime();
     let timer = 1000;
     setTimeout(() => {

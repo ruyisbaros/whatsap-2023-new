@@ -58,13 +58,17 @@ exports.socketServer = (socket, io) => {
     }
   });
   socket.on("new message group", ({ msg, recipients }) => {
-    let usersToSend = users.map((usr) =>
-      recipients.filter((rcp) => rcp._id === usr.id)
-    );
-    console.log(usersToSend);
-    /*  if (user) {
-      socket.to(`${user.socketId}`).emit("new message group", msg);
-    } */
+    //console.log(recipients);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    //console.log(usersToSend);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("new message group", msg);
+      });
+    }
   });
 
   //Updated conversation list for fresh chat users
@@ -101,7 +105,18 @@ exports.socketServer = (socket, io) => {
         .emit("openTypingToClient", { typeTo, convo });
     }
   });
-  socket.on("typing group", ({ recipients, typer, convo }) => {});
+  socket.on("typing group", ({ recipients, typer, convo }) => {
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    //console.log(usersToSend);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("typing group", { typer, convo });
+      });
+    }
+  });
   //Stop Typing
   socket.on("stop typing", ({ chattedUserId, convo, message }) => {
     //console.log(userId);
@@ -114,7 +129,18 @@ exports.socketServer = (socket, io) => {
         .emit("closeTypingToClient", { convo, message });
     }
   });
-  socket.on("stop typing group", ({ recipients, convo, message }) => {});
+  socket.on("stop typing group", ({ recipients, convo, message }) => {
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    //console.log(usersToSend);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("stop typing group", { convo, message });
+      });
+    }
+  });
 
   //Video Calls
   socket.on("newOffer", ({ target, offer, name, picture, offerer }) => {

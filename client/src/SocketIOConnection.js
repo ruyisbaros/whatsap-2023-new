@@ -37,6 +37,9 @@ export const connectToSocketServer = () => {
   socket.on("new message", (msg) => {
     store.dispatch(reduxAddMyMessagesFromSocket(msg));
   });
+  socket.on("new message group", (msg) => {
+    store.dispatch(reduxAddMyMessagesFromSocket(msg));
+  });
   socket.on("update conversationList", (convo) => {
     store.dispatch(reduxAddMyConversations(convo));
   });
@@ -59,6 +62,12 @@ export const connectToSocketServer = () => {
     store.dispatch(reduxStartTyping({ situation: true, id: typeTo, convo }));
   });
   socket.on("closeTypingToClient", ({ convo, message }) => {
+    store.dispatch(reduxStopTyping({ situation: false, convo, message }));
+  });
+  socket.on("typing group", ({ typer, convo }) => {
+    store.dispatch(reduxStartTyping({ situation: true, id: typer, convo }));
+  });
+  socket.on("stop typing group", ({ convo, message }) => {
     store.dispatch(reduxStopTyping({ situation: false, convo, message }));
   });
   socket.on("newOfferCame", ({ offer, name, picture, offerer }) => {

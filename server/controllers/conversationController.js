@@ -39,13 +39,18 @@ const conversationCtrl = {
           res.status(200).json(exist_conversation);
         }
       } else {
-        let groupChat = await ConversationModel.findOne({ _id: isGroup });
-        if (groupChat) {
-          groupChat = await groupChat.populate("users admin", "-password");
-          res.status(200).json(groupChat);
-        } else {
-          res.status(500).json({ message: "No group found!" });
-        }
+        let groupChat = await ConversationModel.findOne({ _id: isGroup })
+          .populate("users", "-password")
+          .populate("admin", "-password")
+          .populate({
+            path: "latestMessage",
+            model: "Message",
+            populate: {
+              path: "latestMessage.sender",
+              model: "User",
+            },
+          });
+        res.status(200).json(groupChat);
       }
     } catch (error) {
       res.status(500).json({ message: error.message });

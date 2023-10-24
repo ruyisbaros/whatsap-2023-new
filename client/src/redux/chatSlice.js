@@ -4,6 +4,7 @@ const initialState = {
   conversations: [],
   messages: [],
   activeConversation: null,
+  typedConversation: null,
   notifications: [],
   userStatuses: [],
   chattedUser: null,
@@ -93,7 +94,8 @@ const chatSlicer = createSlice({
     reduxStartTyping: (state, action) => {
       //console.log(action.payload);
       state.isTyping = action.payload.situation;
-      state.typeTo = action.payload.id;
+      state.typeTo = action.payload.id; //Who is typing on other side
+      state.typedConversation = action.payload.convo;
       state.conversations = state.conversations.map((c) =>
         c._id === action.payload.convo._id
           ? {
