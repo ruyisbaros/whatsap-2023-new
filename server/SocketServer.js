@@ -132,6 +132,7 @@ exports.socketServer = (socket, io) => {
     }
   });
   socket.on("typing group", ({ recipients, typer, convo }) => {
+    console.log("typing");
     let usersToSend = recipients
       .map((rcp) => users.find((usr) => usr.id === rcp._id))
       .filter((elem, index) => users.indexOf(elem) === index);

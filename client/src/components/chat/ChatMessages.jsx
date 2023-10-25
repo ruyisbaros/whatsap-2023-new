@@ -11,9 +11,15 @@ const ChatMessages = ({
 }) => {
   const endRef = useRef();
 
-  const { messages, chattedUser, isTyping, typeTo, grpChatUsers } = useSelector(
-    (store) => store.messages
-  );
+  const {
+    messages,
+    chattedUser,
+    isTyping,
+    typeTo,
+    grpChatUsers,
+    typedConversation,
+    activeConversation,
+  } = useSelector((store) => store.messages);
   const { loggedUser } = useSelector((store) => store.currentUser);
   useEffect(() => {
     endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -62,7 +68,8 @@ const ChatMessages = ({
           ))}
         {isTyping &&
         (typeTo === chattedUser?._id ||
-          grpChatUsers.find((gu) => gu._id === typeTo)) ? (
+          grpChatUsers.find((gu) => gu._id === typeTo)) &&
+        typedConversation._id === activeConversation._id ? (
           <Typing />
         ) : (
           ""
