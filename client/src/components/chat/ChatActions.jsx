@@ -134,15 +134,17 @@ const ChatActions = () => {
 
     let lastTypeTime = new Date().getTime();
     let timer = 1000;
-    setTimeout(() => {
+    let timers = setTimeout(() => {
       let timeNow = new Date().getTime();
       let tDifference = timeNow - lastTypeTime;
-      if (tDifference >= timer && isTyping) {
+
+      if (tDifference >= timer) {
         !activeConversation.isGroup
           ? userStopMessageTyping(chattedUser._id, activeConversation, null)
           : groupStopMessageTyping(grpChatUsers, activeConversation, null);
       }
     }, timer);
+    return () => clearTimeout(timers);
   };
   const handleEmoji = (data) => {
     //console.log(emojiData);
@@ -215,15 +217,6 @@ const ChatActions = () => {
             value={message}
             onChange={handleMessageType}
             ref={messageRef}
-            onBlur={() =>
-              !activeConversation.isGroup
-                ? userStopMessageTyping(
-                    chattedUser._id,
-                    activeConversation,
-                    null
-                  )
-                : groupStopMessageTyping(grpChatUsers, activeConversation, null)
-            }
           />
         </div>
         {/* Send */}

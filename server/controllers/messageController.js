@@ -145,7 +145,16 @@ const messageCtrl = {
       }
       const messages = await MessageModel.find({
         conversation: convId,
-      }).populate("sender recipient recipients idForDeleted", "-password");
+      })
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
       res.status(200).json(messages);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -161,7 +170,16 @@ const messageCtrl = {
         id,
         { idForDeleted: req.user._id },
         { new: true }
-      ).populate("sender recipient recipients idForDeleted", "-password");
+      )
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
       res.status(200).json(deletedMessage);
     } catch (error) {
       res.status(500).json({ message: error.message });
@@ -177,7 +195,16 @@ const messageCtrl = {
         message,
         { $push: { emojiBox: emoji } },
         { new: true }
-      ).populate("sender recipient recipients idForDeleted", "-password");
+      )
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
       res.status(200).json(updatedMessage);
     } catch (error) {
       res.status(500).json({ message: error.message });

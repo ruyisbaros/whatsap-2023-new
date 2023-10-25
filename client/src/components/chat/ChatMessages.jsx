@@ -21,21 +21,16 @@ const ChatMessages = ({
     activeConversation,
   } = useSelector((store) => store.messages);
   const { loggedUser } = useSelector((store) => store.currentUser);
+
   useEffect(() => {
     endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages]);
+  }, [messages, isTyping]);
+
   return (
     <div className=" mb-[60px] bg-[url('https://res.cloudinary.com/ruyisbaros/image/upload/v1694785109/whatsapp_api/xkiiml6mmcz5xyqkdm42.jpg')] bg-cover bg-no-repeat ">
       <div className="scrollBar overflow-scrollbar overflow-auto py-2 px-[5%]">
         {/* Messages */}
         {messages.length > 0 &&
-          /*  messages
-            .filter(
-              (msg) =>
-                msg.sender._id === chattedUser?._id ||
-                msg.sender._id === loggedUser?.id ||
-                msg.recipients.find((usr) => usr._id === loggedUser.id)
-            ) */
           messages.map((message, index) => (
             <div key={message?.createdAt}>
               {message?.files?.length > 0

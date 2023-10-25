@@ -129,7 +129,7 @@ const PreviewFooter = ({
     setTimeout(() => {
       let timeNow = new Date().getTime();
       let tDifference = timeNow - lastTypeTime;
-      if (tDifference >= timer && isTyping) {
+      if (tDifference >= timer) {
         userStopMessageTyping(chattedUser._id, activeConversation, null);
       }
     }, timer);
@@ -147,9 +147,6 @@ const PreviewFooter = ({
           placeholder="Type your message"
           value={message}
           onChange={handleMessageType}
-          onBlur={() =>
-            userStopMessageTyping(chattedUser._id, activeConversation, null)
-          }
         />
       </div>
       {/* send/review images/add more file */}

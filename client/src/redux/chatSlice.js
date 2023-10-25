@@ -49,11 +49,7 @@ const chatSlicer = createSlice({
     reduxGetMyMessages: (state, action) => {
       state.messages = action.payload;
     },
-    reduxAddEmojiToMessage: (state, action) => {
-      state.messages = state.messages.map((msg) =>
-        msg._id === action.payload.msgId ? action.payload.data : msg
-      );
-    },
+
     reduxAddMyMessages: (state, action) => {
       console.log(action.payload);
       state.messages.push(action.payload);
@@ -85,6 +81,11 @@ const chatSlicer = createSlice({
     },
     reduxRemoveFromMyMessages: (state, action) => {
       state.messages.pop(action.payload);
+    },
+    reduxAddEmojiToMessage: (state, action) => {
+      state.messages = state.messages.map((msg) =>
+        msg._id === action.payload.msgId ? action.payload.data : msg
+      );
     },
     reduxMakeMessagesSeen: (state, action) => {
       const { logId, convoId } = action.payload;
