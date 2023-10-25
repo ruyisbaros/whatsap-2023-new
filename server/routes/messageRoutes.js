@@ -7,4 +7,6 @@ router.post("/send_group", protect, messageCtrl.send_create_message_group);
 router.get("/chat_users", protect, messageCtrl.searchChatUsers);
 router.get("/get_messages/:convId", protect, messageCtrl.get_messages);
 router.get("/make_seen/:convId", protect, messageCtrl.make_seen);
+router.get("/delete_for_me/:id", protect, messageCtrl.delete_for_me);
+router.get("/add_emoji", protect, messageCtrl.add_emoji);
 module.exports = router;

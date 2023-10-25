@@ -28,6 +28,14 @@ const messageSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    idForDeleted: {
+      type: ObjectId,
+      ref: "User",
+    },
+    emojiBox: {
+      type: Array,
+      default: [],
+    },
     files: Array,
   },
   { timestamps: true, collection: "messages" }

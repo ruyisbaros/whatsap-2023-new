@@ -495,3 +495,13 @@ button:disabled {
   width: 30px;
   height: 30px;
 }
+
+/* Emoji content of message */
+.emoji-content {
+  float: left;
+}
+
+.emoji-content img {
+  width: 15px;
+  height: 15px;
+}

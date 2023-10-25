@@ -49,6 +49,11 @@ const chatSlicer = createSlice({
     reduxGetMyMessages: (state, action) => {
       state.messages = action.payload;
     },
+    reduxAddEmojiToMessage: (state, action) => {
+      state.messages = state.messages.map((msg) =>
+        msg._id === action.payload.msgId ? action.payload.data : msg
+      );
+    },
     reduxAddMyMessages: (state, action) => {
       console.log(action.payload);
       state.messages.push(action.payload);
@@ -165,6 +170,7 @@ export const {
   reduxMakeFilesEmpty,
   reduxRemoveFile,
   reduxSetGroupChatUsers,
+  reduxAddEmojiToMessage,
 } = chatSlicer.actions;
 
 export default chatSlicer.reducer;

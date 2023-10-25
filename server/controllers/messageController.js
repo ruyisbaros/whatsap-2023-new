@@ -145,8 +145,40 @@ const messageCtrl = {
       }
       const messages = await MessageModel.find({
         conversation: convId,
-      }).populate("sender recipient recipients", "-password");
+      }).populate("sender recipient recipients idForDeleted", "-password");
       res.status(200).json(messages);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  delete_for_me: async (req, res) => {
+    try {
+      const { id } = req.params;
+      if (!id) {
+        return res.status(500).json({ message: `Something went wrong!` });
+      }
+      const deletedMessage = await MessageModel.findByIdAndUpdate(
+        id,
+        { idForDeleted: req.user._id },
+        { new: true }
+      ).populate("sender recipient recipients idForDeleted", "-password");
+      res.status(200).json(deletedMessage);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  add_emoji: async (req, res) => {
+    try {
+      const { message, emoji } = req.query;
+      if (!message || !emoji) {
+        return res.status(500).json({ message: `Something went wrong!` });
+      }
+      const updatedMessage = await MessageModel.findByIdAndUpdate(
+        message,
+        { $push: { emojiBox: emoji } },
+        { new: true }
+      ).populate("sender recipient recipients idForDeleted", "-password");
+      res.status(200).json(updatedMessage);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

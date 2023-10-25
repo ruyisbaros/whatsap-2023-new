@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 import LoggedInRoutes from "./ristrict_routes/LoggedInRoutes";
 import NotLoggedInRoutes from "./ristrict_routes/NotLoggedInRoutes";
 import RegisteredRoutes from "./ristrict_routes/RegisteredRoutes";
-import { connectToSocketServer, joinUser } from "./SocketIOConnection";
+//import { connectToSocketServer, joinUser } from "./SocketIOConnection";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "./axios";
 import {
@@ -21,14 +21,14 @@ const App = () => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
   //Web socket actions
-  useEffect(() => {
+  /*  useEffect(() => {
     connectToSocketServer();
-  }, []);
-  useEffect(() => {
+  }, []); */
+  /* useEffect(() => {
     if (loggedUser) {
       joinUser(loggedUser.id);
     }
-  }, [loggedUser]);
+  }, [loggedUser]); */
 
   const reFreshToken = useCallback(async () => {
     try {

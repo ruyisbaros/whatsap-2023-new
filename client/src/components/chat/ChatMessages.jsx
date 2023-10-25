@@ -31,13 +31,13 @@ const ChatMessages = ({
                 msg.recipients.find((usr) => usr._id === loggedUser.id)
             ) */
           messages.map((message, index) => (
-            <div key={message.createdAt}>
-              {message.files.length > 0
-                ? message.files.map((f, i) => (
+            <div key={message?.createdAt}>
+              {message?.files?.length > 0
+                ? message?.files?.map((f, i) => (
                     <ShowFileInMessage
                       key={f.public_id}
                       file={f}
-                      me={loggedUser.id === message.sender?._id}
+                      me={loggedUser.id === message?.sender?._id}
                       msg={message}
                       /* sameUser={
                           message[index].sender._id ===
@@ -48,7 +48,7 @@ const ChatMessages = ({
                 : null}
               <SingleMessage
                 msg={message}
-                me={loggedUser.id === message.sender?._id}
+                me={loggedUser.id === message?.sender?._id}
                 sameUser={
                   messages[index]?.sender._id ===
                   messages[index - 1]?.sender._id

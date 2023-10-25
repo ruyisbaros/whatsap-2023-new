@@ -2,6 +2,7 @@ import { io } from "socket.io-client";
 import { store } from "./redux/store";
 import { BACKEND_URL } from "./axios";
 import {
+  reduxAddEmojiToMessage,
   reduxAddMyConversations,
   reduxAddMyMessagesFromSocket,
   reduxStartTyping,
@@ -23,117 +24,117 @@ import {
 } from "./redux/callStreamSlicer";
 let socket;
 
-export const connectToSocketServer = () => {
-  socket = io(BACKEND_URL);
+const loggedUser = store.getState().currentUser.loggedUser;
+socket = io(BACKEND_URL, {
+  auth: {
+    id: loggedUser.id,
+  },
+});
 
-  socket.on("connect", () => {
-    console.log("Connected to socket io server");
-    store.dispatch(createSocket(socket));
-  });
-  socket.on("setup socketId", (id) => {
-    //console.log("remote socket id ", id);
-    store.dispatch(reduxSetMySocketId(id));
-  });
-  socket.on("new message", (msg) => {
-    store.dispatch(reduxAddMyMessagesFromSocket(msg));
-  });
-  socket.on("new message group", (msg) => {
-    store.dispatch(reduxAddMyMessagesFromSocket(msg));
-  });
-  socket.on("update conversationList", (convo) => {
-    store.dispatch(reduxAddMyConversations(convo));
-  });
-  socket.on("new Group", (convo) => {
-    store.dispatch(reduxAddMyConversations(convo));
-  });
-  socket.on("onlineUsers", (users) => {
-    window.localStorage.setItem("onlineUsers", JSON.stringify(users));
-    store.dispatch(reduxSetOnlineUsers(users));
-  });
-  socket.on("offlineUsers", (id) => {
-    let onUsers = window.localStorage.getItem("onlineUsers");
-    onUsers = JSON.parse(onUsers);
-    onUsers = onUsers?.filter((usr) => usr.id !== id);
-    window.localStorage.setItem("onlineUsers", JSON.stringify(onUsers));
-    store.dispatch(reduxAUserBecameOffline(id));
-  });
+socket.on("connect", () => {
+  console.log("Connected to socket io server");
+  store.dispatch(createSocket(socket));
+});
+socket.on("setup socketId", (id) => {
+  //console.log("remote socket id ", id);
+  store.dispatch(reduxSetMySocketId(id));
+});
+socket.on("new message", (msg) => {
+  store.dispatch(reduxAddMyMessagesFromSocket(msg));
+});
+socket.on("new message group", (msg) => {
+  store.dispatch(reduxAddMyMessagesFromSocket(msg));
+});
+socket.on("update conversationList", (convo) => {
+  store.dispatch(reduxAddMyConversations(convo));
+});
+socket.on("new Group", (convo) => {
+  store.dispatch(reduxAddMyConversations(convo));
+});
+socket.on("onlineUsers", (users) => {
+  console.log(users);
+  window.localStorage.setItem("onlineUsers", JSON.stringify(users));
+  store.dispatch(reduxSetOnlineUsers(users));
+});
+socket.on("offlineUsers", (id) => {
+  let onUsers = window.localStorage.getItem("onlineUsers");
+  onUsers = JSON.parse(onUsers);
+  onUsers = onUsers?.filter((usr) => usr.id !== id);
+  window.localStorage.setItem("onlineUsers", JSON.stringify(onUsers));
+  store.dispatch(reduxAUserBecameOffline(id));
+});
 
-  socket.on("openTypingToClient", ({ typeTo, convo }) => {
-    store.dispatch(reduxStartTyping({ situation: true, id: typeTo, convo }));
+socket.on("openTypingToClient", ({ typeTo, convo }) => {
+  store.dispatch(reduxStartTyping({ situation: true, id: typeTo, convo }));
+});
+socket.on("closeTypingToClient", ({ convo, message }) => {
+  store.dispatch(reduxStopTyping({ situation: false, convo, message }));
+});
+socket.on("typing group", ({ typer, convo }) => {
+  store.dispatch(reduxStartTyping({ situation: true, id: typer, convo }));
+});
+socket.on("stop typing group", ({ convo, message }) => {
+  store.dispatch(reduxStopTyping({ situation: false, convo, message }));
+});
+socket.on("add emoji", ({ msgId, data }) => {
+  store.dispatch(reduxAddEmojiToMessage({ data, msgId }));
+});
+socket.on("add emoji group", ({ msgId, data }) => {
+  store.dispatch(reduxAddEmojiToMessage({ data, msgId }));
+});
+socket.on("newOfferCame", ({ offer, name, picture, offerer }) => {
+  console.log("new offer received");
+  store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "receivingCall", value: true }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "name", value: name }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "picture", value: picture }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "offerer", value: offerer }));
+  store.dispatch(reduxSetOffer(offer));
+});
+socket.on("newAnswerCame", (answer) => {
+  console.log("new answer received");
+  store.dispatch(reduxUpdateCallStatus({ cst: "callAccepted", value: true }));
+  store.dispatch(reduxSetAnswer(answer));
+});
+socket.on("iceToClient", (iceCandidate) => {
+  console.log("ice candidate received");
+  store.dispatch(reduxAddIceCandidate(iceCandidate));
+});
+socket.on("callRejected", () => {
+  store.dispatch(reduxUpdateCallStatus({ cst: "callRejected", value: true }));
+});
+socket.on("callEnded", () => {
+  const peerConnection = store.getState().streams.peerConnection;
+  const localStream = store.getState().streams.localStream;
+  peerConnection.close();
+  peerConnection.onicecandidate = null;
+  peerConnection.onaddstream = null;
+  localStream.getVideoTracks().forEach((track) => {
+    track.stop();
   });
-  socket.on("closeTypingToClient", ({ convo, message }) => {
-    store.dispatch(reduxStopTyping({ situation: false, convo, message }));
-  });
-  socket.on("typing group", ({ typer, convo }) => {
-    store.dispatch(reduxStartTyping({ situation: true, id: typer, convo }));
-  });
-  socket.on("stop typing group", ({ convo, message }) => {
-    store.dispatch(reduxStopTyping({ situation: false, convo, message }));
-  });
-  socket.on("newOfferCame", ({ offer, name, picture, offerer }) => {
-    console.log("new offer received");
-    store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));
-    store.dispatch(
-      reduxUpdateCallStatus({ cst: "receivingCall", value: true })
-    );
-    store.dispatch(reduxUpdateCallStatus({ cst: "name", value: name }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "picture", value: picture }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "offerer", value: offerer }));
-    store.dispatch(reduxSetOffer(offer));
-  });
-  socket.on("newAnswerCame", (answer) => {
-    console.log("new answer received");
-    store.dispatch(reduxUpdateCallStatus({ cst: "callAccepted", value: true }));
-    store.dispatch(reduxSetAnswer(answer));
-  });
-  socket.on("iceToClient", (iceCandidate) => {
-    console.log("ice candidate received");
-    store.dispatch(reduxAddIceCandidate(iceCandidate));
-  });
-  socket.on("callRejected", () => {
-    store.dispatch(reduxUpdateCallStatus({ cst: "callRejected", value: true }));
-  });
-  socket.on("callEnded", () => {
-    const peerConnection = store.getState().streams.peerConnection;
-    const localStream = store.getState().streams.localStream;
-    peerConnection.close();
-    peerConnection.onicecandidate = null;
-    peerConnection.onaddstream = null;
-    localStream.getVideoTracks().forEach((track) => {
-      track.stop();
-    });
-    store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: false }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "callEnded", value: true }));
-    store.dispatch(
-      reduxUpdateCallStatus({ cst: "callRejected", value: false })
-    );
-    store.dispatch(reduxUpdateCallStatus({ cst: "caller", value: false }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "callee", value: false }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "cstOffer", value: false }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "offerer", value: "" }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "name", value: "" }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "picture", value: "" }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "current", value: "idle" }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "haveOffer", value: false }));
-    store.dispatch(
-      reduxUpdateCallStatus({ cst: "receivingCall", value: false })
-    );
-    store.dispatch(
-      reduxUpdateCallStatus({ cst: "callAccepted", value: false })
-    );
-    store.dispatch(reduxRemoveStreamPeer());
-  });
+  store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: false }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "callEnded", value: true }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "callRejected", value: false }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "caller", value: false }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "callee", value: false }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "cstOffer", value: false }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "offerer", value: "" }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "name", value: "" }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "picture", value: "" }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "current", value: "idle" }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "haveOffer", value: false }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "receivingCall", value: false }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "callAccepted", value: false }));
+  store.dispatch(reduxRemoveStreamPeer());
+});
 
-  socket.on("cancelCall", () => {
-    store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: false }));
-    store.dispatch(
-      reduxUpdateCallStatus({ cst: "receivingCall", value: false })
-    );
-    store.dispatch(reduxUpdateCallStatus({ cst: "name", value: "" }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "picture", value: "" }));
-    store.dispatch(reduxUpdateCallStatus({ cst: "offerer", value: "" }));
-  });
-};
+socket.on("cancelCall", () => {
+  store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: false }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "receivingCall", value: false }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "name", value: "" }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "picture", value: "" }));
+  store.dispatch(reduxUpdateCallStatus({ cst: "offerer", value: "" }));
+});
 
 //Emit user activities
 export const joinUser = (id) => {
@@ -174,4 +175,11 @@ export const groupStartMessageTyping = (recipients, typer, convo) => {
 
 export const groupStopMessageTyping = (recipients, convo, message) => {
   socket?.emit("stop typing group", { recipients, convo, message });
+};
+
+export const userAddMessageEmoji = (chattedUserId, msgId, data) => {
+  socket?.emit("add emoji", { chattedUserId, msgId, data });
+};
+export const groupAddMessageEmoji = (recipients, msgId, data) => {
+  socket?.emit("add emoji group", { recipients, msgId, data });
 };

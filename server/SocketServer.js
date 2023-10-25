@@ -3,16 +3,22 @@ const User = require("./models/userModel");
 let users = [];
 exports.socketServer = (socket, io) => {
   console.log(`User with ${socket.id} connected`);
-  //Join User (Online)
-  socket.on("joinUser", (id) => {
+  const id = socket.handshake.auth.id;
+  const user = users.find((user) => user.id === id);
+  if (!user) {
+    users.push({ socketId: socket.id, id });
+    socket.broadcast.emit("onlineUsers", users);
+  }
+  console.log(users);
+  /* socket.on("joinUser", (id) => {
     const user = users.find((user) => user.id === id);
     if (!user) {
       users.push({ id, socketId: socket.id });
       socket.broadcast.emit("onlineUsers", users);
     }
     socket.emit("setup socketId", socket.id);
-    console.log(users);
-  });
+    //console.log(users);
+  }); */
 
   socket.on("disconnect", async () => {
     const user = users.find((u) => u.socketId === socket.id);
@@ -70,11 +76,31 @@ exports.socketServer = (socket, io) => {
       });
     }
   });
+  socket.on("add emoji group", ({ recipients, msgId, data }) => {
+    console.log(recipients);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    console.log(usersToSend);
 
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("add emoji group", { msgId, data });
+      });
+    }
+  });
+  socket.on("add emoji", ({ chattedUserId, msgId, data }) => {
+    //console.log(chattedUserId);
+    const user = users.find((user) => user.id === chattedUserId);
+    //console.log(user);
+    if (user) {
+      socket.to(`${user.socketId}`).emit("add emoji", { msgId, data });
+    }
+  });
   //Updated conversation list for fresh chat users
   socket.on("update conversationList", ({ newConversation, id }) => {
     const user = users.find((user) => user.id === id);
-    console.log(user);
+    //console.log(user);
     if (user) {
       socket
         .to(`${user.socketId}`)
