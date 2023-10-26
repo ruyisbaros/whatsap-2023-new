@@ -77,11 +77,11 @@ exports.socketServer = (socket, io) => {
     }
   });
   socket.on("add emoji group", ({ recipients, msgId, data }) => {
-    console.log(recipients);
+    //console.log(recipients);
     let usersToSend = recipients
       .map((rcp) => users.find((usr) => usr.id === rcp._id))
       .filter((elem, index) => users.indexOf(elem) === index);
-    console.log(usersToSend);
+    //console.log(usersToSend);
 
     if (usersToSend.length > 0) {
       usersToSend.forEach((user) => {

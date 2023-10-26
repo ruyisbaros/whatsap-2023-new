@@ -30,7 +30,7 @@ const SideBarHeader = () => {
           </button>
           <ul className="flex items-center gap-x-2 ">
             <li>
-              <button className="btn">
+              <button className="btn" onClick={() => setShowGroupMenu(true)}>
                 <CommunityIcon className="dark:fill-dark_svg_1" />
               </button>
             </li>
