@@ -505,3 +505,50 @@ button:disabled {
   width: 15px;
   height: 15px;
 }
+
+/* Reply Message */
+.reply-main {
+  padding: 8px;
+  padding-top: 15px;
+}
+.reply-content {
+  height: 100%;
+}
+.reply-list {
+  width: 15%;
+  height: 100%;
+}
+.reply-box {
+  width: 90%;
+  border-radius: 8px;
+  background: #32424c;
+
+  padding: 5px;
+  padding-left: 10px;
+}
+.reply-box_me {
+  border-left: 3px solid green;
+}
+.reply-box_you {
+  border-left: 3px solid rgba(255, 0, 0, 0.79);
+}
+.reply-name {
+  font-weight: bold;
+}
+.reply-name_me {
+  color: green;
+}
+.reply-name_you {
+  color: rgba(255, 0, 0, 0.79);
+}
+.reply-message {
+  color: #dddddda1;
+}
+#reply-btn {
+  width: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 2rem;
+  background: #222;
+}

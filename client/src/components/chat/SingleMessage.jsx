@@ -57,7 +57,10 @@ const SingleMessage = ({
   index,
   clickedCount,
   setClickedCount,
-  setReplyMessageId,
+  setShowEmoji,
+  showEmoji,
+  getRepliedMessageInfo,
+  replyTriggered,
 }) => {
   const dispatch = useDispatch();
   const msgRef = useRef(null);
@@ -68,7 +71,6 @@ const SingleMessage = ({
   //console.log(typer);
   const [changeBg, setChangeBg] = useState(false);
   const [clickedIndex, setClickedIndex] = useState(null);
-  const [showEmoji, setShowEmoji] = useState(false);
   const [animTrigger, setAnimTrigger] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(false);
   const handleActions = (e) => {
@@ -80,14 +82,16 @@ const SingleMessage = ({
       setShowMessageActions(true);
       setChangeBg(true);
       setClickedIndex(index);
-      setClickedCount((prev) => prev + 1);
+      setClickedCount(clickedCount + 1);
       setShowEmoji(true);
-      if (clickedCount === 1) {
-        setReplyMessageId(msg._id);
-      }
     }
   };
-
+  useEffect(() => {
+    if (replyTriggered) {
+      setChangeBg(false);
+      setClickedIndex(null);
+    }
+  }, [replyTriggered]);
   const handleAddEmoji = async (id) => {
     try {
       const { data } = await axios.get(
@@ -113,8 +117,11 @@ const SingleMessage = ({
         ref={msgRef}
         className={`relative w-full flex mt-2 mb-3 space-x-3  ${
           me ? "ml-auto justify-end" : ""
-        } ${changeBg ? "newBg" : ""}`}
-        onClick={(e) => handleActions(e)}
+        } ${changeBg && clickedCount > 0 ? "newBg" : ""}`}
+        onClick={() => {
+          handleActions();
+          getRepliedMessageInfo(msg);
+        }}
       >
         {activeConversation.isGroup && !me && !sameUser ? (
           <div>
@@ -164,7 +171,7 @@ const SingleMessage = ({
             ))}
         </div>
 
-        {clickedIndex === index && clickedCount === 1 && (
+        {clickedIndex === index && clickedCount === 1 && showEmoji && (
           <div className={`emoji-box `}>
             {emojies.map((em, idx) => (
               <button

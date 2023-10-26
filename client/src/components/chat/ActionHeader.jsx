@@ -8,6 +8,7 @@ const ActionHeader = ({
   clickedCount,
   setClickedCount,
   setReplyMessage,
+  setShowEmoji,
 }) => {
   return (
     <div className="createGroupAnimation h-[59px] dark:bg-dark_bg_2 p16 py-3">
@@ -27,6 +28,7 @@ const ActionHeader = ({
             onClick={() => {
               setReplyMessage(true);
               setShowMessageActions(false);
+              setShowEmoji(false);
             }}
             disabled={clickedCount !== 1}
           >

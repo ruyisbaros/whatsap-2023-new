@@ -3,12 +3,25 @@ import { useSelector } from "react-redux";
 import SingleMessage from "./SingleMessage";
 import Typing from "./Typing";
 import ShowFileInMessage from "./ShowFileInMessage";
-
+/* setShowMessageActions={setShowMessageActions}
+            setClickedCount={setClickedCount}
+            clickedCount={clickedCount}
+            setShowEmoji={setShowEmoji}
+            showEmoji={showEmoji}
+            replyMessage={replyMessage}
+            getRepliedMessageInfo={getRepliedMessageInfo}
+            replyMessageContent={replyMessageContent}
+            setReplyTriggered={setReplyTriggered}
+            replyTriggered={replyTriggered} */
 const ChatMessages = ({
   setShowMessageActions,
   setClickedCount,
   clickedCount,
-  setReplyMessageId,
+  setShowEmoji,
+  showEmoji,
+  replyMessage,
+  getRepliedMessageInfo,
+  replyTriggered,
 }) => {
   const endRef = useRef();
 
@@ -35,7 +48,7 @@ const ChatMessages = ({
 
   useEffect(() => {
     endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages, isTyping, filteredMessages]);
+  }, [messages, isTyping, filteredMessages, replyMessage]);
 
   return (
     <div className=" mb-[60px] bg-[url('https://res.cloudinary.com/ruyisbaros/image/upload/v1694785109/whatsapp_api/xkiiml6mmcz5xyqkdm42.jpg')] bg-cover bg-no-repeat ">
@@ -69,7 +82,10 @@ const ChatMessages = ({
                 index={index}
                 setClickedCount={setClickedCount}
                 clickedCount={clickedCount}
-                setReplyMessageId={setReplyMessageId}
+                setShowEmoji={setShowEmoji}
+                showEmoji={showEmoji}
+                getRepliedMessageInfo={getRepliedMessageInfo}
+                replyTriggered={replyTriggered}
               />
             </div>
           ))}

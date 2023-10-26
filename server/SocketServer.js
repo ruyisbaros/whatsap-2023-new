@@ -76,6 +76,28 @@ exports.socketServer = (socket, io) => {
       });
     }
   });
+  socket.on("reply message", ({ msg, id, msgId }) => {
+    const user = users.find((user) => user.id === id);
+    //console.log("Users: ", users);
+    //console.log("User: ", user);
+
+    if (user) {
+      socket.to(`${user.socketId}`).emit("reply message", { msg, msgId });
+    }
+  });
+  socket.on("reply message group", ({ msg, recipients, msgId }) => {
+    //console.log(recipients);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    //console.log(usersToSend);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("reply message group", { msg, msgId });
+      });
+    }
+  });
   socket.on("add emoji group", ({ recipients, msgId, data }) => {
     //console.log(recipients);
     let usersToSend = recipients

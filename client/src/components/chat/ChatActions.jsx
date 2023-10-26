@@ -19,6 +19,8 @@ import {
   groupStopMessageTyping,
   sendNewMessage,
   sendNewMessageToGroup,
+  sendReplyMessage,
+  sendReplyMessageToGroup,
   userStartMessageTyping,
   userStopMessageTyping,
 } from "../../SocketIOConnection";
@@ -39,7 +41,7 @@ const ChatActions = ({
   const [status, setStatus] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [showAttachment, setShowAttachment] = useState(false);
-
+  console.log(replyMessageId);
   useEffect(() => {
     if (!activeConversation.isGroup) {
       const usr = activeConversation.users.find(
@@ -130,24 +132,28 @@ const ChatActions = ({
             message,
             convo_id: activeConversation._id,
             recipient: chattedUser._id,
-            messageId: replyMessageId,
+            messageId: replyMessageId[0],
           });
           console.log(data);
 
           dispatch(
             reduxAddReplyToMessage({
               data: data.populatedMessage,
-              msgId: replyMessageId,
+              msgId: replyMessageId[0],
             })
           );
 
           //Socket send message convo,message
-          sendNewMessage(data.populatedMessage, chattedUser._id);
+          sendReplyMessage(
+            data.populatedMessage,
+            chattedUser._id,
+            replyMessageId[0]
+          );
 
           setMessage("");
           setStatus(false);
           setReplyMessage(false);
-          setReplyMessageId("");
+          setReplyMessageId([]);
         } catch (error) {
           setStatus(false);
           toast.error(error.response.data.message);
@@ -159,24 +165,28 @@ const ChatActions = ({
             message,
             convo_id: activeConversation._id,
             recipients: grpChatUsers,
-            messageId: replyMessageId,
+            messageId: replyMessageId[0],
           });
           console.log(data);
 
           dispatch(
             reduxAddReplyToMessage({
               data: data.populatedMessage,
-              msgId: replyMessageId,
+              msgId: replyMessageId[0],
             })
           );
 
           //Socket send message convo,message
-          sendNewMessageToGroup(data.populatedMessage, grpChatUsers);
+          sendReplyMessageToGroup(
+            data.populatedMessage,
+            grpChatUsers,
+            replyMessageId[0]
+          );
 
           setMessage("");
           setStatus(false);
           setReplyMessage(false);
-          setReplyMessageId("");
+          setReplyMessageId([]);
         } catch (error) {
           setStatus(false);
           toast.error(error.response.data.message);

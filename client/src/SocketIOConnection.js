@@ -5,6 +5,7 @@ import {
   reduxAddEmojiToMessage,
   reduxAddMyConversations,
   reduxAddMyMessagesFromSocket,
+  reduxAddReplyToMessage,
   reduxStartTyping,
   reduxStopTyping,
 } from "./redux/chatSlice";
@@ -44,6 +45,22 @@ socket.on("new message", (msg) => {
 });
 socket.on("new message group", (msg) => {
   store.dispatch(reduxAddMyMessagesFromSocket(msg));
+});
+socket.on("reply message", ({ msg, msgId }) => {
+  store.dispatch(
+    reduxAddReplyToMessage({
+      data: msg,
+      msgId,
+    })
+  );
+});
+socket.on("reply message group", ({ msg, msgId }) => {
+  store.dispatch(
+    reduxAddReplyToMessage({
+      data: msg,
+      msgId,
+    })
+  );
 });
 socket.on("update conversationList", (convo) => {
   store.dispatch(reduxAddMyConversations(convo));
@@ -150,6 +167,12 @@ export const sendNewMessage = (msg, id) => {
 };
 export const sendNewMessageToGroup = (msg, recipients) => {
   socket?.emit("new message group", { msg, recipients });
+};
+export const sendReplyMessage = (msg, id, msgId) => {
+  socket?.emit("reply message", { msg, id, msgId });
+};
+export const sendReplyMessageToGroup = (msg, recipients, msgId) => {
+  socket?.emit("reply message group", { msg, recipients, msgId });
 };
 //first time chat means other user's conversation list should include me real time
 export const createNewConversation = (newConversation, id) => {

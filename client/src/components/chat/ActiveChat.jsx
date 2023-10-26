@@ -11,6 +11,7 @@ import {
 import ChatActions from "./ChatActions";
 import FilePreview from "../previews/file/FilePreview";
 import ActionHeader from "./ActionHeader";
+import ChatReply from "./ChatReply";
 
 const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   const dispatch = useDispatch();
@@ -18,7 +19,10 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   const [showMessageActions, setShowMessageActions] = useState(false);
   const [clickedCount, setClickedCount] = useState(0);
   const [replyMessage, setReplyMessage] = useState(false);
-  const [replyMessageId, setReplyMessageId] = useState("");
+  const [showEmoji, setShowEmoji] = useState(false);
+  const [replyTriggered, setReplyTriggered] = useState(false);
+  const [replyMessageId, setReplyMessageId] = useState([]);
+  const [replyMessageContent, setReplyMessageContent] = useState([]);
   //const { loggedUser } = useSelector((store) => store.currentUser);
 
   const fetchRelevantMessages = useCallback(async () => {
@@ -43,6 +47,27 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
     fetchRelevantMessages();
   }, [fetchRelevantMessages]);
   console.log(replyMessageId);
+  console.log(replyMessageContent);
+
+  const getRepliedMessageInfo = (msg) => {
+    if (replyMessageId.length <= 0) {
+      setReplyMessageId((prev) => [...prev, msg._id]);
+      setReplyMessageContent((prev) => [...prev, msg]);
+      setReplyTriggered(false);
+    } else {
+      setReplyMessageId(replyMessageId.filter((flt) => flt !== msg._id));
+      setReplyMessageContent(
+        replyMessageContent.filter((flt) => flt._id !== msg._id)
+      );
+      setReplyTriggered(false);
+    }
+  };
+  useEffect(() => {
+    if (replyTriggered) {
+      setReplyMessageId([]);
+      setReplyMessageContent([]);
+    }
+  }, [replyTriggered]);
   return (
     <div className="relative w-full h-full  ">
       {showMessageActions && clickedCount > 0 ? (
@@ -51,6 +76,7 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
           clickedCount={clickedCount}
           setClickedCount={setClickedCount}
           setReplyMessage={setReplyMessage}
+          setShowEmoji={setShowEmoji}
         />
       ) : (
         <ChatHeader
@@ -66,8 +92,20 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
             setShowMessageActions={setShowMessageActions}
             setClickedCount={setClickedCount}
             clickedCount={clickedCount}
-            setReplyMessageId={setReplyMessageId}
+            setShowEmoji={setShowEmoji}
+            showEmoji={showEmoji}
+            replyMessage={replyMessage}
+            getRepliedMessageInfo={getRepliedMessageInfo}
+            replyTriggered={replyTriggered}
           />
+          {replyMessage && (
+            <ChatReply
+              replyMessageContent={replyMessageContent}
+              setReplyMessage={setReplyMessage}
+              setClickedCount={setClickedCount}
+              setReplyTriggered={setReplyTriggered}
+            />
+          )}
           <ChatActions
             replyMessage={replyMessage}
             setReplyMessage={setReplyMessage}
