@@ -36,6 +36,10 @@ const messageSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    repliedMessage: {
+      type: ObjectId,
+      ref: "Message",
+    },
     files: Array,
   },
   { timestamps: true, collection: "messages" }

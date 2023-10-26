@@ -7,6 +7,7 @@ const ActionHeader = ({
   setShowMessageActions,
   clickedCount,
   setClickedCount,
+  setReplyMessage,
 }) => {
   return (
     <div className="createGroupAnimation h-[59px] dark:bg-dark_bg_2 p16 py-3">
@@ -21,7 +22,14 @@ const ActionHeader = ({
         </div>
         <div className="text-white font-weight-bold">{clickedCount}</div>
         <div>
-          <button className="roo">
+          <button
+            className="roo"
+            onClick={() => {
+              setReplyMessage(true);
+              setShowMessageActions(false);
+            }}
+            disabled={clickedCount !== 1}
+          >
             <TiArrowForward color="white" size={20} />
           </button>
         </div>

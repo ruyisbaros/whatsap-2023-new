@@ -1,16 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  AttachmentIcon,
-  CloseIcon,
-  EmojiIcon,
-  SendIcon,
-} from "../../assets/svg";
+import { CloseIcon, EmojiIcon, SendIcon } from "../../assets/svg";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
 import { ClipLoader } from "react-spinners";
 import {
   reduxAddMyMessages,
+  reduxAddReplyToMessage,
   reduxGetMyConversations,
   reduxSetChattedUser,
   reduxSetGroupChatUsers,
@@ -27,7 +23,12 @@ import {
   userStopMessageTyping,
 } from "../../SocketIOConnection";
 
-const ChatActions = () => {
+const ChatActions = ({
+  replyMessage,
+  setReplyMessage,
+  replyMessageId,
+  setReplyMessageId,
+}) => {
   const dispatch = useDispatch();
   const messageRef = useRef(null);
 
@@ -119,6 +120,70 @@ const ChatActions = () => {
       }
     }
   };
+  const handleSendReplyMessage = async (e) => {
+    e.preventDefault();
+    if (message) {
+      if (!activeConversation.isGroup) {
+        try {
+          setStatus(true);
+          const { data } = await axios.post("/message/send_reply", {
+            message,
+            convo_id: activeConversation._id,
+            recipient: chattedUser._id,
+            messageId: replyMessageId,
+          });
+          console.log(data);
+
+          dispatch(
+            reduxAddReplyToMessage({
+              data: data.populatedMessage,
+              msgId: replyMessageId,
+            })
+          );
+
+          //Socket send message convo,message
+          sendNewMessage(data.populatedMessage, chattedUser._id);
+
+          setMessage("");
+          setStatus(false);
+          setReplyMessage(false);
+          setReplyMessageId("");
+        } catch (error) {
+          setStatus(false);
+          toast.error(error.response.data.message);
+        }
+      } else {
+        try {
+          setStatus(true);
+          const { data } = await axios.post("/message/send_group_reply", {
+            message,
+            convo_id: activeConversation._id,
+            recipients: grpChatUsers,
+            messageId: replyMessageId,
+          });
+          console.log(data);
+
+          dispatch(
+            reduxAddReplyToMessage({
+              data: data.populatedMessage,
+              msgId: replyMessageId,
+            })
+          );
+
+          //Socket send message convo,message
+          sendNewMessageToGroup(data.populatedMessage, grpChatUsers);
+
+          setMessage("");
+          setStatus(false);
+          setReplyMessage(false);
+          setReplyMessageId("");
+        } catch (error) {
+          setStatus(false);
+          toast.error(error.response.data.message);
+        }
+      }
+    }
+  };
   const handleMessageType = (e) => {
     setMessage(e.target.value);
     if (!isTyping && activeConversation.isGroup) {
@@ -158,7 +223,7 @@ const ChatActions = () => {
     <form
       className="dark:bg-dark_bg_2 h-[60px] w-full flex items-center absolute bottom-0
   py-2 px-4 formBorder"
-      onSubmit={handleSendMessage}
+      onSubmit={replyMessage ? handleSendReplyMessage : handleSendMessage}
     >
       <div className="w-full flex items-center gap-x-2 ">
         {/* Icons */}

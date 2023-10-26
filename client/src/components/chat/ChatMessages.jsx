@@ -8,6 +8,7 @@ const ChatMessages = ({
   setShowMessageActions,
   setClickedCount,
   clickedCount,
+  setReplyMessageId,
 }) => {
   const endRef = useRef();
 
@@ -68,6 +69,7 @@ const ChatMessages = ({
                 index={index}
                 setClickedCount={setClickedCount}
                 clickedCount={clickedCount}
+                setReplyMessageId={setReplyMessageId}
               />
             </div>
           ))}

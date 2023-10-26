@@ -57,6 +57,7 @@ const SingleMessage = ({
   index,
   clickedCount,
   setClickedCount,
+  setReplyMessageId,
 }) => {
   const dispatch = useDispatch();
   const msgRef = useRef(null);
@@ -81,6 +82,9 @@ const SingleMessage = ({
       setClickedIndex(index);
       setClickedCount((prev) => prev + 1);
       setShowEmoji(true);
+      if (clickedCount === 1) {
+        setReplyMessageId(msg._id);
+      }
     }
   };
 
@@ -154,7 +158,7 @@ const SingleMessage = ({
 
           {msg.emojiBox.length > 0 &&
             msg.emojiBox.map((emj) => (
-              <div key={emj} className="emoji-content">
+              <div key={emj.id} className="emoji-content">
                 <img src={emojies.find((e) => e.id === emj).image} alt="" />
               </div>
             ))}

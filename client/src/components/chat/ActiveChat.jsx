@@ -14,9 +14,11 @@ import ActionHeader from "./ActionHeader";
 
 const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   const dispatch = useDispatch();
+  const { activeConversation, files } = useSelector((store) => store.messages);
   const [showMessageActions, setShowMessageActions] = useState(false);
   const [clickedCount, setClickedCount] = useState(0);
-  const { activeConversation, files } = useSelector((store) => store.messages);
+  const [replyMessage, setReplyMessage] = useState(false);
+  const [replyMessageId, setReplyMessageId] = useState("");
   //const { loggedUser } = useSelector((store) => store.currentUser);
 
   const fetchRelevantMessages = useCallback(async () => {
@@ -40,7 +42,7 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   useEffect(() => {
     fetchRelevantMessages();
   }, [fetchRelevantMessages]);
-
+  console.log(replyMessageId);
   return (
     <div className="relative w-full h-full  ">
       {showMessageActions && clickedCount > 0 ? (
@@ -48,6 +50,7 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
           setShowMessageActions={setShowMessageActions}
           clickedCount={clickedCount}
           setClickedCount={setClickedCount}
+          setReplyMessage={setReplyMessage}
         />
       ) : (
         <ChatHeader
@@ -63,8 +66,14 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
             setShowMessageActions={setShowMessageActions}
             setClickedCount={setClickedCount}
             clickedCount={clickedCount}
+            setReplyMessageId={setReplyMessageId}
           />
-          <ChatActions />
+          <ChatActions
+            replyMessage={replyMessage}
+            setReplyMessage={setReplyMessage}
+            replyMessageId={replyMessageId}
+            setReplyMessageId={setReplyMessageId}
+          />
         </>
       )}
     </div>

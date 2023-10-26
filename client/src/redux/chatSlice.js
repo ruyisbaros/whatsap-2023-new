@@ -63,6 +63,11 @@ const chatSlicer = createSlice({
           : c
       );
     },
+    reduxAddReplyToMessage: (state, action) => {
+      state.messages = state.messages.map((msg) =>
+        msg._id === action.payload.msgId ? action.payload.data : msg
+      );
+    },
     reduxAddMyMessagesFromSocket: (state, action) => {
       state.messages.push(action.payload);
       //Update latest message
@@ -172,6 +177,7 @@ export const {
   reduxRemoveFile,
   reduxSetGroupChatUsers,
   reduxAddEmojiToMessage,
+  reduxAddReplyToMessage,
 } = chatSlicer.actions;
 
 export default chatSlicer.reducer;
