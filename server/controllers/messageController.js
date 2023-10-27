@@ -163,21 +163,24 @@ const messageCtrl = {
       const createdMessage = await MessageModel.create({
         message,
         sender: my_id,
+        isReplied: true,
+        repliedMessage: messageId,
         recipient,
         conversation: convo_id,
         files: files && files.length > 0 ? uploadedFiles : [],
       });
       //3 -update and Populate related message before send
-      const populatedMessage = await MessageModel.findByIdAndUpdate(
-        messageId,
-        {
-          repliedMessage: createdMessage._id,
-        },
-        { new: true }
-      )
+      const populatedMessage = await MessageModel.findById(createdMessage._id)
         .populate("sender", "-password")
         .populate("recipient", "-password")
-        .populate("repliedMessage")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
         .populate({
           path: "conversation",
           model: "Conversation",
@@ -217,21 +220,24 @@ const messageCtrl = {
       const createdMessage = await MessageModel.create({
         message,
         sender: my_id,
+        repliedMessage: messageId,
+        isReplied: true,
         recipients,
         conversation: convo_id,
         files: files && files.length > 0 ? uploadedFiles : [],
       });
       //3 -update and Populate related message before send
-      const populatedMessage = await MessageModel.findByIdAndUpdate(
-        messageId,
-        {
-          repliedMessage: createdMessage._id,
-        },
-        { new: true }
-      )
+      const populatedMessage = await MessageModel.findById(createdMessage._id)
         .populate("sender", "-password")
         .populate("recipients", "-password")
-        .populate("repliedMessage")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
         .populate({
           path: "conversation",
           model: "Conversation",
@@ -254,10 +260,15 @@ const messageCtrl = {
       const messages = await MessageModel.find({
         conversation: convId,
       })
-        .populate(
-          "sender recipient recipients idForDeleted repliedMessage",
-          "-password"
-        )
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
         .populate({
           path: "conversation",
           model: "Conversation",
@@ -267,6 +278,62 @@ const messageCtrl = {
           },
         });
       res.status(200).json(messages);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  give_star: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updatedMessage = await MessageModel.findByIdAndUpdate(id, {
+        haveStar: true,
+      })
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
+      res.status(201).json(updatedMessage);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  cancel_star: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updatedMessage = await MessageModel.findByIdAndUpdate(id, {
+        haveStar: false,
+      })
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
+      res.status(201).json(updatedMessage);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
@@ -283,6 +350,14 @@ const messageCtrl = {
         { new: true }
       )
         .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
         .populate({
           path: "conversation",
           model: "Conversation",
@@ -307,10 +382,15 @@ const messageCtrl = {
         { $push: { emojiBox: emoji } },
         { new: true }
       )
-        .populate(
-          "sender recipient recipients idForDeleted repliedMessage",
-          "-password"
-        )
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
         .populate({
           path: "conversation",
           model: "Conversation",

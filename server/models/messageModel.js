@@ -40,6 +40,14 @@ const messageSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "Message",
     },
+    isReplied: {
+      type: Boolean,
+      default: false,
+    },
+    haveStar: {
+      type: Boolean,
+      default: false,
+    },
     files: Array,
   },
   { timestamps: true, collection: "messages" }

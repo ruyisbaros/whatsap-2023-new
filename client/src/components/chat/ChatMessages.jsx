@@ -48,7 +48,7 @@ const ChatMessages = ({
 
   useEffect(() => {
     endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages, isTyping, filteredMessages, replyMessage]);
+  }, [messages, filteredMessages, replyMessage]);
 
   return (
     <div className=" mb-[60px] bg-[url('https://res.cloudinary.com/ruyisbaros/image/upload/v1694785109/whatsapp_api/xkiiml6mmcz5xyqkdm42.jpg')] bg-cover bg-no-repeat ">

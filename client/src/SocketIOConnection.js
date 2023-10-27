@@ -2,12 +2,13 @@ import { io } from "socket.io-client";
 import { store } from "./redux/store";
 import { BACKEND_URL } from "./axios";
 import {
-  reduxAddEmojiToMessage,
+  reduxAddUpdateMessage,
   reduxAddMyConversations,
   reduxAddMyMessagesFromSocket,
   reduxAddReplyToMessage,
   reduxStartTyping,
   reduxStopTyping,
+  reduxUpdateLatestMessage,
 } from "./redux/chatSlice";
 import {
   reduxAUserBecameOffline,
@@ -46,22 +47,7 @@ socket.on("new message", (msg) => {
 socket.on("new message group", (msg) => {
   store.dispatch(reduxAddMyMessagesFromSocket(msg));
 });
-socket.on("reply message", ({ msg, msgId }) => {
-  store.dispatch(
-    reduxAddReplyToMessage({
-      data: msg,
-      msgId,
-    })
-  );
-});
-socket.on("reply message group", ({ msg, msgId }) => {
-  store.dispatch(
-    reduxAddReplyToMessage({
-      data: msg,
-      msgId,
-    })
-  );
-});
+
 socket.on("update conversationList", (convo) => {
   store.dispatch(reduxAddMyConversations(convo));
 });
@@ -84,21 +70,30 @@ socket.on("offlineUsers", (id) => {
 socket.on("openTypingToClient", ({ typeTo, convo }) => {
   store.dispatch(reduxStartTyping({ situation: true, id: typeTo, convo }));
 });
-socket.on("closeTypingToClient", ({ convo, message }) => {
-  store.dispatch(reduxStopTyping({ situation: false, convo, message }));
+socket.on("closeTypingToClient", ({ convo }) => {
+  store.dispatch(reduxStopTyping({ situation: false, convo }));
 });
 socket.on("typing group", ({ typer, convo }) => {
   store.dispatch(reduxStartTyping({ situation: true, id: typer, convo }));
 });
-socket.on("stop typing group", ({ convo, message }) => {
-  store.dispatch(reduxStopTyping({ situation: false, convo, message }));
+socket.on("stop typing group", ({ convo }) => {
+  store.dispatch(reduxStopTyping({ situation: false, convo }));
 });
+socket.on("update latest message", ({ message }) => {
+  store.dispatch(reduxUpdateLatestMessage({ situation: false, message }));
+});
+
 socket.on("add emoji", ({ msgId, data }) => {
-  store.dispatch(reduxAddEmojiToMessage({ data, msgId }));
+  store.dispatch(reduxAddUpdateMessage({ data, msgId }));
 });
-socket.on("add emoji group", ({ msgId, data }) => {
-  store.dispatch(reduxAddEmojiToMessage({ data, msgId }));
+
+socket.on("give star", ({ msgId, data }) => {
+  store.dispatch(reduxAddUpdateMessage({ data, msgId }));
 });
+socket.on("cancel star", ({ msgId, data }) => {
+  store.dispatch(reduxAddUpdateMessage({ data, msgId }));
+});
+
 socket.on("newOfferCame", ({ offer, name, picture, offerer }) => {
   console.log("new offer received");
   store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));
@@ -168,12 +163,7 @@ export const sendNewMessage = (msg, id) => {
 export const sendNewMessageToGroup = (msg, recipients) => {
   socket?.emit("new message group", { msg, recipients });
 };
-export const sendReplyMessage = (msg, id, msgId) => {
-  socket?.emit("reply message", { msg, id, msgId });
-};
-export const sendReplyMessageToGroup = (msg, recipients, msgId) => {
-  socket?.emit("reply message group", { msg, recipients, msgId });
-};
+
 //first time chat means other user's conversation list should include me real time
 export const createNewConversation = (newConversation, id) => {
   socket?.emit("update conversationList", { newConversation, id });
@@ -189,20 +179,37 @@ export const userStartMessageTyping = (chattedUserId, typeTo, convo) => {
   socket?.emit("typing", { chattedUserId, typeTo, convo });
 };
 
-export const userStopMessageTyping = (chattedUserId, convo, message) => {
-  socket?.emit("stop typing", { chattedUserId, convo, message });
+export const userStopMessageTyping = (chattedUserId, convo) => {
+  socket?.emit("stop typing", { chattedUserId, convo });
 };
 export const groupStartMessageTyping = (recipients, typer, convo) => {
   socket?.emit("typing group", { recipients, typer, convo });
 };
 
-export const groupStopMessageTyping = (recipients, convo, message) => {
-  socket?.emit("stop typing group", { recipients, convo, message });
+export const groupStopMessageTyping = (recipients, convo) => {
+  socket?.emit("stop typing group", { recipients, convo });
 };
-
+export const userUpdateLatestMessage = (chattedUserId, message) => {
+  socket?.emit("update latest message", { chattedUserId, message });
+};
+export const groupUpdateLatestMessage = (recipients, message) => {
+  socket?.emit("update latest message group", { recipients, message });
+};
 export const userAddMessageEmoji = (chattedUserId, msgId, data) => {
   socket?.emit("add emoji", { chattedUserId, msgId, data });
 };
 export const groupAddMessageEmoji = (recipients, msgId, data) => {
   socket?.emit("add emoji group", { recipients, msgId, data });
+};
+export const userGiveStar = (chattedUserId, msgId, data) => {
+  socket?.emit("give star", { chattedUserId, msgId, data });
+};
+export const groupGiveStar = (recipients, msgId, data) => {
+  socket?.emit("give star group", { recipients, msgId, data });
+};
+export const userCancelStar = (chattedUserId, msgId, data) => {
+  socket?.emit("cancel star", { chattedUserId, msgId, data });
+};
+export const groupCancelStar = (recipients, msgId, data) => {
+  socket?.emit("cancel star group", { recipients, msgId, data });
 };

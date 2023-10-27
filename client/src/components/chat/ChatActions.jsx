@@ -6,7 +6,6 @@ import axios from "../../axios";
 import { ClipLoader } from "react-spinners";
 import {
   reduxAddMyMessages,
-  reduxAddReplyToMessage,
   reduxGetMyConversations,
   reduxSetChattedUser,
   reduxSetGroupChatUsers,
@@ -17,12 +16,12 @@ import {
   createNewConversation,
   groupStartMessageTyping,
   groupStopMessageTyping,
+  groupUpdateLatestMessage,
   sendNewMessage,
   sendNewMessageToGroup,
-  sendReplyMessage,
-  sendReplyMessageToGroup,
   userStartMessageTyping,
   userStopMessageTyping,
+  userUpdateLatestMessage,
 } from "../../SocketIOConnection";
 
 const ChatActions = ({
@@ -30,6 +29,7 @@ const ChatActions = ({
   setReplyMessage,
   replyMessageId,
   setReplyMessageId,
+  setClickedCount,
 }) => {
   const dispatch = useDispatch();
   const messageRef = useRef(null);
@@ -41,7 +41,8 @@ const ChatActions = ({
   const [status, setStatus] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [showAttachment, setShowAttachment] = useState(false);
-  console.log(replyMessageId);
+  const [msgSended, setMsgSended] = useState(false);
+  console.log(replyMessage);
   useEffect(() => {
     if (!activeConversation.isGroup) {
       const usr = activeConversation.users.find(
@@ -71,6 +72,7 @@ const ChatActions = ({
             recipient: chattedUser._id,
           });
           console.log(data);
+          setMsgSended(true);
           //Means first time chat
           if (data.conversations) {
             dispatch(
@@ -89,7 +91,7 @@ const ChatActions = ({
 
           //Socket send message convo,message
           sendNewMessage(data.populatedMessage, chattedUser._id);
-          userStopMessageTyping(chattedUser._id, null, data.populatedMessage);
+          userUpdateLatestMessage(chattedUser._id, data.populatedMessage);
 
           setMessage("");
           setStatus(false);
@@ -106,12 +108,12 @@ const ChatActions = ({
             recipients: grpChatUsers,
           });
           console.log(data);
-
+          setMsgSended(true);
           dispatch(reduxAddMyMessages(data.populatedMessage));
 
           //Socket send message convo,message
           sendNewMessageToGroup(data.populatedMessage, grpChatUsers);
-          groupStopMessageTyping(grpChatUsers, null, data.populatedMessage);
+          groupUpdateLatestMessage(grpChatUsers, data.populatedMessage);
 
           setMessage("");
           setStatus(false);
@@ -135,21 +137,13 @@ const ChatActions = ({
             messageId: replyMessageId[0],
           });
           console.log(data);
-
-          dispatch(
-            reduxAddReplyToMessage({
-              data: data.populatedMessage,
-              msgId: replyMessageId[0],
-            })
-          );
+          setMsgSended(true);
+          //setClickedCount(0);
+          dispatch(reduxAddMyMessages(data.populatedMessage));
 
           //Socket send message convo,message
-          sendReplyMessage(
-            data.populatedMessage,
-            chattedUser._id,
-            replyMessageId[0]
-          );
-
+          sendNewMessage(data.populatedMessage, chattedUser._id);
+          userUpdateLatestMessage(chattedUser._id, data.populatedMessage);
           setMessage("");
           setStatus(false);
           setReplyMessage(false);
@@ -168,20 +162,13 @@ const ChatActions = ({
             messageId: replyMessageId[0],
           });
           console.log(data);
-
-          dispatch(
-            reduxAddReplyToMessage({
-              data: data.populatedMessage,
-              msgId: replyMessageId[0],
-            })
-          );
+          setMsgSended(true);
+          //setClickedCount(0);
+          dispatch(reduxAddMyMessages(data.populatedMessage));
 
           //Socket send message convo,message
-          sendReplyMessageToGroup(
-            data.populatedMessage,
-            grpChatUsers,
-            replyMessageId[0]
-          );
+          sendNewMessageToGroup(data.populatedMessage, grpChatUsers);
+          groupUpdateLatestMessage(grpChatUsers, data.populatedMessage);
 
           setMessage("");
           setStatus(false);
@@ -208,15 +195,15 @@ const ChatActions = ({
     }
 
     let lastTypeTime = new Date().getTime();
-    let timer = 1000;
+    let timer = 2000;
     let timers = setTimeout(() => {
       let timeNow = new Date().getTime();
       let tDifference = timeNow - lastTypeTime;
 
-      if (tDifference >= timer) {
+      if (tDifference >= timer && !msgSended) {
         !activeConversation.isGroup
-          ? userStopMessageTyping(chattedUser._id, activeConversation, null)
-          : groupStopMessageTyping(grpChatUsers, activeConversation, null);
+          ? userStopMessageTyping(chattedUser._id, activeConversation)
+          : groupStopMessageTyping(grpChatUsers, activeConversation);
       }
     }, timer);
     return () => clearTimeout(timers);
@@ -229,6 +216,11 @@ const ChatActions = ({
     setMessage((prev) => prev + emoji);
   };
 
+  useEffect(() => {
+    if (replyMessage) {
+      messageRef.current.focus();
+    }
+  }, [replyMessage]);
   return (
     <form
       className="dark:bg-dark_bg_2 h-[60px] w-full flex items-center absolute bottom-0

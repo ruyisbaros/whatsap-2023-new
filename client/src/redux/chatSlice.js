@@ -87,7 +87,7 @@ const chatSlicer = createSlice({
     reduxRemoveFromMyMessages: (state, action) => {
       state.messages.pop(action.payload);
     },
-    reduxAddEmojiToMessage: (state, action) => {
+    reduxAddUpdateMessage: (state, action) => {
       state.messages = state.messages.map((msg) =>
         msg._id === action.payload.msgId ? action.payload.data : msg
       );
@@ -130,7 +130,11 @@ const chatSlicer = createSlice({
             ? { ...c, latestMessage: action.payload.convo.latestMessage }
             : c
         );
-      } else if (action.payload.message) {
+      }
+    },
+    reduxUpdateLatestMessage: (state, action) => {
+      state.isTyping = action.payload.situation;
+      if (action.payload.message) {
         state.conversations = state.conversations.map((c) =>
           c._id === action.payload.message.conversation._id
             ? {
@@ -176,8 +180,9 @@ export const {
   reduxMakeFilesEmpty,
   reduxRemoveFile,
   reduxSetGroupChatUsers,
-  reduxAddEmojiToMessage,
+  reduxAddUpdateMessage,
   reduxAddReplyToMessage,
+  reduxUpdateLatestMessage,
 } = chatSlicer.actions;
 
 export default chatSlicer.reducer;

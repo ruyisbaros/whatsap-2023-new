@@ -76,49 +76,7 @@ exports.socketServer = (socket, io) => {
       });
     }
   });
-  socket.on("reply message", ({ msg, id, msgId }) => {
-    const user = users.find((user) => user.id === id);
-    //console.log("Users: ", users);
-    //console.log("User: ", user);
 
-    if (user) {
-      socket.to(`${user.socketId}`).emit("reply message", { msg, msgId });
-    }
-  });
-  socket.on("reply message group", ({ msg, recipients, msgId }) => {
-    //console.log(recipients);
-    let usersToSend = recipients
-      .map((rcp) => users.find((usr) => usr.id === rcp._id))
-      .filter((elem, index) => users.indexOf(elem) === index);
-    //console.log(usersToSend);
-
-    if (usersToSend.length > 0) {
-      usersToSend.forEach((user) => {
-        socket.to(user.socketId).emit("reply message group", { msg, msgId });
-      });
-    }
-  });
-  socket.on("add emoji group", ({ recipients, msgId, data }) => {
-    //console.log(recipients);
-    let usersToSend = recipients
-      .map((rcp) => users.find((usr) => usr.id === rcp._id))
-      .filter((elem, index) => users.indexOf(elem) === index);
-    //console.log(usersToSend);
-
-    if (usersToSend.length > 0) {
-      usersToSend.forEach((user) => {
-        socket.to(user.socketId).emit("add emoji group", { msgId, data });
-      });
-    }
-  });
-  socket.on("add emoji", ({ chattedUserId, msgId, data }) => {
-    //console.log(chattedUserId);
-    const user = users.find((user) => user.id === chattedUserId);
-    //console.log(user);
-    if (user) {
-      socket.to(`${user.socketId}`).emit("add emoji", { msgId, data });
-    }
-  });
   //Updated conversation list for fresh chat users
   socket.on("update conversationList", ({ newConversation, id }) => {
     const user = users.find((user) => user.id === id);
@@ -167,18 +125,16 @@ exports.socketServer = (socket, io) => {
     }
   });
   //Stop Typing
-  socket.on("stop typing", ({ chattedUserId, convo, message }) => {
+  socket.on("stop typing", ({ chattedUserId, convo }) => {
     //console.log(userId);
     //console.log(convo);
     const user = users.find((user) => user.id === chattedUserId);
     //console.log(user);
     if (user) {
-      socket
-        .to(`${user.socketId}`)
-        .emit("closeTypingToClient", { convo, message });
+      socket.to(`${user.socketId}`).emit("closeTypingToClient", { convo });
     }
   });
-  socket.on("stop typing group", ({ recipients, convo, message }) => {
+  socket.on("stop typing group", ({ recipients, convo }) => {
     let usersToSend = recipients
       .map((rcp) => users.find((usr) => usr.id === rcp._id))
       .filter((elem, index) => users.indexOf(elem) === index);
@@ -186,8 +142,95 @@ exports.socketServer = (socket, io) => {
 
     if (usersToSend.length > 0) {
       usersToSend.forEach((user) => {
-        socket.to(user.socketId).emit("stop typing group", { convo, message });
+        socket.to(user.socketId).emit("stop typing group", { convo });
       });
+    }
+  });
+  socket.on("update latest message", ({ chattedUserId, message }) => {
+    //console.log(userId);
+    //console.log(message);
+    const user = users.find((user) => user.id === chattedUserId);
+    //console.log(user);
+    if (user) {
+      socket.to(`${user.socketId}`).emit("update latest message", { message });
+    }
+  });
+  socket.on("update latest message group", ({ recipients, message }) => {
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    //console.log(usersToSend);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("update latest message", { message });
+      });
+    }
+  });
+
+  socket.on("add emoji group", ({ recipients, msgId, data }) => {
+    //console.log(recipients);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    //console.log(usersToSend);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("add emoji", { msgId, data });
+      });
+    }
+  });
+  socket.on("add emoji", ({ chattedUserId, msgId, data }) => {
+    //console.log(chattedUserId);
+    const user = users.find((user) => user.id === chattedUserId);
+    //console.log(user);
+    if (user) {
+      socket.to(`${user.socketId}`).emit("add emoji", { msgId, data });
+    }
+  });
+
+  socket.on("give star group", ({ recipients, msgId, data }) => {
+    //console.log(recipients);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    //console.log(usersToSend);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("give star", { msgId, data });
+      });
+    }
+  });
+  socket.on("give star", ({ chattedUserId, msgId, data }) => {
+    //console.log(chattedUserId);
+    const user = users.find((user) => user.id === chattedUserId);
+    //console.log(user);
+    if (user) {
+      socket.to(`${user.socketId}`).emit("give star", { msgId, data });
+    }
+  });
+
+  socket.on("cancel star group", ({ recipients, msgId, data }) => {
+    //console.log(recipients);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    //console.log(usersToSend);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("cancel star", { msgId, data });
+      });
+    }
+  });
+  socket.on("cancel star", ({ chattedUserId, msgId, data }) => {
+    //console.log(chattedUserId);
+    const user = users.find((user) => user.id === chattedUserId);
+    //console.log(user);
+    if (user) {
+      socket.to(`${user.socketId}`).emit("cancel star", { msgId, data });
     }
   });
 

@@ -12,7 +12,8 @@ import shy from "../../assets/emojies/shy.png";
 import simarik from "../../assets/emojies/simarik.png";
 import { toast } from "react-toastify";
 import axios from "../../axios";
-import { reduxAddEmojiToMessage } from "../../redux/chatSlice";
+import { BsStarFill } from "react-icons/bs";
+import { reduxAddUpdateMessage } from "../../redux/chatSlice";
 import {
   groupAddMessageEmoji,
   userAddMessageEmoji,
@@ -92,13 +93,14 @@ const SingleMessage = ({
       setClickedIndex(null);
     }
   }, [replyTriggered]);
+  //console.log(replyTriggered);
   const handleAddEmoji = async (id) => {
     try {
       const { data } = await axios.get(
         `/message/add_emoji?message=${msg._id}&&emoji=${id}`
       );
       console.log(data);
-      dispatch(reduxAddEmojiToMessage({ data, msgId: msg._id }));
+      dispatch(reduxAddUpdateMessage({ data, msgId: msg._id }));
 
       //Socket emit
       if (activeConversation.isGroup) {
@@ -116,7 +118,7 @@ const SingleMessage = ({
       <div
         ref={msgRef}
         className={`relative w-full flex mt-2 mb-3 space-x-3  ${
-          me ? "ml-auto justify-end" : ""
+          me || msg.isReplied ? "ml-auto justify-end" : ""
         } ${changeBg && clickedCount > 0 ? "newBg" : ""}`}
         onClick={() => {
           handleActions();
@@ -138,26 +140,56 @@ const SingleMessage = ({
         )}
         <div
           className={`relative  p-2 rounded-lg
-      ${me ? "bg-green_5 text-black" : "dark:bg-dark_bg_5 text-dark_text_1"}`}
+      ${
+        me || msg.isReplied
+          ? "bg-green_5 text-black"
+          : "dark:bg-dark_bg_5 text-dark_text_1"
+      }`}
         >
-          <p className="float-left h-full text-sm pb-4 pr-8">
-            {activeConversation.isGroup && !me && !sameUser && (
-              <span className="flex text-red-600">
-                {makeCapital(msg?.sender.name)}
+          {!msg.isReplied ? (
+            <div className="float-left h-full text-sm pb-4 pr-8">
+              {activeConversation.isGroup && !me && !sameUser && (
+                <span className="flex text-red-700 font-bold">
+                  {makeCapital(msg?.sender.name)}
+                </span>
+              )}
+              {msg.message}
+            </div>
+          ) : (
+            <div className="float-left h-full text-sm pb-4 pr-8">
+              <div className="inside_replied">
+                <span className="flex text-red-700 font-bold">
+                  {msg?.repliedMessage?.sender._id === loggedUser.id
+                    ? "You"
+                    : makeCapital(msg?.repliedMessage?.sender.name)}
+                </span>
+                {msg?.repliedMessage?.message}
+              </div>
+              <div className="inside_reply">
+                {activeConversation.isGroup && (
+                  <span className="flex text-green-700 font-bold">
+                    {me ? "You" : makeCapital(msg?.sender.name)}
+                  </span>
+                )}
+                {msg.message}
+              </div>
+            </div>
+          )}
+
+          <div className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_3 leading-none flex items-center gap-1">
+            {msg.haveStar && (
+              <span className="star-anim">
+                <BsStarFill color="#8696a0" size={10} />
               </span>
             )}
-            {msg.message}
-          </p>
-
-          <span className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_3 leading-none">
-            {moment(msg.createdAt).format("HH:mm")}
-          </span>
+            <span>{moment(msg.createdAt).format("HH:mm")}</span>
+          </div>
           {/* Triangle */}
           <span className="">
             <TriangleIcon
               className={
-                me
-                  ? "fill-dark_bg_7 rotate-[60deg] absolute top-[-5px] -right-1.5"
+                me || msg.isReplied
+                  ? "fill-dark_bg_7 rotate-[60deg] absolute top-[-4.5px] -right-1.5"
                   : "dark:fill-dark_bg_5 rotate-[60deg] absolute top-[-5px] -left-1.5"
               }
             />
