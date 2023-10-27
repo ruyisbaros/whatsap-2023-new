@@ -169,7 +169,11 @@ const messageCtrl = {
         conversation: convo_id,
         files: files && files.length > 0 ? uploadedFiles : [],
       });
-      //3 -update and Populate related message before send
+      //3. Update relevant conversation's latestMessage (each new message will be the latestMessage)
+      await ConversationModel.findByIdAndUpdate(convo_id, {
+        latestMessage: createdMessage,
+      });
+      //4 -update and Populate related message before send
       const populatedMessage = await MessageModel.findById(createdMessage._id)
         .populate("sender", "-password")
         .populate("recipient", "-password")
@@ -226,7 +230,11 @@ const messageCtrl = {
         conversation: convo_id,
         files: files && files.length > 0 ? uploadedFiles : [],
       });
-      //3 -update and Populate related message before send
+      //3. Update relevant conversation's latestMessage (each new message will be the latestMessage)
+      await ConversationModel.findByIdAndUpdate(convo_id, {
+        latestMessage: createdMessage,
+      });
+      //4 -update and Populate related message before send
       const populatedMessage = await MessageModel.findById(createdMessage._id)
         .populate("sender", "-password")
         .populate("recipients", "-password")
@@ -285,9 +293,13 @@ const messageCtrl = {
   give_star: async (req, res) => {
     try {
       const { id } = req.params;
-      const updatedMessage = await MessageModel.findByIdAndUpdate(id, {
-        haveStar: true,
-      })
+      const updatedMessage = await MessageModel.findByIdAndUpdate(
+        id,
+        {
+          haveStar: true,
+        },
+        { new: true }
+      )
         .populate("sender recipient recipients idForDeleted", "-password")
         .populate({
           path: "repliedMessage",
@@ -313,9 +325,13 @@ const messageCtrl = {
   cancel_star: async (req, res) => {
     try {
       const { id } = req.params;
-      const updatedMessage = await MessageModel.findByIdAndUpdate(id, {
-        haveStar: false,
-      })
+      const updatedMessage = await MessageModel.findByIdAndUpdate(
+        id,
+        {
+          haveStar: false,
+        },
+        { new: true }
+      )
         .populate("sender recipient recipients idForDeleted", "-password")
         .populate({
           path: "repliedMessage",

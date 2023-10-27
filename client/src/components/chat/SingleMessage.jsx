@@ -125,7 +125,7 @@ const SingleMessage = ({
           getRepliedMessageInfo(msg);
         }}
       >
-        {activeConversation.isGroup && !me && !sameUser ? (
+        {activeConversation.isGroup && !me && !msg.isReplied && !sameUser ? (
           <div>
             <img
               src={msg?.sender?.picture}

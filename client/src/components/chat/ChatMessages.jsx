@@ -76,7 +76,8 @@ const ChatMessages = ({
                 me={loggedUser.id === message?.sender?._id}
                 sameUser={
                   messages[index]?.sender._id ===
-                  messages[index - 1]?.sender._id
+                    messages[index - 1]?.sender._id &&
+                  !messages[index - 1]?.isReplied
                 }
                 setShowMessageActions={setShowMessageActions}
                 index={index}

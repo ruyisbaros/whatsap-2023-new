@@ -21,7 +21,6 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   const [replyMessage, setReplyMessage] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [replyTriggered, setReplyTriggered] = useState(false);
-  const [haveStar, setHaveStar] = useState(false);
   const [replyMessageId, setReplyMessageId] = useState([]);
   const [replyMessageContent, setReplyMessageContent] = useState([]);
   //const { loggedUser } = useSelector((store) => store.currentUser);
@@ -78,8 +77,6 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
           replyMessageId={replyMessageId}
           setReplyMessage={setReplyMessage}
           setShowEmoji={setShowEmoji}
-          haveStar={haveStar}
-          setHaveStar={setHaveStar}
         />
       ) : (
         <ChatHeader

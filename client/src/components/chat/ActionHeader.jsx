@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TiArrowForward } from "react-icons/ti";
 import { AiFillStar } from "react-icons/ai";
 import { TbStarOff } from "react-icons/tb";
@@ -19,15 +19,17 @@ const ActionHeader = ({
   clickedCount,
   setReplyMessage,
   setShowEmoji,
-  haveStar,
-  setHaveStar,
   replyMessageId,
 }) => {
   const dispatch = useDispatch();
-  const { activeConversation, chattedUser, grpChatUsers } = useSelector(
-    (store) => store.messages
-  );
+  const { activeConversation, chattedUser, grpChatUsers, messages } =
+    useSelector((store) => store.messages);
+  const [relevantMessage, setRelevantMessage] = useState(null);
 
+  useEffect(() => {
+    setRelevantMessage(messages.find((msg) => msg._id === replyMessageId[0]));
+  }, [messages, replyMessageId]);
+  console.log(relevantMessage);
   const handleGiveStar = async () => {
     try {
       const { data } = await axios.get(
@@ -40,7 +42,7 @@ const ActionHeader = ({
       if (activeConversation.isGroup) {
         groupGiveStar(grpChatUsers, replyMessageId[0], data);
       } else {
-        userGiveStar(chattedUser, replyMessageId[0], data);
+        userGiveStar(chattedUser._id, replyMessageId[0], data);
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -57,7 +59,7 @@ const ActionHeader = ({
       if (activeConversation.isGroup) {
         groupCancelStar(grpChatUsers, replyMessageId[0], data);
       } else {
-        userCancelStar(chattedUser, replyMessageId[0], data);
+        userCancelStar(chattedUser._id, replyMessageId[0], data);
       }
     } catch (error) {
       toast.error(error.response.data.message);
@@ -91,19 +93,16 @@ const ActionHeader = ({
           </button>
         </div>
         <div>
-          <button
-            onClick={() => setHaveStar((prev) => !prev)}
-            disabled={clickedCount !== 1}
-          >
-            {haveStar ? (
+          <button disabled={clickedCount !== 1}>
+            {relevantMessage?.haveStar ? (
               <TbStarOff
                 color="white"
                 size={20}
                 fill="white"
-                onClick={handleGiveStar}
+                onClick={handleCancelStar}
               />
             ) : (
-              <AiFillStar color="white" size={20} onClick={handleCancelStar} />
+              <AiFillStar color="white" size={20} onClick={handleGiveStar} />
             )}
           </button>
         </div>
