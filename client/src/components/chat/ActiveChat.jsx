@@ -12,6 +12,7 @@ import ChatActions from "./ChatActions";
 import FilePreview from "../previews/file/FilePreview";
 import ActionHeader from "./ActionHeader";
 import ChatReply from "./ChatReply";
+import DeleteBox from "./DeleteBox";
 
 const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   const [replyMessage, setReplyMessage] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
   const [replyTriggered, setReplyTriggered] = useState(false);
+  const [showDeleteBox, setShowDeleteBox] = useState(false);
   const [replyMessageId, setReplyMessageId] = useState([]);
   const [replyMessageContent, setReplyMessageContent] = useState([]);
   //const { loggedUser } = useSelector((store) => store.currentUser);
@@ -77,6 +79,7 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
           replyMessageId={replyMessageId}
           setReplyMessage={setReplyMessage}
           setShowEmoji={setShowEmoji}
+          setShowDeleteBox={setShowDeleteBox}
         />
       ) : (
         <ChatHeader
@@ -113,6 +116,13 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
             setReplyMessageId={setReplyMessageId}
             setClickedCount={setClickedCount}
           />
+
+          {showDeleteBox && (
+            <DeleteBox
+              replyMessageId={replyMessageId}
+              setShowDeleteBox={setShowDeleteBox}
+            />
+          )}
         </>
       )}
     </div>

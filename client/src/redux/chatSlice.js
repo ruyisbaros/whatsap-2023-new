@@ -92,6 +92,7 @@ const chatSlicer = createSlice({
         msg._id === action.payload.msgId ? action.payload.data : msg
       );
     },
+
     reduxMakeMessagesSeen: (state, action) => {
       const { logId, convoId } = action.payload;
       state.messages = state.messages.map((msg) =>

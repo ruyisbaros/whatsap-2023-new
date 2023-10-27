@@ -20,6 +20,7 @@ const ActionHeader = ({
   setReplyMessage,
   setShowEmoji,
   replyMessageId,
+  setShowDeleteBox,
 }) => {
   const dispatch = useDispatch();
   const { activeConversation, chattedUser, grpChatUsers, messages } =
@@ -65,6 +66,7 @@ const ActionHeader = ({
       toast.error(error.response.data.message);
     }
   };
+
   return (
     <div className="createGroupAnimation h-[59px] dark:bg-dark_bg_2 p16 py-3">
       <div className="w-full h-full flex justify-around items-center">
@@ -107,7 +109,10 @@ const ActionHeader = ({
           </button>
         </div>
         <div>
-          <button>
+          <button
+            onClick={() => setShowDeleteBox(true)}
+            disabled={clickedCount !== 1}
+          >
             <MdDelete color="white" size={20} />
           </button>
         </div>

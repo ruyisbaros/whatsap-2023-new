@@ -382,6 +382,43 @@ const messageCtrl = {
             model: "Message",
           },
         });
+
+      res.status(200).json(deletedMessage);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  delete_for_all: async (req, res) => {
+    try {
+      const { id, name } = req.body;
+      if (!id) {
+        return res.status(500).json({ message: `Something went wrong!` });
+      }
+      const deletedMessage = await MessageModel.findByIdAndUpdate(
+        id,
+        {
+          deleteForAll: true,
+          message: `!!! This message deleted by ${name} !!!`,
+        },
+        { new: true }
+      )
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
       res.status(200).json(deletedMessage);
     } catch (error) {
       res.status(500).json({ message: error.message });

@@ -28,10 +28,7 @@ const messageSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    idForDeleted: {
-      type: ObjectId,
-      ref: "User",
-    },
+
     emojiBox: {
       type: Array,
       default: [],
@@ -45,6 +42,14 @@ const messageSchema = new mongoose.Schema(
       default: false,
     },
     haveStar: {
+      type: Boolean,
+      default: false,
+    },
+    idForDeleted: {
+      type: ObjectId,
+      ref: "User",
+    },
+    deleteForAll: {
       type: Boolean,
       default: false,
     },

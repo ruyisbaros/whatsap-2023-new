@@ -234,6 +234,28 @@ exports.socketServer = (socket, io) => {
     }
   });
 
+  socket.on("delete forAll group", ({ recipients, msgId, data }) => {
+    //console.log(recipients);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((elem, index) => users.indexOf(elem) === index);
+    //console.log(usersToSend);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("deleted message", { msgId, data });
+      });
+    }
+  });
+  socket.on("delete forAll user", ({ chattedUserId, msgId, data }) => {
+    //console.log(chattedUserId);
+    const user = users.find((user) => user.id === chattedUserId);
+    //console.log(user);
+    if (user) {
+      socket.to(`${user.socketId}`).emit("deleted message", { msgId, data });
+    }
+  });
+
   //Video Calls
   socket.on("newOffer", ({ target, offer, name, picture, offerer }) => {
     const user = users.find((user) => user.id === target);

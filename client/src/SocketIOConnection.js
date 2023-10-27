@@ -94,6 +94,10 @@ socket.on("cancel star", ({ msgId, data }) => {
   store.dispatch(reduxAddUpdateMessage({ data, msgId }));
 });
 
+socket.on("deleted message", ({ msgId, data }) => {
+  store.dispatch(reduxAddUpdateMessage({ data, msgId }));
+});
+
 socket.on("newOfferCame", ({ offer, name, picture, offerer }) => {
   console.log("new offer received");
   store.dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));
@@ -212,4 +216,10 @@ export const userCancelStar = (chattedUserId, msgId, data) => {
 };
 export const groupCancelStar = (recipients, msgId, data) => {
   socket?.emit("cancel star group", { recipients, msgId, data });
+};
+export const deleteForAllUser = (chattedUserId, msgId, data) => {
+  socket?.emit("delete forAll user", { chattedUserId, msgId, data });
+};
+export const deleteForAllGroup = (recipients, msgId, data) => {
+  socket?.emit("delete forAll group", { recipients, msgId, data });
 };

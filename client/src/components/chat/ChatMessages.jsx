@@ -41,10 +41,12 @@ const ChatMessages = ({
   useEffect(() => {
     setFilteredMessages(
       messages.filter(
-        (message) => message.conversation._id === activeConversation._id
+        (message) =>
+          message.conversation._id === activeConversation._id &&
+          message.idForDeleted?._id !== loggedUser.id
       )
     );
-  }, [messages, activeConversation]);
+  }, [messages, activeConversation, loggedUser]);
 
   useEffect(() => {
     endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
