@@ -14,9 +14,14 @@ import { toast } from "react-toastify";
 import axios from "../../../axios";
 import {
   createNewConversation,
+  groupStartMessageTyping,
+  groupStopMessageTyping,
+  groupUpdateLatestMessage,
   sendNewMessage,
+  sendNewMessageToGroup,
   userStartMessageTyping,
   userStopMessageTyping,
+  userUpdateLatestMessage,
 } from "../../../SocketIOConnection";
 import { ClipLoader } from "react-spinners";
 
@@ -28,12 +33,11 @@ const PreviewFooter = ({
 }) => {
   const dispatch = useDispatch();
   const documentInputRef = useRef(null);
-  const { files, activeConversation, chattedUser, isTyping } = useSelector(
-    (store) => store.messages
-  );
+  const { files, activeConversation, chattedUser, isTyping, grpChatUsers } =
+    useSelector((store) => store.messages);
   const { loggedUser } = useSelector((store) => store.currentUser);
   const [status, setStatus] = useState(false);
-
+  const [msgSended, setMsgSended] = useState(false);
   const handleAddDocument = (e) => {
     let files = Array.from(e.target.files);
 
@@ -76,63 +80,101 @@ const PreviewFooter = ({
       }
     });
   };
-  const handleMessageSend = async (e) => {
+
+  const handleSendMessage = async (e) => {
     e.preventDefault();
-    try {
-      setStatus(true);
-      const { data } = await axios.post("/message/send", {
-        message,
-        convo_id: activeConversation._id,
-        recipient: chattedUser._id,
-        files,
-      });
-      console.log(data);
-      //Means first time chat
-      if (data.conversations) {
-        dispatch(
-          reduxGetMyConversations(
-            data.conversations.filter((dt) => dt.latestMessage)
-          )
-        );
-        //socket create conversation for fresh chatters
-        const convo = data.conversations.find(
-          (cnv) => cnv._id === activeConversation._id
-        );
-        createNewConversation(convo, chattedUser._id);
+    if (message) {
+      if (!activeConversation.isGroup) {
+        try {
+          setStatus(true);
+          const { data } = await axios.post("/message/send", {
+            message,
+            convo_id: activeConversation._id,
+            recipient: chattedUser._id,
+            files,
+          });
+          console.log(data);
+          setMsgSended(true);
+          //Means first time chat
+          if (data.conversations) {
+            dispatch(
+              reduxGetMyConversations(
+                data.conversations.filter((dt) => dt.latestMessage)
+              )
+            );
+            //socket create conversation for fresh chatters
+            const convo = data.conversations.find(
+              (cnv) => cnv._id === activeConversation._id
+            );
+            createNewConversation(convo, chattedUser._id);
+          }
+
+          dispatch(reduxAddMyMessages(data.populatedMessage));
+
+          //Socket send message convo,message
+          sendNewMessage(data.populatedMessage, chattedUser._id);
+          userUpdateLatestMessage(chattedUser._id, data.populatedMessage);
+
+          setMessage("");
+          setStatus(false);
+          //Make files empty
+          dispatch(reduxMakeFilesEmpty());
+        } catch (error) {
+          setStatus(false);
+          toast.error(error.response.data.message);
+        }
+      } else {
+        try {
+          setStatus(true);
+          const { data } = await axios.post("/message/send_group", {
+            message,
+            convo_id: activeConversation._id,
+            recipients: grpChatUsers,
+            files,
+          });
+          console.log(data);
+          setMsgSended(true);
+          dispatch(reduxAddMyMessages(data.populatedMessage));
+
+          //Socket send message convo,message
+          sendNewMessageToGroup(data.populatedMessage, grpChatUsers);
+          groupUpdateLatestMessage(grpChatUsers, data.populatedMessage);
+
+          setMessage("");
+          setStatus(false);
+        } catch (error) {
+          setStatus(false);
+          toast.error(error.response.data.message);
+        }
       }
-      dispatch(reduxAddMyMessages(data.populatedMessage));
-
-      //Socket send message
-      sendNewMessage(data.populatedMessage, chattedUser._id);
-      userStopMessageTyping(chattedUser._id, null, data.populatedMessage);
-
-      //Make files empty
-      dispatch(reduxMakeFilesEmpty());
-      setMessage("");
-      setStatus(false);
-    } catch (error) {
-      setStatus(false);
-      toast.error(error.response.data.message);
     }
   };
   const handleMessageType = (e) => {
     setMessage(e.target.value);
-    if (!isTyping) {
+    if (!isTyping && activeConversation.isGroup) {
+      groupStartMessageTyping(grpChatUsers, loggedUser.id, activeConversation);
+      console.log("group typing triggered");
+    } else if (!isTyping && !activeConversation.isGroup) {
       userStartMessageTyping(
         chattedUser._id,
         loggedUser.id,
         activeConversation
       );
     }
+
     let lastTypeTime = new Date().getTime();
-    let timer = 1000;
-    setTimeout(() => {
+    let timer = 2000;
+    let timers = setTimeout(() => {
       let timeNow = new Date().getTime();
       let tDifference = timeNow - lastTypeTime;
-      if (tDifference >= timer) {
-        userStopMessageTyping(chattedUser._id, activeConversation, null);
+
+      if (tDifference >= timer && !msgSended) {
+        !activeConversation.isGroup
+          ? userStopMessageTyping(chattedUser._id, activeConversation)
+          : groupStopMessageTyping(grpChatUsers, activeConversation);
       }
     }, timer);
+    return () => clearTimeout(timers);
   };
   //console.log(message, files);
   const handleRemoveThumbnail = (index) => {
@@ -214,7 +256,7 @@ const PreviewFooter = ({
         <div
           className="bg-green_1 w-14 h-14 mt-2 rounded-full flex items-center justify-center
         cursor-pointer"
-          onClick={handleMessageSend}
+          onClick={handleSendMessage}
         >
           {status ? (
             <ClipLoader color="#e9edef" size={25} />
