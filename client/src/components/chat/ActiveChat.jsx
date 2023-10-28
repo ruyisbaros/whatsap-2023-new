@@ -68,8 +68,14 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
     if (replyTriggered) {
       setReplyMessageId([]);
       setReplyMessageContent([]);
+      setClickedCount(0);
     }
   }, [replyTriggered]);
+
+  const copyMessageContent = async (text) => {
+    await navigator.clipboard.readText(text);
+  };
+
   return (
     <div className="relative w-full h-full  ">
       {showMessageActions && clickedCount > 0 ? (
@@ -80,6 +86,8 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
           setReplyMessage={setReplyMessage}
           setShowEmoji={setShowEmoji}
           setShowDeleteBox={setShowDeleteBox}
+          copyMessageContent={copyMessageContent}
+          setReplyTriggered={setReplyTriggered}
         />
       ) : (
         <ChatHeader
@@ -115,12 +123,14 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
             replyMessageId={replyMessageId}
             setReplyMessageId={setReplyMessageId}
             setClickedCount={setClickedCount}
+            setReplyTriggered={setReplyTriggered}
           />
 
           {showDeleteBox && (
             <DeleteBox
               replyMessageId={replyMessageId}
               setShowDeleteBox={setShowDeleteBox}
+              setReplyTriggered={setReplyTriggered}
             />
           )}
         </>

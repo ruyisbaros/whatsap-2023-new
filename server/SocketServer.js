@@ -120,7 +120,9 @@ exports.socketServer = (socket, io) => {
 
     if (usersToSend.length > 0) {
       usersToSend.forEach((user) => {
-        socket.to(user.socketId).emit("typing group", { typer, convo });
+        if (user) {
+          socket.to(user.socketId).emit("typing group", { typer, convo });
+        }
       });
     }
   });

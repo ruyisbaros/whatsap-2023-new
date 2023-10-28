@@ -5,7 +5,7 @@ import axios from "../../axios";
 import { reduxAddUpdateMessage } from "../../redux/chatSlice";
 import { deleteForAllGroup, deleteForAllUser } from "../../SocketIOConnection";
 
-const DeleteBox = ({ replyMessageId, setShowDeleteBox }) => {
+const DeleteBox = ({ replyMessageId, setShowDeleteBox, setReplyTriggered }) => {
   const dispatch = useDispatch();
 
   const { activeConversation, chattedUser, grpChatUsers, messages } =
@@ -26,6 +26,7 @@ const DeleteBox = ({ replyMessageId, setShowDeleteBox }) => {
       console.log(data);
       dispatch(reduxAddUpdateMessage({ data, msgId: replyMessageId[0] }));
       setShowDeleteBox(false);
+      setReplyTriggered(true);
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -45,6 +46,7 @@ const DeleteBox = ({ replyMessageId, setShowDeleteBox }) => {
         deleteForAllUser(chattedUser._id, replyMessageId[0], data);
       }
       setShowDeleteBox(false);
+      setReplyTriggered(true);
     } catch (error) {
       toast.error(error.response.data.message);
     }

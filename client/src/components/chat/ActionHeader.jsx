@@ -14,6 +14,8 @@ import {
   userCancelStar,
   userGiveStar,
 } from "../../SocketIOConnection";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+
 const ActionHeader = ({
   setShowMessageActions,
   clickedCount,
@@ -21,6 +23,7 @@ const ActionHeader = ({
   setShowEmoji,
   replyMessageId,
   setShowDeleteBox,
+  setReplyTriggered,
 }) => {
   const dispatch = useDispatch();
   const { activeConversation, chattedUser, grpChatUsers, messages } =
@@ -75,6 +78,7 @@ const ActionHeader = ({
             className="btn w-6 h-6 border"
             onClick={() => {
               setShowMessageActions(false);
+              setReplyTriggered(true);
             }}
           >
             <ReturnIcon className="fill-white " />
@@ -117,9 +121,14 @@ const ActionHeader = ({
           </button>
         </div>
         <div>
-          <button>
-            <MdContentCopy color="white" size={20} />
-          </button>
+          <CopyToClipboard
+            text={relevantMessage?.message}
+            onCopy={() => setReplyTriggered(true)}
+          >
+            <button disabled={clickedCount !== 1} className="copy-text">
+              <MdContentCopy color="white" size={20} />
+            </button>
+          </CopyToClipboard>
         </div>
         <div>
           <button>

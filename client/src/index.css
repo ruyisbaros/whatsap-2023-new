@@ -605,3 +605,36 @@ button:disabled {
   margin: 1rem auto;
   font-style: italic;
 }
+
+.copy-text {
+  position: relative;
+}
+.copy-text::before {
+  content: "Copy";
+  position: absolute;
+  font-size: 12px;
+  color: #ddd;
+  top: -20px;
+  right: -20px;
+  opacity: 0;
+  transition: all 0.4s;
+}
+/* copy text */
+.copy-text:focus {
+  animation: kucult 0.1s;
+}
+.copy-text:hover::before {
+  opacity: 1;
+}
+
+@keyframes kucult {
+  0% {
+    transform: scale(0.6);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

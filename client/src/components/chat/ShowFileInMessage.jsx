@@ -1,5 +1,4 @@
 import React from "react";
-import { TriangleIcon } from "../../assets/svg";
 import moment from "moment";
 import DownloadIcon from "../../assets/svg/Download";
 

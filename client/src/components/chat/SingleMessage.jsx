@@ -114,7 +114,7 @@ const SingleMessage = ({
   };
 
   return (
-    <>
+    <div>
       {!msg.deleteForAll ? (
         <div
           ref={msgRef}
@@ -155,7 +155,7 @@ const SingleMessage = ({
               <div className="float-left h-full text-sm pb-4 pr-8">
                 {activeConversation.isGroup && !me && !sameUser && (
                   <span className="flex text-red-700 font-bold">
-                    {makeCapital(msg?.sender.name)}
+                    {makeCapital(msg?.sender?.name)}
                   </span>
                 )}
                 {!msg.deleteForAll && msg.message}
@@ -164,9 +164,9 @@ const SingleMessage = ({
               <div className="float-left h-full text-sm pb-4 pr-8">
                 <div className="inside_replied">
                   <span className="flex text-red-700 font-bold">
-                    {msg?.repliedMessage?.sender._id === loggedUser.id
+                    {msg?.repliedMessage?.sender?._id === loggedUser.id
                       ? "You"
-                      : makeCapital(msg?.repliedMessage?.sender.name)}
+                      : makeCapital(msg?.repliedMessage?.sender?.name)}
                   </span>
                   {msg?.repliedMessage?.message}
                 </div>
@@ -181,14 +181,16 @@ const SingleMessage = ({
               </div>
             )}
 
-            <div className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_3 leading-none flex items-center gap-1">
-              {msg.haveStar && (
-                <span className="star-anim">
-                  <BsStarFill color="#8696a0" size={10} />
-                </span>
-              )}
-              <span>{moment(msg.createdAt).format("HH:mm")}</span>
-            </div>
+            {msg.message !== "" && (
+              <div className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_3 leading-none flex items-center gap-1">
+                {msg.haveStar && (
+                  <span className="star-anim">
+                    <BsStarFill color="#8696a0" size={10} />
+                  </span>
+                )}
+                <span>{moment(msg.createdAt).format("HH:mm")}</span>
+              </div>
+            )}
             {/* Triangle */}
             <span className="">
               <TriangleIcon
@@ -239,7 +241,7 @@ const SingleMessage = ({
       ) : (
         <div id="delete-for-all">{msg.message}</div>
       )}
-    </>
+    </div>
   );
 };
 

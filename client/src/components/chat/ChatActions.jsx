@@ -30,6 +30,7 @@ const ChatActions = ({
   replyMessageId,
   setReplyMessageId,
   setClickedCount,
+  setReplyTriggered,
 }) => {
   const dispatch = useDispatch();
   const messageRef = useRef(null);
@@ -148,6 +149,7 @@ const ChatActions = ({
           setStatus(false);
           setReplyMessage(false);
           setReplyMessageId([]);
+          setReplyTriggered(true);
         } catch (error) {
           setStatus(false);
           toast.error(error.response.data.message);
@@ -174,6 +176,7 @@ const ChatActions = ({
           setStatus(false);
           setReplyMessage(false);
           setReplyMessageId([]);
+          setReplyTriggered(true);
         } catch (error) {
           setStatus(false);
           toast.error(error.response.data.message);
