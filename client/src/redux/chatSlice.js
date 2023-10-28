@@ -12,6 +12,7 @@ const initialState = {
   isTyping: false,
   typeTo: null,
   files: [],
+  profileFiles: [],
 };
 
 const chatSlicer = createSlice({
@@ -48,6 +49,13 @@ const chatSlicer = createSlice({
     },
     reduxGetMyMessages: (state, action) => {
       state.messages = action.payload;
+      let tempArr = [];
+      state.messages.forEach((msg) => {
+        if (msg.files.length > 0) {
+          tempArr = [...tempArr, ...msg.files];
+        }
+      });
+      state.profileFiles = tempArr;
     },
 
     reduxAddMyMessages: (state, action) => {

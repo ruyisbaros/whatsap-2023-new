@@ -1,0 +1,265 @@
+/* Main */
+.group-info {
+  background: #202c33;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 38px);
+  max-width: 1600px;
+  z-index: 45;
+  border: 0.5px solid #222d34;
+  overflow: hidden;
+}
+.group_main {
+  width: 100%;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+/* Header */
+.group_header {
+  padding-left: 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #202c33;
+  z-index: 20;
+}
+.header-info {
+  color: #ddd;
+}
+/* Box */
+.group_box {
+  margin-top: 61px;
+  width: 100%;
+  height: 400px;
+  background: #cccccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 10px;
+}
+.change_icon {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+.group_img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+}
+.cover_img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  display: none;
+}
+.cover_img-ic {
+  color: #ddd;
+}
+.change_icon:hover .cover_img {
+  display: flex;
+}
+.cover_img input {
+  display: none;
+}
+.group_gen-info {
+  color: #202c33;
+}
+.group_name {
+  position: relative;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.group_name span {
+  position: absolute;
+  top: 3px;
+  right: 0;
+  opacity: 0.7;
+  cursor: pointer;
+}
+.group_parts {
+  font-weight: 500;
+  opacity: 0.6;
+}
+/* Media */
+.group_media {
+  width: 100%;
+  height: 400px;
+  background: #cccccc;
+  margin-bottom: 10px;
+  padding: 2rem 4rem;
+}
+.group_media_header {
+  color: #222;
+  font-weight: 500;
+}
+.group_media_docs {
+  margin-top: 4rem;
+  color: #222;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+.group_media_imgs {
+  width: 100%;
+  height: 200px;
+  padding: 4rem;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+}
+.profile_files {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(to bottom, #ddd, #222) border-box;
+  border-radius: 10px;
+  border: 4px solid transparent;
+  cursor: pointer;
+}
+/* Settings */
+.group_settings {
+  width: 100%;
+  height: 250px;
+  background: #cccccc;
+  margin-bottom: 10px;
+  padding: 2rem 4rem;
+}
+
+.group_settings-p1,
+.group_settings-p2,
+.group_settings-p3 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #222;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+.group_settings-p3 {
+  align-items: start;
+}
+.star-text {
+  flex-grow: 1;
+}
+.mute-nots {
+  position: relative;
+  width: 30px;
+  height: 10px;
+  border-radius: 5px;
+  background: #222;
+  transition: all 0.4s;
+  cursor: pointer;
+}
+.mute-nots span {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: -2.5px;
+  border-radius: 50%;
+  background: #eeeeee;
+  transition: all 0.4s;
+}
+.r0 {
+  right: 0;
+}
+.l0 {
+  left: 0;
+}
+.encrypt span {
+  font-weight: normal;
+}
+/* participants */
+.group_participants {
+  width: 100%;
+  height: 400px;
+  background: #cccccc;
+  margin-bottom: 10px;
+  padding: 2rem 4rem;
+}
+.group_participants-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #222;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.usr-box {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+.usr-img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.usr-name {
+  width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.usr-name-1 {
+  font-weight: 500;
+  color: #222;
+}
+.usr-name-2 {
+  width: fit-content;
+  height: fit-content;
+  background-color: #e6f5e4;
+  color: #83f771;
+  padding: 1px 5px;
+  border-radius: 10px;
+}
+.usr-status {
+  opacity: 0.8;
+}
+
+/* Exit group */
+.group_exit {
+  width: 100%;
+  height: 200px;
+  background: #cccccc;
+  margin-bottom: 10px;
+  padding: 2rem 4rem;
+}
+.exit-1 {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+.exit-1a {
+  cursor: pointer;
+}
+.exit-1b {
+  color: #ea0038;
+  cursor: pointer;
+}
