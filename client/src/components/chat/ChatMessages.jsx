@@ -3,16 +3,7 @@ import { useSelector } from "react-redux";
 import SingleMessage from "./SingleMessage";
 import Typing from "./Typing";
 import ShowFileInMessage from "./ShowFileInMessage";
-/* setShowMessageActions={setShowMessageActions}
-            setClickedCount={setClickedCount}
-            clickedCount={clickedCount}
-            setShowEmoji={setShowEmoji}
-            showEmoji={showEmoji}
-            replyMessage={replyMessage}
-            getRepliedMessageInfo={getRepliedMessageInfo}
-            replyMessageContent={replyMessageContent}
-            setReplyTriggered={setReplyTriggered}
-            replyTriggered={replyTriggered} */
+
 const ChatMessages = ({
   setShowMessageActions,
   setClickedCount,
@@ -24,7 +15,7 @@ const ChatMessages = ({
   replyTriggered,
 }) => {
   const endRef = useRef();
-
+  const typeRef = useRef();
   const {
     messages,
     chattedUser,
@@ -50,7 +41,7 @@ const ChatMessages = ({
 
   useEffect(() => {
     endRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages, filteredMessages, replyMessage]);
+  }, [messages, filteredMessages, replyMessage, isTyping]);
 
   return (
     <div className=" mb-[60px] bg-[url('https://res.cloudinary.com/ruyisbaros/image/upload/v1694785109/whatsapp_api/xkiiml6mmcz5xyqkdm42.jpg')] bg-cover bg-no-repeat ">
@@ -98,7 +89,7 @@ const ChatMessages = ({
         (typeTo === chattedUser?._id ||
           grpChatUsers.find((gu) => gu._id === typeTo)) &&
         typedConversation._id === activeConversation._id ? (
-          <Typing />
+          <Typing typeRef={typeRef} />
         ) : (
           ""
         )}

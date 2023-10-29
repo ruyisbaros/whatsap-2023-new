@@ -1,11 +1,11 @@
 import React from "react";
 import { BeatLoader } from "react-spinners";
 
-const Typing = () => {
+const Typing = ({ typeRef }) => {
   return (
-    <div className={`w-full flex mt-2 mb-2 space-x-3  `}>
+    <div ref={typeRef} className={`w-full flex mt-2 mb-1 space-x-3  `}>
       <div
-        className={`relative  rounded-lg p-2 dark:bg-dark_bg_5
+        className={`relative rounded-lg p-2 dark:bg-dark_bg_5
       `}
       >
         <div className=" h-full text-sm p-1 flex items-center justify-center">

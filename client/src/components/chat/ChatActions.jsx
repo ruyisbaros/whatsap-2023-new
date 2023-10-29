@@ -29,7 +29,6 @@ const ChatActions = ({
   setReplyMessage,
   replyMessageId,
   setReplyMessageId,
-  setClickedCount,
   setReplyTriggered,
 }) => {
   const dispatch = useDispatch();
@@ -43,6 +42,7 @@ const ChatActions = ({
   const [showEmoji, setShowEmoji] = useState(false);
   const [showAttachment, setShowAttachment] = useState(false);
   const [msgSended, setMsgSended] = useState(false);
+
   console.log(replyMessage);
   useEffect(() => {
     if (!activeConversation.isGroup) {
@@ -184,8 +184,10 @@ const ChatActions = ({
       }
     }
   };
+  console.log(msgSended);
   const handleMessageType = (e) => {
     setMessage(e.target.value);
+    setMsgSended(false);
     if (!isTyping && activeConversation.isGroup) {
       groupStartMessageTyping(grpChatUsers, loggedUser.id, activeConversation);
       console.log("group typing triggered");
