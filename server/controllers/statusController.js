@@ -1,6 +1,8 @@
 const Status = require("../models/statusModel");
-const User = require("../models/userModel");
-const { uploadImageToCloduinary } = require("../services/cloudinaryActions");
+const {
+  uploadImageToCloduinary,
+  deleteImage,
+} = require("../services/cloudinaryActions");
 
 const statusCtrl = {
   create_status: async (req, res) => {
@@ -55,6 +57,26 @@ const statusCtrl = {
         ).populate("owner targets seenBy", "-password");
         res.status(201).json(updatedStatus);
       }
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  delete_status: async (req, res) => {
+    try {
+      const { statusId } = req.params;
+      if (!statusId) {
+        res.status(500).json({ message: "Wrong credentials!" });
+      }
+      let targetStatus = await Status.findById(statusId);
+      if (!targetStatus) {
+        res.status(500).json({ message: "Status time may over!" });
+      }
+      //First delete related media through cloudinary
+      targetStatus.files.map(async (file) => {
+        await deleteImage(file.public._id);
+      });
+      await Status.findByIdAndDelete(statusId);
+      res.status(200).json({ message: "ok" });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

@@ -4,5 +4,6 @@ const statusCtrl = require("../controllers/statusController");
 
 router.post("/create", protect, statusCtrl.create_status);
 router.get("/see/:statusId", protect, statusCtrl.make_seen_status);
+router.delete("/delete/:statusId", protect, statusCtrl.delete_status);
 
 module.exports = router;
