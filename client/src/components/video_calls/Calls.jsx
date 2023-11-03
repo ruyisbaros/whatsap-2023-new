@@ -25,7 +25,7 @@ const Calls = ({
     <>
       <div
         className={`fixed top-1/2 left-1/2 
-  -translate-x-1/2 -translate-y-1/2 z30 w-[360px] h-[550px] rounded-2xl overflow-hidden callBg shadow-lg `}
+  -translate-x-1/2 -translate-y-1/2 z55 w-[360px] h-[550px] rounded-2xl overflow-hidden callBg shadow-lg `}
         onMouseOver={() => setShowCallActions(true)}
         onMouseLeave={() => setShowCallActions(false)}
       >

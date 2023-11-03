@@ -15,7 +15,9 @@ import {
 } from "../redux/callStreamSlicer";
 import { reduxUpdateCallStatus } from "../redux/callingsSlice";
 import GroupInfo from "../components/groupChat/GroupInfo";
-import SideBarStatus from "../components/sidebar/SideBarStatus";
+import SideBarStatus from "../components/status/SideBarStatus";
+import CreateStatus from "../components/status/CreateStatus";
+import ViewStatus from "../components/status/ViewStatus";
 
 const Home = () => {
   const myVideo = useRef(null);
@@ -46,6 +48,8 @@ const Home = () => {
 
   const [showGroupInfo, setShowGroupInfo] = useState(false);
   const [showStatusInfo, setShowStatusInfo] = useState(false);
+  const [showCreateStatus, setShowCreateStatus] = useState(false);
+  const [showViewStatus, setShowViewStatus] = useState(false);
 
   const fetchMyConversations = useCallback(async () => {
     try {
@@ -239,24 +243,33 @@ const Home = () => {
 
   return (
     <>
-      <div className="relative h-screen dark:bg-dark_bg_1 overflow-hidden borderC">
-        <div className="headBanner"></div>
-        <div className="container h-[95%] pt-[19px] flex dark:bg-dark_bg_1">
-          {showStatusInfo ? (
-            <SideBarStatus setShowStatusInfo={setShowStatusInfo} />
-          ) : (
-            <SidebarLeft setShowStatusInfo={setShowStatusInfo} />
-          )}
-          {activeConversation ? (
-            <ActiveChat
-              startVideoCall={startVideoCall}
-              setShowGroupInfo={setShowGroupInfo}
-            />
-          ) : (
-            <WhatsappHome />
-          )}
+      {showCreateStatus ? (
+        <CreateStatus setShowCreateStatus={setShowCreateStatus} />
+      ) : showViewStatus ? (
+        <ViewStatus />
+      ) : (
+        <div className="relative h-screen dark:bg-dark_bg_1 overflow-hidden borderC">
+          <div className="headBanner"></div>
+          <div className="container h-[95%] pt-[19px] flex dark:bg-dark_bg_1">
+            {showStatusInfo ? (
+              <SideBarStatus
+                setShowStatusInfo={setShowStatusInfo}
+                setShowCreateStatus={setShowCreateStatus}
+              />
+            ) : (
+              <SidebarLeft setShowStatusInfo={setShowStatusInfo} />
+            )}
+            {activeConversation ? (
+              <ActiveChat
+                startVideoCall={startVideoCall}
+                setShowGroupInfo={setShowGroupInfo}
+              />
+            ) : (
+              <WhatsappHome />
+            )}
+          </div>
         </div>
-      </div>
+      )}
       {/* Calls */}
       {videoScreen && (
         <Calls
