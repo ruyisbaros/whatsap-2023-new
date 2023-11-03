@@ -5,7 +5,6 @@ const statusSchema = new mongoose.Schema(
   {
     text: {
       type: String,
-      required: true,
       trim: true,
     },
     owner: {
@@ -24,7 +23,10 @@ const statusSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    files: Array,
+    files: {
+      type: Array,
+      required: true,
+    },
   },
   { timestamps: true, collection: "statuses" }
 );
