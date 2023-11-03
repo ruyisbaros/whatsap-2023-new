@@ -13,6 +13,7 @@ import simarik from "../../assets/emojies/simarik.png";
 import { toast } from "react-toastify";
 import axios from "../../axios";
 import { BsStarFill } from "react-icons/bs";
+import { MdNotInterested } from "react-icons/md";
 import { reduxAddUpdateMessage } from "../../redux/chatSlice";
 import {
   groupAddMessageEmoji,
@@ -115,132 +116,143 @@ const SingleMessage = ({
 
   return (
     <div>
-      {!msg.deleteForAll ? (
+      <div
+        ref={msgRef}
+        className={`relative w-full flex mt-2 mb-3 space-x-3  ${
+          me || msg.isReplied ? "ml-auto justify-end" : ""
+        } ${changeBg && clickedCount > 0 ? "newBg" : ""}`}
+        onClick={() => {
+          handleActions();
+          getRepliedMessageInfo(msg);
+        }}
+      >
+        {activeConversation.isGroup &&
+        !msg.deleteForAll &&
+        !me &&
+        !msg.isReplied &&
+        !sameUser ? (
+          <div>
+            <img
+              src={msg?.sender?.picture}
+              alt=""
+              className="w-[40px] h-[40px] rounded-full object-cover"
+            />
+          </div>
+        ) : (
+          <div>
+            <span className="w-[40px] h-[40px] rounded-full object-cover ml-10 "></span>
+          </div>
+        )}
         <div
-          ref={msgRef}
-          className={`relative w-full flex mt-2 mb-3 space-x-3  ${
-            me || msg.isReplied ? "ml-auto justify-end" : ""
-          } ${changeBg && clickedCount > 0 ? "newBg" : ""}`}
-          onClick={() => {
-            handleActions();
-            getRepliedMessageInfo(msg);
-          }}
-        >
-          {activeConversation.isGroup &&
-          !msg.deleteForAll &&
-          !me &&
-          !msg.isReplied &&
-          !sameUser ? (
-            <div>
-              <img
-                src={msg?.sender?.picture}
-                alt=""
-                className="w-[40px] h-[40px] rounded-full object-cover"
-              />
-            </div>
-          ) : (
-            <div>
-              <span className="w-[40px] h-[40px] rounded-full object-cover ml-10 "></span>
-            </div>
-          )}
-          <div
-            className={`relative  p-2 rounded-lg
+          className={`relative  p-2 rounded-lg
       ${
         me || msg.isReplied
           ? "bg-green_5 text-black"
           : "dark:bg-dark_bg_5 text-dark_text_1"
       }`}
-          >
-            {!msg.isReplied ? (
-              <div className="float-left h-full text-sm pb-4 pr-8">
-                {activeConversation.isGroup && !me && !sameUser && (
+        >
+          {!msg.isReplied ? (
+            <div className="float-left h-full text-sm pb-4 pr-8">
+              {activeConversation.isGroup &&
+                !me &&
+                !sameUser &&
+                !msg.deleteForAll && (
                   <span className="flex text-red-700 font-bold">
                     {makeCapital(msg?.sender?.name)}
                   </span>
                 )}
-                {!msg.deleteForAll && msg.message}
+              {msg.deleteForAll ? (
+                <span className="flex items-center gap-1 text-gray-400">
+                  <MdNotInterested /> {msg.message}
+                </span>
+              ) : (
+                <span>{msg.message}</span>
+              )}
+            </div>
+          ) : (
+            <div className="float-left h-full text-sm pb-4 pr-8">
+              <div className="inside_replied">
+                <span className="flex text-red-700 font-bold">
+                  {msg?.repliedMessage?.sender?._id === loggedUser.id
+                    ? "You"
+                    : makeCapital(msg?.repliedMessage?.sender?.name)}
+                </span>
+                {msg?.repliedMessage?.message}
               </div>
-            ) : (
-              <div className="float-left h-full text-sm pb-4 pr-8">
-                <div className="inside_replied">
-                  <span className="flex text-red-700 font-bold">
-                    {msg?.repliedMessage?.sender?._id === loggedUser.id
-                      ? "You"
-                      : makeCapital(msg?.repliedMessage?.sender?.name)}
-                  </span>
-                  {msg?.repliedMessage?.message}
-                </div>
-                <div className="inside_reply">
-                  {activeConversation.isGroup && (
-                    <span className="flex text-green-700 font-bold">
-                      {me ? "You" : makeCapital(msg?.sender.name)}
-                    </span>
-                  )}
-                  {!msg.deleteForAll && msg.message}
-                </div>
-              </div>
-            )}
-
-            {msg.message !== "" && (
-              <div className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_3 leading-none flex items-center gap-1">
-                {msg.haveStar && (
-                  <span className="star-anim">
-                    <BsStarFill color="#8696a0" size={10} />
+              <div className="inside_reply">
+                {activeConversation.isGroup && (
+                  <span className="flex text-green-700 font-bold">
+                    {me ? "You" : makeCapital(msg?.sender.name)}
                   </span>
                 )}
-                <span>{moment(msg.createdAt).format("HH:mm")}</span>
+                {msg.deleteForAll ? (
+                  <span className="flex items-center gap-1 text-gray-400">
+                    <MdNotInterested /> {msg.message}
+                  </span>
+                ) : (
+                  <span>{msg.message}</span>
+                )}
               </div>
-            )}
-            {/* Triangle */}
-            <span className="">
-              <TriangleIcon
-                className={
-                  me || msg.isReplied
-                    ? "fill-dark_bg_7 rotate-[60deg] absolute top-[-4.5px] -right-1.5"
-                    : "dark:fill-dark_bg_5 rotate-[60deg] absolute top-[-5px] -left-1.5"
-                }
-              />
-            </span>
-
-            {msg.emojiBox.length > 0 &&
-              msg.emojiBox.map((emj) => (
-                <div key={emj.id} className="emoji-content">
-                  <img src={emojies.find((e) => e.id === emj).image} alt="" />
-                </div>
-              ))}
-          </div>
-
-          {clickedIndex === index && clickedCount === 1 && showEmoji && (
-            <div className={`emoji-box `}>
-              {emojies.map((em, idx) => (
-                <button
-                  key={em.id}
-                  className="emoji-item"
-                  onClick={() => handleAddEmoji(em.id)}
-                >
-                  <img
-                    onMouseOver={() => {
-                      setAnimTrigger(true);
-                      setHoveredIndex(idx);
-                    }}
-                    onMouseLeave={() => {
-                      setAnimTrigger(false);
-                      setHoveredIndex(null);
-                    }}
-                    src={em.image}
-                    alt=""
-                    className={`emoji-img ${
-                      animTrigger && hoveredIndex === idx ? "emojiAnim" : ""
-                    }`}
-                  />
-                </button>
-              ))}
             </div>
           )}
+
+          {msg.message !== "" && (
+            <div className="absolute right-1.5 bottom-1.5 text-xs text-dark_text_3 leading-none flex items-center gap-1">
+              {msg.haveStar && (
+                <span className="star-anim">
+                  <BsStarFill color="#8696a0" size={10} />
+                </span>
+              )}
+              <span>{moment(msg.createdAt).format("HH:mm")}</span>
+            </div>
+          )}
+          {/* Triangle */}
+          <span className="">
+            <TriangleIcon
+              className={
+                me || msg.isReplied
+                  ? "fill-dark_bg_7 rotate-[60deg] absolute top-[-4.5px] -right-1.5"
+                  : "dark:fill-dark_bg_5 rotate-[60deg] absolute top-[-5px] -left-1.5"
+              }
+            />
+          </span>
+
+          {msg.emojiBox.length > 0 &&
+            msg.emojiBox.map((emj) => (
+              <div key={emj.id} className="emoji-content">
+                <img src={emojies.find((e) => e.id === emj).image} alt="" />
+              </div>
+            ))}
         </div>
-      ) : (
-        <div id="delete-for-all">{msg.message}</div>
-      )}
+
+        {clickedIndex === index && clickedCount === 1 && showEmoji && (
+          <div className={`emoji-box `}>
+            {emojies.map((em, idx) => (
+              <button
+                key={em.id}
+                className="emoji-item"
+                onClick={() => handleAddEmoji(em.id)}
+              >
+                <img
+                  onMouseOver={() => {
+                    setAnimTrigger(true);
+                    setHoveredIndex(idx);
+                  }}
+                  onMouseLeave={() => {
+                    setAnimTrigger(false);
+                    setHoveredIndex(null);
+                  }}
+                  src={em.image}
+                  alt=""
+                  className={`emoji-img ${
+                    animTrigger && hoveredIndex === idx ? "emojiAnim" : ""
+                  }`}
+                />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

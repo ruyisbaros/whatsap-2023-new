@@ -15,6 +15,7 @@ import {
 } from "../redux/callStreamSlicer";
 import { reduxUpdateCallStatus } from "../redux/callingsSlice";
 import GroupInfo from "../components/groupChat/GroupInfo";
+import SideBarStatus from "../components/sidebar/SideBarStatus";
 
 const Home = () => {
   const myVideo = useRef(null);
@@ -44,6 +45,7 @@ const Home = () => {
   } = useSelector((store) => store.streams);
 
   const [showGroupInfo, setShowGroupInfo] = useState(false);
+  const [showStatusInfo, setShowStatusInfo] = useState(false);
 
   const fetchMyConversations = useCallback(async () => {
     try {
@@ -240,7 +242,11 @@ const Home = () => {
       <div className="relative h-screen dark:bg-dark_bg_1 overflow-hidden borderC">
         <div className="headBanner"></div>
         <div className="container h-[95%] pt-[19px] flex dark:bg-dark_bg_1">
-          <SidebarLeft />
+          {showStatusInfo ? (
+            <SideBarStatus setShowStatusInfo={setShowStatusInfo} />
+          ) : (
+            <SidebarLeft setShowStatusInfo={setShowStatusInfo} />
+          )}
           {activeConversation ? (
             <ActiveChat
               startVideoCall={startVideoCall}

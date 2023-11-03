@@ -398,7 +398,7 @@ const messageCtrl = {
         id,
         {
           deleteForAll: true,
-          message: `!!! This message deleted by ${name} !!!`,
+          message: `This message was deleted by ${name}`,
         },
         { new: true }
       )

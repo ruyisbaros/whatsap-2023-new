@@ -121,7 +121,10 @@
 button:disabled {
   cursor: not-allowed;
 }
-
+img {
+  width: 100%;
+  object-fit: cover;
+}
 /* rotateAnimation */
 
 /* Animations */
@@ -632,3 +635,4 @@ button:disabled {
 }
 
 @import url("./styles/groupInfo.css");
+@import url("./styles/userStatus.css");

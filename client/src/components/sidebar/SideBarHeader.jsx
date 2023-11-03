@@ -8,7 +8,7 @@ import Menu from "./Menu";
 import { useOutsideClick } from "../../utils/helpers";
 import CreateGroup from "../groupChat/CreateGroup";
 
-const SideBarHeader = () => {
+const SideBarHeader = ({ setShowStatusInfo }) => {
   const menuRef = useRef(null);
   const { loggedUser } = useSelector((store) => store.currentUser);
   const [showMenu, setShowMenu] = useState(false);
@@ -35,7 +35,7 @@ const SideBarHeader = () => {
               </button>
             </li>
             <li>
-              <button className="btn">
+              <button className="btn" onClick={() => setShowStatusInfo(true)}>
                 <StoryIcon className="dark:fill-dark_svg_1" />
               </button>
             </li>

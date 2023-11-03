@@ -1,0 +1,17 @@
+.status_banner {
+  width: 100%;
+  height: calc(200px - 5%);
+  background: #008069;
+  border-left: none;
+  display: flex;
+  align-items: flex-end;
+  padding: 1rem;
+}
+.hr_status {
+  width: 80%;
+  margin-left: 20%;
+  height: 0.6px !important;
+  border: none;
+  background-color: gray;
+  opacity: 0.5;
+}
