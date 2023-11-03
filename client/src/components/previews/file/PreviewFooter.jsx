@@ -38,6 +38,7 @@ const PreviewFooter = ({
   const { loggedUser } = useSelector((store) => store.currentUser);
   const [status, setStatus] = useState(false);
   const [msgSended, setMsgSended] = useState(false);
+
   const handleAddDocument = (e) => {
     let files = Array.from(e.target.files);
 

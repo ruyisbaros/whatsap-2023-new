@@ -100,6 +100,7 @@ app.use("/api/v1/auth", routes.authRoutes);
 app.use("/api/v1/conversation", routes.conversationRoutes);
 app.use("/api/v1/message", routes.messageRoutes);
 app.use("/api/v1/users", routes.userRoutes);
+app.use("/api/v1/status", routes.statusRoutes);
 
 //Socket functions
 io.on("connection", (socket) => {
