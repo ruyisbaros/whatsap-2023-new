@@ -13,6 +13,7 @@ const initialState = {
   typeTo: null,
   files: [],
   profileFiles: [],
+  targets: [],
 };
 
 const chatSlicer = createSlice({
@@ -34,6 +35,16 @@ const chatSlicer = createSlice({
     },
     reduxGetMyConversations: (state, action) => {
       state.conversations = action.payload;
+      let users = [];
+      state.conversations.forEach((cnv) => {
+        users = [...users, ...cnv.users];
+      });
+      state.targets = users.reduce((accumulator, current) => {
+        if (!accumulator.find((item) => item._id === current._id)) {
+          accumulator.push(current);
+        }
+        return accumulator;
+      }, []);
     },
     reduxAddMyConversations: (state, action) => {
       //console.log(action.payload);
@@ -43,6 +54,16 @@ const chatSlicer = createSlice({
       if (!newConversation) {
         state.conversations.push(action.payload);
       }
+      let users = [];
+      state.conversations.forEach((cnv) => {
+        users = [...users, ...cnv.users];
+      });
+      state.targets = users.reduce((accumulator, current) => {
+        if (!accumulator.find((item) => item._id === current._id)) {
+          accumulator.push(current);
+        }
+        return accumulator;
+      }, []);
     },
     reduxRemoveFromMyConversations: (state, action) => {
       state.conversations.pop(action.payload);

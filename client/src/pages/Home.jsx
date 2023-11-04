@@ -23,7 +23,7 @@ const Home = () => {
   const myVideo = useRef(null);
   const inComingVideo = useRef(null);
   const dispatch = useDispatch();
-  const { activeConversation, chattedUser } = useSelector(
+  const { activeConversation, chattedUser, targets } = useSelector(
     (store) => store.messages
   );
   const { socket } = useSelector((store) => store.sockets);
@@ -62,10 +62,10 @@ const Home = () => {
         )
       );
     } catch (error) {
-      if (error.response.data.message === "jwt expired") {
+      if (error?.response?.data?.message === "jwt expired") {
         dispatch(reduxMakeTokenExpired());
       } else {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data?.message);
       }
     }
   }, [dispatch]);
@@ -73,7 +73,7 @@ const Home = () => {
   useEffect(() => {
     fetchMyConversations();
   }, [fetchMyConversations]);
-
+  console.log(targets);
   const startVideoCall = async () => {
     try {
       dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));
