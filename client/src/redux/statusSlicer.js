@@ -4,12 +4,24 @@ const initialState = {
   activeStatuses: [],
   notSeenStatuses: [],
   statusFiles: [],
+  myStatus: null,
 };
 
 const makeStatus = createSlice({
   name: "statuses",
   initialState,
   reducers: {
+    reduxSetMyStatus: (state, action) => {
+      state.myStatus = action.payload;
+    },
+    reduxAddActiveStatuses: (state, action) => {
+      state.activeStatuses.push(action.payload);
+    },
+    reduxRemoveFromActiveStatuses: (state, action) => {
+      state.activeStatuses = state.activeStatuses.filter(
+        (st) => st._id !== action.payload._id
+      );
+    },
     reduxAddToStatusFiles: (state, action) => {
       state.statusFiles.push(action.payload);
     },
@@ -30,5 +42,8 @@ export const {
   reduxAddToStatusFiles,
   reduxMakeStatusFilesEmpty,
   reduxRemoveStatusFile,
+  reduxSetMyStatus,
+  reduxAddActiveStatuses,
+  reduxRemoveFromActiveStatuses,
 } = makeStatus.actions;
 export default makeStatus.reducer;

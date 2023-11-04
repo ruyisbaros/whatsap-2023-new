@@ -24,6 +24,7 @@ import {
   reduxSetAnswer,
   reduxSetOffer,
 } from "./redux/callStreamSlicer";
+import { reduxAddActiveStatuses } from "./redux/statusSlicer";
 let socket;
 
 const loggedUser = store.getState().currentUser.loggedUser;
@@ -47,7 +48,9 @@ socket.on("new message", (msg) => {
 socket.on("new message group", (msg) => {
   store.dispatch(reduxAddMyMessagesFromSocket(msg));
 });
-
+socket.on("deleted message", ({ msgId, data }) => {
+  store.dispatch(reduxAddUpdateMessage({ data, msgId }));
+});
 socket.on("update conversationList", (convo) => {
   store.dispatch(reduxAddMyConversations(convo));
 });
@@ -55,7 +58,7 @@ socket.on("new Group", (convo) => {
   store.dispatch(reduxAddMyConversations(convo));
 });
 socket.on("onlineUsers", (users) => {
-  console.log(users);
+  //console.log(users);
   window.localStorage.setItem("onlineUsers", JSON.stringify(users));
   store.dispatch(reduxSetOnlineUsers(users));
 });
@@ -94,8 +97,10 @@ socket.on("cancel star", ({ msgId, data }) => {
   store.dispatch(reduxAddUpdateMessage({ data, msgId }));
 });
 
-socket.on("deleted message", ({ msgId, data }) => {
-  store.dispatch(reduxAddUpdateMessage({ data, msgId }));
+/* Status */
+socket.on("new status created", (status) => {
+  console.log(status);
+  store.dispatch(reduxAddActiveStatuses(status));
 });
 
 socket.on("newOfferCame", ({ offer, name, picture, offerer }) => {
@@ -222,4 +227,11 @@ export const deleteForAllUser = (chattedUserId, msgId, data) => {
 };
 export const deleteForAllGroup = (recipients, msgId, data) => {
   socket?.emit("delete forAll group", { recipients, msgId, data });
+};
+
+export const newStatusCreated = (targets, status) => {
+  socket?.emit("new status created", { targets, status });
+};
+export const makeStatusSeen = (targets, status) => {
+  socket?.emit("status seen", { targets, status });
 };

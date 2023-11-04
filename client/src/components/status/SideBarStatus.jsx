@@ -1,11 +1,29 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { ReturnIcon } from "../../assets/svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AiOutlinePlus } from "react-icons/ai";
+import axios from "../../axios";
+import { reduxSetMyStatus } from "../../redux/statusSlicer";
+import { toast } from "react-toastify";
 
 const SideBarStatus = ({ setShowStatusInfo, setShowCreateStatus }) => {
+  const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
   const [showAddIcon, setShowAddIcon] = useState(false);
+
+  const fetchMyStatus = useCallback(async () => {
+    try {
+      const { data } = await axios.get("/status/my_status");
+
+      console.log(data);
+      dispatch(reduxSetMyStatus(data));
+    } catch (error) {
+      toast.error(error.response.data?.message);
+    }
+  }, [dispatch]);
+  useEffect(() => {
+    fetchMyStatus();
+  }, [fetchMyStatus]);
   return (
     <div className="flex0030 w-[30%] h-full overflow-hidden select-none borderC">
       <div className="status_banner">

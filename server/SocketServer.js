@@ -68,12 +68,7 @@ exports.socketServer = (socket, io) => {
     let usersToSend = recipients.map((rcp) =>
       users.find((usr) => usr.id === rcp._id)
     );
-    usersToSend = usersToSend.reduce((accumulator, current) => {
-      if (!accumulator.find((item) => item.id === current.id)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
+
     //console.log(usersToSend);
 
     if (usersToSend.length > 0) {
@@ -119,15 +114,10 @@ exports.socketServer = (socket, io) => {
   });
   socket.on("typing group", ({ recipients, typer, convo }) => {
     console.log("typing");
-    let usersToSend = recipients.map((rcp) =>
-      users.find((usr) => usr.id === rcp._id)
-    );
-    usersToSend = usersToSend.reduce((accumulator, current) => {
-      if (!accumulator.find((item) => item.id === current.id)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((el) => el !== undefined);
+
     //console.log(usersToSend);
 
     if (usersToSend.length > 0) {
@@ -149,16 +139,10 @@ exports.socketServer = (socket, io) => {
     }
   });
   socket.on("stop typing group", ({ recipients, convo }) => {
-    let usersToSend = recipients.map((rcp) =>
-      users.find((usr) => usr.id === rcp._id)
-    );
-    usersToSend = usersToSend.reduce((accumulator, current) => {
-      if (!accumulator.find((item) => item.id === current.id)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
-    //console.log(usersToSend);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((el) => el !== undefined);
+    console.log(usersToSend);
 
     if (usersToSend.length > 0) {
       usersToSend.forEach((user) => {
@@ -176,15 +160,10 @@ exports.socketServer = (socket, io) => {
     }
   });
   socket.on("update latest message group", ({ recipients, message }) => {
-    let usersToSend = recipients.map((rcp) =>
-      users.find((usr) => usr.id === rcp._id)
-    );
-    usersToSend = usersToSend.reduce((accumulator, current) => {
-      if (!accumulator.find((item) => item.id === current.id)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((el) => el !== undefined);
+
     //console.log(usersToSend);
 
     if (usersToSend.length > 0) {
@@ -196,15 +175,10 @@ exports.socketServer = (socket, io) => {
 
   socket.on("add emoji group", ({ recipients, msgId, data }) => {
     //console.log(recipients);
-    let usersToSend = recipients.map((rcp) =>
-      users.find((usr) => usr.id === rcp._id)
-    );
-    usersToSend = usersToSend.reduce((accumulator, current) => {
-      if (!accumulator.find((item) => item.id === current.id)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((el) => el !== undefined);
+
     //console.log(usersToSend);
 
     if (usersToSend.length > 0) {
@@ -224,15 +198,10 @@ exports.socketServer = (socket, io) => {
 
   socket.on("give star group", ({ recipients, msgId, data }) => {
     //console.log(recipients);
-    let usersToSend = recipients.map((rcp) =>
-      users.find((usr) => usr.id === rcp._id)
-    );
-    usersToSend = usersToSend.reduce((accumulator, current) => {
-      if (!accumulator.find((item) => item.id === current.id)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((el) => el !== undefined);
+
     //console.log(usersToSend);
 
     if (usersToSend.length > 0) {
@@ -252,15 +221,10 @@ exports.socketServer = (socket, io) => {
 
   socket.on("cancel star group", ({ recipients, msgId, data }) => {
     //console.log(recipients);
-    let usersToSend = recipients.map((rcp) =>
-      users.find((usr) => usr.id === rcp._id)
-    );
-    usersToSend = usersToSend.reduce((accumulator, current) => {
-      if (!accumulator.find((item) => item.id === current.id)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((el) => el !== undefined);
+
     //console.log(usersToSend);
 
     if (usersToSend.length > 0) {
@@ -280,15 +244,9 @@ exports.socketServer = (socket, io) => {
 
   socket.on("delete forAll group", ({ recipients, msgId, data }) => {
     //console.log(recipients);
-    let usersToSend = recipients.map((rcp) =>
-      users.find((usr) => usr.id === rcp._id)
-    );
-    usersToSend = usersToSend.reduce((accumulator, current) => {
-      if (!accumulator.find((item) => item.id === current.id)) {
-        accumulator.push(current);
-      }
-      return accumulator;
-    }, []);
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((el) => el !== undefined);
     //console.log(usersToSend);
 
     if (usersToSend.length > 0) {
@@ -348,6 +306,20 @@ exports.socketServer = (socket, io) => {
     const user = users.find((user) => user.id === userTo);
     if (user) {
       io.to(user.socketId).emit("cancelCall");
+    }
+  });
+
+  /* Statuses */
+  socket.on("new status created", ({ targets, status }) => {
+    console.log(targets);
+    let usersToSend = targets
+      .map((trg) => users.find((usr) => usr.id === trg._id))
+      .filter((el) => el !== undefined);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("new status created", status);
+      });
     }
   });
 };

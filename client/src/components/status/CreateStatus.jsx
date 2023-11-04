@@ -6,7 +6,7 @@ import CreateStatusFooter from "./CreateStatusFooter";
 
 const CreateStatus = ({ setShowCreateStatus }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [statusText, setStatusText] = useState(0);
+  const [statusText, setStatusText] = useState("");
   return (
     <div className="status-full w-full h-screen dark:bg-dark_bg_1 overflow-hidden">
       <div className="close_status">
@@ -31,6 +31,7 @@ const CreateStatus = ({ setShowCreateStatus }) => {
           setActiveIndex={setActiveIndex}
           setStatusText={setStatusText}
           statusText={statusText}
+          setShowCreateStatus={setShowCreateStatus}
         />
       </div>
     </div>

@@ -4,23 +4,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdSendTimeExtension } from "react-icons/md";
 import {
   reduxAddToStatusFiles,
+  reduxMakeStatusFilesEmpty,
   reduxRemoveStatusFile,
+  reduxSetMyStatus,
 } from "../../redux/statusSlicer";
 import { getFileType } from "../../utils/fileTypes";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import axios from "../../axios";
+import { newStatusCreated } from "../../SocketIOConnection";
 
 const CreateStatusFooter = ({
   activeIndex,
   setActiveIndex,
   setStatusText,
   statusText,
+  setShowCreateStatus,
 }) => {
   const dispatch = useDispatch();
   const documentInputRef = useRef();
   const [status, setStatus] = useState(false);
   const { statusFiles } = useSelector((store) => store.statuses);
+  const { targets } = useSelector((store) => store.messages);
+  const { loggedUser } = useSelector((store) => store.currentUser);
 
   const handleAddDocument = (e) => {
     let files = Array.from(e.target.files);
@@ -63,9 +69,20 @@ const CreateStatusFooter = ({
   const handleCreateStatus = async () => {
     try {
       setStatus(true);
-      const { data } = await axios.post("/status/create");
+      const { data } = await axios.post("/status/create", {
+        text: statusText,
+        files: statusFiles,
+        targets: targets.filter((tr) => tr._id !== loggedUser.id),
+      });
       console.log(data);
+      dispatch(reduxSetMyStatus(data));
       setStatus(false);
+      setShowCreateStatus(false);
+      setStatusText("");
+      dispatch(reduxMakeStatusFilesEmpty());
+      //Emit socket
+      let targetUsers = targets.filter((tr) => tr._id !== loggedUser.id);
+      newStatusCreated(targetUsers, data);
     } catch (error) {
       setStatus(false);
       toast.error("Something went wrong! Try again");

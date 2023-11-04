@@ -42,12 +42,26 @@ const statusCtrl = {
       res.status(500).json({ message: error.message });
     }
   },
+  get_my_status: async (req, res) => {
+    try {
+      let targetStatus = await Status.findOne({ owner: req.user._id }).populate(
+        "owner targets seenBy",
+        "-password"
+      );
+      if (!targetStatus) {
+        return;
+      }
+      res.status(201).json(targetStatus);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
   make_seen_status: async (req, res) => {
     try {
       const { statusId } = req.params;
       let targetStatus = await Status.findById(statusId);
       if (!targetStatus) {
-        res.status(500).json({ message: "Status time may over!" });
+        return res.status(500).json({ message: "Status time may over!" });
       }
       if (!targetStatus.seenBy.includes(req.user._id)) {
         const updatedStatus = await Status.findByIdAndUpdate(
@@ -65,7 +79,7 @@ const statusCtrl = {
     try {
       const { statusId } = req.params;
       if (!statusId) {
-        res.status(500).json({ message: "Wrong credentials!" });
+        return res.status(500).json({ message: "Wrong credentials!" });
       }
       let targetStatus = await Status.findById(statusId);
       if (!targetStatus) {
