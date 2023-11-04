@@ -636,6 +636,14 @@ img {
     transform: scale(1);
   }
 }
+.story-icon {
+  position: relative;
+}
+.story-icon span {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
 
 @import url("./styles/groupInfo.css");
 @import url("./styles/userStatus.css");

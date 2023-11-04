@@ -1,22 +1,48 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import CommunityIcon from "../../assets/svg/Community";
 import StoryIcon from "../../assets/svg/Story";
 import ChatIcon from "../../assets/svg/Chat";
 import DotsIcon from "../../assets/svg/Dots";
+import { LuDot } from "react-icons/lu";
 import Menu from "./Menu";
 import { useOutsideClick } from "../../utils/helpers";
 import CreateGroup from "../groupChat/CreateGroup";
 
-const SideBarHeader = ({ setShowStatusInfo }) => {
+const SideBarHeader = ({
+  setShowStatusInfo,
+  statusCondition,
+  setStatusCondition,
+}) => {
   const menuRef = useRef(null);
   const { loggedUser } = useSelector((store) => store.currentUser);
+  const { activeStatuses } = useSelector((store) => store.statuses);
   const [showMenu, setShowMenu] = useState(false);
   const [showGroupMenu, setShowGroupMenu] = useState(false);
 
   useOutsideClick(menuRef, () => {
     setShowMenu(false);
   });
+
+  useEffect(() => {
+    if (activeStatuses.length > 0) {
+      activeStatuses.forEach((st) => {
+        st.targets.forEach((trg) => {
+          if (trg._id === loggedUser.id) {
+            setStatusCondition((prev) => ({ ...prev, available: true }));
+          }
+        });
+        if (st.seenBy.length > 0) {
+          st.seenBy.forEach((seen) => {
+            if (seen._id === loggedUser.id) {
+              setStatusCondition((prev) => ({ ...prev, seen: true }));
+            }
+          });
+        }
+      });
+    }
+  }, [activeStatuses, loggedUser]);
+  //console.log(isForMeStatusAvailable, isStatusSeenByMe);
   return (
     <>
       <div className="h-[59px] dark:bg-dark_bg_2 flex items-center p16">
@@ -34,9 +60,17 @@ const SideBarHeader = ({ setShowStatusInfo }) => {
                 <CommunityIcon className="dark:fill-dark_svg_1" />
               </button>
             </li>
-            <li>
-              <button className="btn" onClick={() => setShowStatusInfo(true)}>
+            <li className="story-icon">
+              <button
+                className="btn relative"
+                onClick={() => setShowStatusInfo(true)}
+              >
                 <StoryIcon className="dark:fill-dark_svg_1" />
+                {statusCondition.available && !statusCondition.seen && (
+                  <span>
+                    <LuDot color="#008069" size={50} />
+                  </span>
+                )}
               </button>
             </li>
             <li>

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/Home";
 import Register from "./pages/Register";
@@ -15,20 +15,12 @@ import {
   reduxMakeTokenExpired,
   reduxRegisterUser,
 } from "./redux/currentUserSlice";
+import { reduxGetActiveStatuses } from "./redux/statusSlicer";
 
 /* https://github.com/robertbunch/webrtcCourse */
 const App = () => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
-  //Web socket actions
-  /*  useEffect(() => {
-    connectToSocketServer();
-  }, []); */
-  /* useEffect(() => {
-    if (loggedUser) {
-      joinUser(loggedUser.id);
-    }
-  }, [loggedUser]); */
 
   const reFreshToken = useCallback(async () => {
     try {
@@ -45,6 +37,21 @@ const App = () => {
       reFreshToken();
     }
   }, [reFreshToken]);
+
+  const fetchActiveStatuses = useCallback(async () => {
+    try {
+      const { data } = await axios.get("/status/active_sts");
+      console.log(data);
+      dispatch(reduxGetActiveStatuses(data));
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchActiveStatuses();
+  }, [fetchActiveStatuses]);
+
   return (
     <div className="dark ">
       <ToastContainer position="bottom-center" limit={1} />

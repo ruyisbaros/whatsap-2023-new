@@ -56,6 +56,16 @@ const statusCtrl = {
       res.status(500).json({ message: error.message });
     }
   },
+  get_active_statuses: async (req, res) => {
+    try {
+      const activeStatuses = await Status.find({
+        targets: { $elemMatch: { $eq: req.user._id } },
+      }).populate("owner targets seenBy", "-password");
+      res.status(200).json(activeStatuses);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
   make_seen_status: async (req, res) => {
     try {
       const { statusId } = req.params;

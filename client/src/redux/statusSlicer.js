@@ -14,6 +14,9 @@ const makeStatus = createSlice({
     reduxSetMyStatus: (state, action) => {
       state.myStatus = action.payload;
     },
+    reduxGetActiveStatuses: (state, action) => {
+      state.activeStatuses = action.payload;
+    },
     reduxAddActiveStatuses: (state, action) => {
       state.activeStatuses.push(action.payload);
     },
@@ -45,5 +48,6 @@ export const {
   reduxSetMyStatus,
   reduxAddActiveStatuses,
   reduxRemoveFromActiveStatuses,
+  reduxGetActiveStatuses,
 } = makeStatus.actions;
 export default makeStatus.reducer;

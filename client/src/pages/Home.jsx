@@ -18,6 +18,7 @@ import GroupInfo from "../components/groupChat/GroupInfo";
 import SideBarStatus from "../components/status/SideBarStatus";
 import CreateStatus from "../components/status/CreateStatus";
 import ViewStatus from "../components/status/ViewStatus";
+import ViewMyStatus from "../components/status/ViewMyStatus";
 
 const Home = () => {
   const myVideo = useRef(null);
@@ -50,6 +51,11 @@ const Home = () => {
   const [showStatusInfo, setShowStatusInfo] = useState(false);
   const [showCreateStatus, setShowCreateStatus] = useState(false);
   const [showViewStatus, setShowViewStatus] = useState(false);
+  const [showMyStatus, setShowMyStatus] = useState(false);
+  const [statusCondition, setStatusCondition] = useState({
+    available: false,
+    seen: false,
+  });
 
   const fetchMyConversations = useCallback(async () => {
     try {
@@ -255,9 +261,14 @@ const Home = () => {
               <SideBarStatus
                 setShowStatusInfo={setShowStatusInfo}
                 setShowCreateStatus={setShowCreateStatus}
+                setShowMyStatus={setShowMyStatus}
               />
             ) : (
-              <SidebarLeft setShowStatusInfo={setShowStatusInfo} />
+              <SidebarLeft
+                setShowStatusInfo={setShowStatusInfo}
+                statusCondition={statusCondition}
+                setStatusCondition={setStatusCondition}
+              />
             )}
             {activeConversation ? (
               <ActiveChat
@@ -267,6 +278,7 @@ const Home = () => {
             ) : (
               <WhatsappHome />
             )}
+            {showMyStatus && <ViewMyStatus setShowMyStatus={setShowMyStatus} />}
           </div>
         </div>
       )}

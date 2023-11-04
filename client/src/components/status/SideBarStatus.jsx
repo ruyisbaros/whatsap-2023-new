@@ -6,9 +6,14 @@ import axios from "../../axios";
 import { reduxSetMyStatus } from "../../redux/statusSlicer";
 import { toast } from "react-toastify";
 
-const SideBarStatus = ({ setShowStatusInfo, setShowCreateStatus }) => {
+const SideBarStatus = ({
+  setShowStatusInfo,
+  setShowCreateStatus,
+  setShowMyStatus,
+}) => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
+  const { myStatus } = useSelector((store) => store.statuses);
   const [showAddIcon, setShowAddIcon] = useState(false);
 
   const fetchMyStatus = useCallback(async () => {
@@ -38,11 +43,7 @@ const SideBarStatus = ({ setShowStatusInfo, setShowCreateStatus }) => {
         </span>
       </div>
       <div className="status_currentUser w-full h-[25%] flex flex-col justify-around pl-4">
-        <div
-          className="status_currentUser-child flex gap-4 relative"
-          onMouseOver={() => setShowAddIcon(true)}
-          onMouseLeave={() => setShowAddIcon(false)}
-        >
+        <div className="status_currentUser-child flex items-center gap-4 relative">
           <img
             src={loggedUser.picture}
             alt=""
@@ -50,8 +51,17 @@ const SideBarStatus = ({ setShowStatusInfo, setShowCreateStatus }) => {
               showAddIcon ? "border-[2px] border-[#008069]" : ""
             }`}
             onClick={() => setShowCreateStatus(true)}
+            onMouseOver={() => setShowAddIcon(true)}
+            onMouseLeave={() => setShowAddIcon(false)}
           />
-          <span className="text-gray-400">My Status</span>
+          {myStatus && (
+            <span
+              className="text-gray-400 cursor-pointer relative z-40"
+              onClick={() => setShowMyStatus(true)}
+            >
+              View Your Status
+            </span>
+          )}
           {showAddIcon && (
             <span className="addIcon text-[25px] font-bold">
               <AiOutlinePlus color="#008069" />
