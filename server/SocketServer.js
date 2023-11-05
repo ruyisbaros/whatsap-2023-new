@@ -335,9 +335,9 @@ exports.socketServer = (socket, io) => {
     }
   });
   socket.on("status seen", ({ targets, statusId, seenBy }) => {
-    //console.log(targets);
+    console.log(targets);
     let usersToSend = targets
-      .map((trg) => users.find((usr) => usr.id === trg._id))
+      ?.map((trg) => users.find((usr) => usr.id === trg._id))
       .filter((el) => el !== undefined);
 
     if (usersToSend.length > 0) {

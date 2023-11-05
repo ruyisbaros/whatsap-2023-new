@@ -46,13 +46,13 @@ const Home = () => {
     iceCandidates,
     remoteStream,
   } = useSelector((store) => store.streams);
+  const { activeStatuses } = useSelector((store) => store.statuses);
 
   const [showGroupInfo, setShowGroupInfo] = useState(false);
   const [showStatusInfo, setShowStatusInfo] = useState(false);
   const [showCreateStatus, setShowCreateStatus] = useState(false);
   const [showViewStatus, setShowViewStatus] = useState(false);
   const [showMyStatus, setShowMyStatus] = useState(false);
-  const [viewedStatusId, setViewedStatusId] = useState(null);
   const [statusCondition, setStatusCondition] = useState({
     available: false,
     seen: false,
@@ -253,10 +253,7 @@ const Home = () => {
       {showCreateStatus ? (
         <CreateStatus setShowCreateStatus={setShowCreateStatus} />
       ) : showViewStatus ? (
-        <ViewStatus
-          setShowViewStatus={setShowViewStatus}
-          viewedStatusId={viewedStatusId}
-        />
+        <ViewStatus setShowViewStatus={setShowViewStatus} />
       ) : (
         <div className="relative h-screen dark:bg-dark_bg_1 overflow-hidden borderC">
           <div className="headBanner"></div>
@@ -266,9 +263,7 @@ const Home = () => {
                 setShowStatusInfo={setShowStatusInfo}
                 setShowCreateStatus={setShowCreateStatus}
                 setShowMyStatus={setShowMyStatus}
-                setStatusCondition={setStatusCondition}
-                statusCondition={statusCondition}
-                setViewedStatusId={setViewedStatusId}
+                setShowViewStatus={setShowViewStatus}
               />
             ) : (
               <SidebarLeft

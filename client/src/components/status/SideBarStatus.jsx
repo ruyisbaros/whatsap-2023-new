@@ -1,24 +1,26 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { ReturnIcon } from "../../assets/svg";
 import { useDispatch, useSelector } from "react-redux";
-import { AiOutlinePlus } from "react-icons/ai";
 import axios from "../../axios";
-import { reduxSetMyStatus } from "../../redux/statusSlicer";
+import {
+  reduxSetMyStatus,
+  reduxSetViewedStatus,
+} from "../../redux/statusSlicer";
 import { toast } from "react-toastify";
+import { makeStatusSeen } from "../../SocketIOConnection";
 
 const SideBarStatus = ({
   setShowStatusInfo,
   setShowCreateStatus,
   setShowMyStatus,
-  statusCondition,
-  setStatusCondition,
-  setViewedStatusId,
+  setShowViewStatus,
 }) => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
-  const { myStatus, activeStatuses } = useSelector((store) => store.statuses);
-  const [statusesSeen, setStatusesSeen] = useState([]);
-  const [statusesNotSeen, setStatusesNotSeen] = useState([]);
+  const { myStatus, activeStatuses, viewedStatus } = useSelector(
+    (store) => store.statuses
+  );
+
   const fetchMyStatus = useCallback(async () => {
     try {
       const { data } = await axios.get("/status/my_status");
@@ -33,17 +35,21 @@ const SideBarStatus = ({
     fetchMyStatus();
   }, [fetchMyStatus]);
 
-  useEffect(() => {
-    activeStatuses.forEach((sts) => {
-      if (sts.seenBy.length > 0) {
-        sts.seenBy.forEach((snB) => {
-          if (snB._id === loggedUser.id) {
-            setStatusesSeen((prev) => [...prev, snB]);
-          }
-        });
-      }
-    });
-  }, [activeStatuses, loggedUser]);
+  const handleView = (id) => {
+    setShowViewStatus(true);
+    dispatch(reduxSetViewedStatus(id));
+  };
+  const handleViewAndSee = async (id) => {
+    setShowViewStatus(true);
+    dispatch(reduxSetViewedStatus(id));
+    const { data } = await axios.get(`/status/seen/${id}`);
+    //Emit view status
+    let timer = setTimeout(() => {
+      makeStatusSeen(viewedStatus?.targets, id, loggedUser);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  };
 
   return (
     <div className="flex0030 w-[30%] h-full overflow-hidden select-none borderC">
@@ -83,14 +89,45 @@ const SideBarStatus = ({
         </div>
       </div>
       {activeStatuses.length ? (
-        <div>
-          {activeStatuses.map((sts, idx) => (
-            <div key={sts._id}>
-              <div className="uppercase text-[#008069] ml-8 mb-4">Viewed</div>
-              <hr className="hr_status" />
-            </div>
-          ))}
-        </div>
+        activeStatuses.filter((st) => st.isSeen === false).length > 0 ? (
+          <div>
+            <div className="uppercase text-[#008069] ml-8 mb-4">Recent</div>
+            <hr className="hr_status" />
+            {activeStatuses
+              .filter((st) => st.isSeen === false)
+              .map((sts, idx) => (
+                <div key={sts._id} className="w-full pt-6 pl-4 flex gap-4">
+                  <img
+                    src={sts.owner.picture}
+                    alt=""
+                    className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200"
+                    onClick={() => handleViewAndSee(sts._id)}
+                  />
+                  <span className="text-gray-400">{sts.text}</span>
+                </div>
+              ))}
+          </div>
+        ) : activeStatuses.filter((st) => st.isSeen === true).length > 0 ? (
+          <div>
+            <div className="uppercase text-[#008069] ml-8 mb-4">Viewed</div>
+            <hr className="hr_status" />
+            {activeStatuses
+              .filter((st) => st.isSeen === true)
+              .map((sts, idx) => (
+                <div key={sts._id} className="w-full pt-6 pl-4 flex gap-4">
+                  <img
+                    src={sts.owner.picture}
+                    alt=""
+                    className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200"
+                    onClick={() => handleView(sts._id)}
+                  />
+                  <span className="text-gray-400">{sts.text}</span>
+                </div>
+              ))}
+          </div>
+        ) : (
+          <></>
+        )
       ) : (
         <></>
       )}

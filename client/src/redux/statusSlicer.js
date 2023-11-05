@@ -5,6 +5,7 @@ const initialState = {
   notSeenStatuses: [],
   statusFiles: [],
   myStatus: null,
+  viewedStatus: null,
 };
 
 const makeStatus = createSlice({
@@ -35,6 +36,15 @@ const makeStatus = createSlice({
           : st
       );
     },
+
+    reduxSetViewedStatus: (state, action) => {
+      state.viewedStatus = state.activeStatuses.find(
+        (sts) => sts._id === action.payload
+      );
+    },
+    reduxRESetViewedStatus: (state, action) => {
+      state.viewedStatus = null;
+    },
     reduxAddToStatusFiles: (state, action) => {
       state.statusFiles.push(action.payload);
     },
@@ -61,5 +71,7 @@ export const {
   reduxGetActiveStatuses,
   reduxDeleteMyStatus,
   reduxSeenInActiveStatuses,
+  reduxSetViewedStatus,
+  reduxRESetViewedStatus,
 } = makeStatus.actions;
 export default makeStatus.reducer;
