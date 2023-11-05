@@ -3,8 +3,10 @@ import { ReturnIcon } from "../../assets/svg";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
 import {
+  reduxRESetViewedStatus,
   reduxSetMyStatus,
   reduxSetViewedStatus,
+  reduxUpdateActiveStatuses,
 } from "../../redux/statusSlicer";
 import { toast } from "react-toastify";
 import { makeStatusSeen } from "../../SocketIOConnection";
@@ -20,7 +22,8 @@ const SideBarStatus = ({
   const { myStatus, activeStatuses, viewedStatus } = useSelector(
     (store) => store.statuses
   );
-
+  const [seenStatuses, setSeenStatuses] = useState([]);
+  const [notSeenStatuses, setNotSeenStatuses] = useState([]);
   const fetchMyStatus = useCallback(async () => {
     try {
       const { data } = await axios.get("/status/my_status");
@@ -31,9 +34,24 @@ const SideBarStatus = ({
       toast.error(error.response.data?.message);
     }
   }, [dispatch]);
+
   useEffect(() => {
     fetchMyStatus();
-  }, [fetchMyStatus]);
+    dispatch(reduxRESetViewedStatus());
+  }, [fetchMyStatus, dispatch]);
+
+  useEffect(() => {
+    setSeenStatuses(
+      activeStatuses.filter((sts) =>
+        sts.seenBy.find((st) => st._id === loggedUser.id)
+      )
+    );
+    setNotSeenStatuses(
+      activeStatuses.filter((sts) =>
+        sts.seenBy.find((st) => st._id !== loggedUser.id)
+      )
+    );
+  }, [activeStatuses, loggedUser]);
 
   const handleView = (id) => {
     setShowViewStatus(true);
@@ -42,15 +60,16 @@ const SideBarStatus = ({
   const handleViewAndSee = async (id) => {
     setShowViewStatus(true);
     dispatch(reduxSetViewedStatus(id));
-    const { data } = await axios.get(`/status/seen/${id}`);
+    const { data } = await axios.get(`/status/see/${id}`);
+    dispatch(reduxUpdateActiveStatuses(data));
     //Emit view status
-    let timer = setTimeout(() => {
-      makeStatusSeen(viewedStatus?.targets, id, loggedUser);
-    }, 1000);
-
-    return () => clearTimeout(timer);
+    makeStatusSeen(data?.targets, id, loggedUser);
   };
-
+  console.log(
+    activeStatuses.filter((sts) =>
+      sts.seenBy.find((st) => st._id !== loggedUser.id)
+    )
+  );
   return (
     <div className="flex0030 w-[30%] h-full overflow-hidden select-none borderC">
       <div className="status_banner">
@@ -89,8 +108,54 @@ const SideBarStatus = ({
         </div>
       </div>
       {activeStatuses.length ? (
-        activeStatuses.filter((st) => st.isSeen === false).length > 0 ? (
-          <div>
+        <div>
+          {seenStatuses.length > 0 && (
+            <div>
+              <div className="uppercase text-[#008069] ml-8 mb-4">Viewed</div>
+              <hr className="hr_status" />
+              {seenStatuses.map((sts) => (
+                <div key={sts._id} className="w-full pt-6 pl-4 flex gap-4">
+                  <img
+                    src={sts.owner.picture}
+                    alt=""
+                    className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200"
+                    onClick={() => handleView(sts._id)}
+                  />
+                  <span className="text-gray-400">{sts.text}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          {notSeenStatuses.length > 0 && (
+            <div>
+              <div className="uppercase text-[#008069] ml-8 mb-4">Recent</div>
+              <hr className="hr_status" />
+              {notSeenStatuses.map((sts) => (
+                <div key={sts._id} className="w-full pt-6 pl-4 flex gap-4">
+                  <img
+                    src={sts.owner.picture}
+                    alt=""
+                    className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200"
+                    onClick={() => handleViewAndSee(sts._id)}
+                  />
+                  <span className="text-gray-400">{sts.text}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      ) : (
+        <></>
+      )}
+    </div>
+  );
+};
+
+export default SideBarStatus;
+
+/* 
+
+<div>
             <div className="uppercase text-[#008069] ml-8 mb-4">Recent</div>
             <hr className="hr_status" />
             {activeStatuses
@@ -107,32 +172,7 @@ const SideBarStatus = ({
                 </div>
               ))}
           </div>
-        ) : activeStatuses.filter((st) => st.isSeen === true).length > 0 ? (
-          <div>
-            <div className="uppercase text-[#008069] ml-8 mb-4">Viewed</div>
-            <hr className="hr_status" />
-            {activeStatuses
-              .filter((st) => st.isSeen === true)
-              .map((sts, idx) => (
-                <div key={sts._id} className="w-full pt-6 pl-4 flex gap-4">
-                  <img
-                    src={sts.owner.picture}
-                    alt=""
-                    className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200"
-                    onClick={() => handleView(sts._id)}
-                  />
-                  <span className="text-gray-400">{sts.text}</span>
-                </div>
-              ))}
-          </div>
-        ) : (
-          <></>
-        )
-      ) : (
-        <></>
-      )}
-    </div>
-  );
-};
 
-export default SideBarStatus;
+
+
+*/

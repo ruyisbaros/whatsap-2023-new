@@ -36,7 +36,11 @@ const makeStatus = createSlice({
           : st
       );
     },
-
+    reduxUpdateActiveStatuses: (state, action) => {
+      state.activeStatuses = state.activeStatuses.map((st) =>
+        st._id === action.payload._id ? action.payload : st
+      );
+    },
     reduxSetViewedStatus: (state, action) => {
       state.viewedStatus = state.activeStatuses.find(
         (sts) => sts._id === action.payload
@@ -73,5 +77,6 @@ export const {
   reduxSeenInActiveStatuses,
   reduxSetViewedStatus,
   reduxRESetViewedStatus,
+  reduxUpdateActiveStatuses,
 } = makeStatus.actions;
 export default makeStatus.reducer;

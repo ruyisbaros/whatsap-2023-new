@@ -31,7 +31,6 @@ const ViewStatus = ({ setShowViewStatus }) => {
         setActiveIndex(activeIndex + 1);
       } else if (viewedStatus?.files?.length - 1 >= activeIndex) {
         setShowViewStatus(false);
-        dispatch(reduxRESetViewedStatus());
       }
     }, 5000);
     return () => clearTimeout(timer);

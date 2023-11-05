@@ -32,10 +32,12 @@ const SideBarHeader = ({
             setStatusCondition((prev) => ({ ...prev, available: true }));
           }
         });
-        if (st.isSeen === true) {
-          setStatusCondition((prev) => ({ ...prev, seen: true }));
-        } else {
-          setStatusCondition((prev) => ({ ...prev, seen: false }));
+        if (st.seenBy.length > 0) {
+          st.seenBy.forEach((seen) => {
+            if (seen._id === loggedUser.id) {
+              setStatusCondition((prev) => ({ ...prev, seen: true }));
+            }
+          });
         }
       });
     }

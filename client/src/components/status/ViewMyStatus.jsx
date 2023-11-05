@@ -69,7 +69,7 @@ const ViewMyStatus = ({ setShowMyStatus }) => {
                     <img
                       src={myStatus.files[activeIndex].url}
                       alt=""
-                      className="w-full h-[90%] object-cover"
+                      className="w-full h-[90%] object-contain"
                     />
                     <span className="w-full dark:text-dark_text_4 text-[18px] mt-2 text-center inline-block">
                       {myStatus.text}
