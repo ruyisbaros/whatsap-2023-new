@@ -41,6 +41,7 @@
 
 .addIcon {
   position: absolute;
+  top: 0;
   left: 30px;
   color: "#008069";
   width: 15px;
@@ -68,4 +69,57 @@
   top: 50%;
   right: 0;
   transform: translateY(-50%);
+}
+
+.view-lines {
+  width: 100%;
+  position: absolute;
+  top: -40px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.view-lines span {
+  margin-left: 5px;
+  width: 20px;
+  height: 4px;
+  cursor: pointer;
+}
+
+.animated_line {
+  width: 100%;
+  position: absolute;
+  top: -100px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.animated_line span {
+  position: relative;
+  width: 80%;
+  height: 12px;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.animated_line span::before {
+  content: "";
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #008069;
+  animation: doldur 5s;
+}
+@keyframes doldur {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
 }

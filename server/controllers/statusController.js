@@ -71,7 +71,7 @@ const statusCtrl = {
       const { statusId } = req.params;
       let targetStatus = await Status.findById(statusId);
       if (!targetStatus) {
-        return res.status(500).json({ message: "Status time may over!" });
+        return;
       }
       if (!targetStatus.seenBy.includes(req.user._id)) {
         const updatedStatus = await Status.findByIdAndUpdate(
@@ -93,14 +93,14 @@ const statusCtrl = {
       }
       let targetStatus = await Status.findById(statusId);
       if (!targetStatus) {
-        res.status(500).json({ message: "Status time may over!" });
+        return;
       }
       //First delete related media through cloudinary
       targetStatus.files.map(async (file) => {
         await deleteImage(file.public._id);
       });
       await Status.findByIdAndDelete(statusId);
-      res.status(200).json({ message: "ok" });
+      res.status(200).json("deleted");
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

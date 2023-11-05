@@ -311,7 +311,7 @@ exports.socketServer = (socket, io) => {
 
   /* Statuses */
   socket.on("new status created", ({ targets, status }) => {
-    console.log(targets);
+    // console.log(targets);
     let usersToSend = targets
       .map((trg) => users.find((usr) => usr.id === trg._id))
       .filter((el) => el !== undefined);
@@ -319,6 +319,30 @@ exports.socketServer = (socket, io) => {
     if (usersToSend.length > 0) {
       usersToSend.forEach((user) => {
         socket.to(user.socketId).emit("new status created", status);
+      });
+    }
+  });
+  socket.on("status deleted", ({ targets, statusId }) => {
+    //console.log(targets);
+    let usersToSend = targets
+      .map((trg) => users.find((usr) => usr.id === trg._id))
+      .filter((el) => el !== undefined);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("status deleted", statusId);
+      });
+    }
+  });
+  socket.on("status seen", ({ targets, statusId, seenBy }) => {
+    //console.log(targets);
+    let usersToSend = targets
+      .map((trg) => users.find((usr) => usr.id === trg._id))
+      .filter((el) => el !== undefined);
+
+    if (usersToSend.length > 0) {
+      usersToSend.forEach((user) => {
+        socket.to(user.socketId).emit("status seen", { statusId, seenBy });
       });
     }
   });

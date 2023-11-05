@@ -10,12 +10,15 @@ const SideBarStatus = ({
   setShowStatusInfo,
   setShowCreateStatus,
   setShowMyStatus,
+  statusCondition,
+  setStatusCondition,
+  setViewedStatusId,
 }) => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
-  const { myStatus } = useSelector((store) => store.statuses);
-  const [showAddIcon, setShowAddIcon] = useState(false);
-
+  const { myStatus, activeStatuses } = useSelector((store) => store.statuses);
+  const [statusesSeen, setStatusesSeen] = useState([]);
+  const [statusesNotSeen, setStatusesNotSeen] = useState([]);
   const fetchMyStatus = useCallback(async () => {
     try {
       const { data } = await axios.get("/status/my_status");
@@ -29,6 +32,19 @@ const SideBarStatus = ({
   useEffect(() => {
     fetchMyStatus();
   }, [fetchMyStatus]);
+
+  useEffect(() => {
+    activeStatuses.forEach((sts) => {
+      if (sts.seenBy.length > 0) {
+        sts.seenBy.forEach((snB) => {
+          if (snB._id === loggedUser.id) {
+            setStatusesSeen((prev) => [...prev, snB]);
+          }
+        });
+      }
+    });
+  }, [activeStatuses, loggedUser]);
+
   return (
     <div className="flex0030 w-[30%] h-full overflow-hidden select-none borderC">
       <div className="status_banner">
@@ -42,36 +58,42 @@ const SideBarStatus = ({
           Status
         </span>
       </div>
-      <div className="status_currentUser w-full h-[25%] flex flex-col justify-around pl-4">
+      <div className="status_currentUser w-full h-[15%] pl-4 pt-6">
         <div className="status_currentUser-child flex items-center gap-4 relative">
           <img
             src={loggedUser.picture}
             alt=""
-            className={`w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200 ${
-              showAddIcon ? "border-[2px] border-[#008069]" : ""
-            }`}
-            onClick={() => setShowCreateStatus(true)}
-            onMouseOver={() => setShowAddIcon(true)}
-            onMouseLeave={() => setShowAddIcon(false)}
+            className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200"
           />
-          {myStatus && (
+          {myStatus ? (
             <span
               className="text-gray-400 cursor-pointer relative z-40"
               onClick={() => setShowMyStatus(true)}
             >
               View Your Status
             </span>
-          )}
-          {showAddIcon && (
-            <span className="addIcon text-[25px] font-bold">
-              <AiOutlinePlus color="#008069" />
+          ) : (
+            <span
+              className="text-gray-400 cursor-pointer relative z-40"
+              onClick={() => setShowCreateStatus(true)}
+            >
+              Create a Story!
             </span>
           )}
         </div>
-        <div className="uppercase text-[#008069] ml-8">Viewed</div>
       </div>
-      <hr className="hr_status" />
-      <div className="status_actives"></div>
+      {activeStatuses.length ? (
+        <div>
+          {activeStatuses.map((sts, idx) => (
+            <div key={sts._id}>
+              <div className="uppercase text-[#008069] ml-8 mb-4">Viewed</div>
+              <hr className="hr_status" />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

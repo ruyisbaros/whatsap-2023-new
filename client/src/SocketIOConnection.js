@@ -24,7 +24,11 @@ import {
   reduxSetAnswer,
   reduxSetOffer,
 } from "./redux/callStreamSlicer";
-import { reduxAddActiveStatuses } from "./redux/statusSlicer";
+import {
+  reduxAddActiveStatuses,
+  reduxRemoveFromActiveStatuses,
+  reduxSeenInActiveStatuses,
+} from "./redux/statusSlicer";
 let socket;
 
 const loggedUser = store.getState().currentUser.loggedUser;
@@ -101,6 +105,13 @@ socket.on("cancel star", ({ msgId, data }) => {
 socket.on("new status created", (status) => {
   console.log(status);
   store.dispatch(reduxAddActiveStatuses(status));
+});
+socket.on("status seen", ({ statusId, seenBy }) => {
+  //console.log(status);
+  store.dispatch(reduxSeenInActiveStatuses({ statusId, seenBy }));
+});
+socket.on("status deleted", (statusId) => {
+  store.dispatch(reduxRemoveFromActiveStatuses(statusId));
 });
 
 socket.on("newOfferCame", ({ offer, name, picture, offerer }) => {
@@ -232,6 +243,9 @@ export const deleteForAllGroup = (recipients, msgId, data) => {
 export const newStatusCreated = (targets, status) => {
   socket?.emit("new status created", { targets, status });
 };
-export const makeStatusSeen = (targets, status) => {
-  socket?.emit("status seen", { targets, status });
+export const makeStatusSeen = (targets, statusId, seenBy) => {
+  socket?.emit("status seen", { targets, statusId, seenBy });
+};
+export const deleteStatus = (targets, statusId) => {
+  socket?.emit("status deleted", { targets, statusId });
 };

@@ -14,6 +14,9 @@ const makeStatus = createSlice({
     reduxSetMyStatus: (state, action) => {
       state.myStatus = action.payload;
     },
+    reduxDeleteMyStatus: (state, action) => {
+      state.myStatus = null;
+    },
     reduxGetActiveStatuses: (state, action) => {
       state.activeStatuses = action.payload;
     },
@@ -22,7 +25,14 @@ const makeStatus = createSlice({
     },
     reduxRemoveFromActiveStatuses: (state, action) => {
       state.activeStatuses = state.activeStatuses.filter(
-        (st) => st._id !== action.payload._id
+        (st) => st._id !== action.payload
+      );
+    },
+    reduxSeenInActiveStatuses: (state, action) => {
+      state.activeStatuses = state.activeStatuses.map((st) =>
+        st._id === action.payload.statusId
+          ? st.seenBy.push(action.payload.seenBy)
+          : st
       );
     },
     reduxAddToStatusFiles: (state, action) => {
@@ -49,5 +59,7 @@ export const {
   reduxAddActiveStatuses,
   reduxRemoveFromActiveStatuses,
   reduxGetActiveStatuses,
+  reduxDeleteMyStatus,
+  reduxSeenInActiveStatuses,
 } = makeStatus.actions;
 export default makeStatus.reducer;

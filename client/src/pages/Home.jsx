@@ -52,6 +52,7 @@ const Home = () => {
   const [showCreateStatus, setShowCreateStatus] = useState(false);
   const [showViewStatus, setShowViewStatus] = useState(false);
   const [showMyStatus, setShowMyStatus] = useState(false);
+  const [viewedStatusId, setViewedStatusId] = useState(null);
   const [statusCondition, setStatusCondition] = useState({
     available: false,
     seen: false,
@@ -252,7 +253,10 @@ const Home = () => {
       {showCreateStatus ? (
         <CreateStatus setShowCreateStatus={setShowCreateStatus} />
       ) : showViewStatus ? (
-        <ViewStatus />
+        <ViewStatus
+          setShowViewStatus={setShowViewStatus}
+          viewedStatusId={viewedStatusId}
+        />
       ) : (
         <div className="relative h-screen dark:bg-dark_bg_1 overflow-hidden borderC">
           <div className="headBanner"></div>
@@ -262,6 +266,9 @@ const Home = () => {
                 setShowStatusInfo={setShowStatusInfo}
                 setShowCreateStatus={setShowCreateStatus}
                 setShowMyStatus={setShowMyStatus}
+                setStatusCondition={setStatusCondition}
+                statusCondition={statusCondition}
+                setViewedStatusId={setViewedStatusId}
               />
             ) : (
               <SidebarLeft

@@ -15,12 +15,17 @@ import {
   reduxMakeTokenExpired,
   reduxRegisterUser,
 } from "./redux/currentUserSlice";
-import { reduxGetActiveStatuses } from "./redux/statusSlicer";
+import {
+  reduxDeleteMyStatus,
+  reduxGetActiveStatuses,
+} from "./redux/statusSlicer";
+import { deleteStatus } from "./SocketIOConnection";
 
 /* https://github.com/robertbunch/webrtcCourse */
 const App = () => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
+  const { myStatus } = useSelector((store) => store.statuses);
 
   const reFreshToken = useCallback(async () => {
     try {
@@ -51,6 +56,17 @@ const App = () => {
   useEffect(() => {
     fetchActiveStatuses();
   }, [fetchActiveStatuses]);
+
+  //DELETE STORIES AUTOMATICALLY
+  const deleteExpiredStory = useCallback(async () => {
+    const { data } = await axios.delete(`/status/delete/${myStatus._id}`);
+    if (data === "deleted") {
+      dispatch(reduxDeleteMyStatus());
+
+      //Emit deleted status
+      deleteStatus(myStatus?.targets, myStatus?._id);
+    }
+  }, [myStatus, dispatch]);
 
   return (
     <div className="dark ">
