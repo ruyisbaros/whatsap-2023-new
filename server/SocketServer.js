@@ -334,16 +334,10 @@ exports.socketServer = (socket, io) => {
       });
     }
   });
-  socket.on("status seen", ({ targets, statusId, seenBy }) => {
-    console.log(targets);
-    let usersToSend = targets
-      ?.map((trg) => users.find((usr) => usr.id === trg._id))
-      .filter((el) => el !== undefined);
-
-    if (usersToSend.length > 0) {
-      usersToSend.forEach((user) => {
-        socket.to(user.socketId).emit("status seen", { statusId, seenBy });
-      });
+  socket.on("status seen", ({ ownerId, statusId, seenBy }) => {
+    const user = users.find((user) => user.id === ownerId);
+    if (user) {
+      io.to(user.socketId).emit("status seen", { statusId, seenBy });
     }
   });
 };

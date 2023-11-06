@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { ReturnIcon } from "../../assets/svg";
 import { useDispatch, useSelector } from "react-redux";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
-import { reduxRESetViewedStatus } from "../../redux/statusSlicer";
 
 const ViewStatus = ({ setShowViewStatus }) => {
   const dispatch = useDispatch();

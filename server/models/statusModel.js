@@ -23,10 +23,7 @@ const statusSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    isSeen: {
-      type: Boolean,
-      default: false,
-    },
+
     files: {
       type: Array,
       required: true,

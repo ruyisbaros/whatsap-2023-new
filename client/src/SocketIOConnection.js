@@ -243,8 +243,8 @@ export const deleteForAllGroup = (recipients, msgId, data) => {
 export const newStatusCreated = (targets, status) => {
   socket?.emit("new status created", { targets, status });
 };
-export const makeStatusSeen = (targets, statusId, seenBy) => {
-  socket?.emit("status seen", { targets, statusId, seenBy });
+export const makeStatusSeen = (ownerId, statusId, seenBy) => {
+  socket?.emit("status seen", { ownerId, statusId, seenBy });
 };
 export const deleteStatus = (targets, statusId) => {
   socket?.emit("status deleted", { targets, statusId });

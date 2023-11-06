@@ -19,11 +19,13 @@ const SideBarStatus = ({
 }) => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
+  const { targets } = useSelector((store) => store.messages);
   const { myStatus, activeStatuses, viewedStatus } = useSelector(
     (store) => store.statuses
   );
   const [seenStatuses, setSeenStatuses] = useState([]);
   const [notSeenStatuses, setNotSeenStatuses] = useState([]);
+
   const fetchMyStatus = useCallback(async () => {
     try {
       const { data } = await axios.get("/status/my_status");
@@ -41,17 +43,32 @@ const SideBarStatus = ({
   }, [fetchMyStatus, dispatch]);
 
   useEffect(() => {
-    setSeenStatuses(
-      activeStatuses.filter((sts) =>
-        sts.seenBy.find((st) => st._id === loggedUser.id)
-      )
-    );
-    setNotSeenStatuses(
-      activeStatuses.filter((sts) =>
-        sts.seenBy.find((st) => st._id !== loggedUser.id)
-      )
-    );
+    activeStatuses.forEach((sts) => {
+      if (sts.seenBy.length > 0) {
+        let temp = sts.seenBy.find((sn) => sn._id === loggedUser.id);
+        if (!temp) {
+          setNotSeenStatuses([...notSeenStatuses, sts]);
+        } else {
+          setSeenStatuses([...seenStatuses, sts]);
+        }
+      } else {
+        setNotSeenStatuses([...notSeenStatuses, sts]);
+      }
+    });
   }, [activeStatuses, loggedUser]);
+
+  useEffect(() => {
+    if (notSeenStatuses.length > 0) {
+      let tempNSeen = [...notSeenStatuses];
+      tempNSeen = tempNSeen.filter((el, i) => tempNSeen.indexOf(el) === i);
+      setNotSeenStatuses(tempNSeen);
+    }
+    if (seenStatuses.length > 0) {
+      let tempSeen = [...seenStatuses];
+      tempSeen = tempSeen.filter((el, i) => tempSeen.indexOf(el) === i);
+      setSeenStatuses(tempSeen);
+    }
+  }, [notSeenStatuses, seenStatuses]);
 
   const handleView = (id) => {
     setShowViewStatus(true);
@@ -62,14 +79,11 @@ const SideBarStatus = ({
     dispatch(reduxSetViewedStatus(id));
     const { data } = await axios.get(`/status/see/${id}`);
     dispatch(reduxUpdateActiveStatuses(data));
-    //Emit view status
-    makeStatusSeen(data?.targets, id, loggedUser);
+
+    makeStatusSeen(data.owner._id, id, loggedUser);
   };
-  console.log(
-    activeStatuses.filter((sts) =>
-      sts.seenBy.find((st) => st._id !== loggedUser.id)
-    )
-  );
+  console.log(notSeenStatuses);
+  // console.log(seenStatuses);
   return (
     <div className="flex0030 w-[30%] h-full overflow-hidden select-none borderC">
       <div className="status_banner">
