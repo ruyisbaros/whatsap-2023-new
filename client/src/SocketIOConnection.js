@@ -27,7 +27,7 @@ import {
 import {
   reduxAddActiveStatuses,
   reduxRemoveFromActiveStatuses,
-  reduxSeenInActiveStatuses,
+  reduxMyStatusSeen,
 } from "./redux/statusSlicer";
 let socket;
 
@@ -106,9 +106,9 @@ socket.on("new status created", (status) => {
   console.log(status);
   store.dispatch(reduxAddActiveStatuses(status));
 });
-socket.on("status seen", ({ statusId, seenBy }) => {
+socket.on("status seen", (seenBy) => {
   //console.log(status);
-  store.dispatch(reduxSeenInActiveStatuses({ statusId, seenBy }));
+  store.dispatch(reduxMyStatusSeen(seenBy));
 });
 socket.on("status deleted", (statusId) => {
   store.dispatch(reduxRemoveFromActiveStatuses(statusId));
@@ -243,8 +243,8 @@ export const deleteForAllGroup = (recipients, msgId, data) => {
 export const newStatusCreated = (targets, status) => {
   socket?.emit("new status created", { targets, status });
 };
-export const makeStatusSeen = (ownerId, statusId, seenBy) => {
-  socket?.emit("status seen", { ownerId, statusId, seenBy });
+export const makeStatusSeen = (ownerId, seenBy) => {
+  socket?.emit("status seen", { ownerId, seenBy });
 };
 export const deleteStatus = (targets, statusId) => {
   socket?.emit("status deleted", { targets, statusId });

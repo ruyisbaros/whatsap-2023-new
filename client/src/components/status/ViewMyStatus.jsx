@@ -54,7 +54,7 @@ const ViewMyStatus = ({ setShowMyStatus }) => {
         >
           <AiOutlineCloseCircle color="red" size={25} />
         </button>
-        <span className="text-white font-bold text-[20px]">Your Status</span>
+        <span className="text-white font-bold text-[20px]">Your Story</span>
       </div>
       <div className="w-full h-full  flex items-center justify-center relative">
         <div className="relative w-[70%] h-[60%] ">

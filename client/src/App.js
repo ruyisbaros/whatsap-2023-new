@@ -18,6 +18,7 @@ import {
 import {
   reduxDeleteMyStatus,
   reduxGetActiveStatuses,
+  reduxSetMyStatus,
 } from "./redux/statusSlicer";
 import { deleteStatus } from "./SocketIOConnection";
 
@@ -56,6 +57,21 @@ const App = () => {
   useEffect(() => {
     fetchActiveStatuses();
   }, [fetchActiveStatuses]);
+
+  const fetchMyStatus = useCallback(async () => {
+    try {
+      const { data } = await axios.get("/status/my_status");
+
+      console.log(data);
+      dispatch(reduxSetMyStatus(data));
+    } catch (error) {
+      toast.error(error.response.data?.message);
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchMyStatus();
+  }, [fetchMyStatus]);
 
   //DELETE STORIES AUTOMATICALLY
   const deleteExpiredStory = useCallback(async () => {

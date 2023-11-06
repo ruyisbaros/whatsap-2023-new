@@ -334,10 +334,10 @@ exports.socketServer = (socket, io) => {
       });
     }
   });
-  socket.on("status seen", ({ ownerId, statusId, seenBy }) => {
+  socket.on("status seen", ({ ownerId, seenBy }) => {
     const user = users.find((user) => user.id === ownerId);
     if (user) {
-      io.to(user.socketId).emit("status seen", { statusId, seenBy });
+      io.to(user.socketId).emit("status seen", seenBy);
     }
   });
 };

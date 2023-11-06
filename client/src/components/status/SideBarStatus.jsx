@@ -2,14 +2,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ReturnIcon } from "../../assets/svg";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import {
   reduxRESetViewedStatus,
-  reduxSetMyStatus,
   reduxSetViewedStatus,
   reduxUpdateActiveStatuses,
 } from "../../redux/statusSlicer";
-import { toast } from "react-toastify";
 import { makeStatusSeen } from "../../SocketIOConnection";
+import { dateHandler2 } from "../../utils/momentHandler";
 
 const SideBarStatus = ({
   setShowStatusInfo,
@@ -18,29 +18,15 @@ const SideBarStatus = ({
   setShowViewStatus,
 }) => {
   const dispatch = useDispatch();
-  const { loggedUser } = useSelector((store) => store.currentUser);
-  const { targets } = useSelector((store) => store.messages);
-  const { myStatus, activeStatuses, viewedStatus } = useSelector(
-    (store) => store.statuses
-  );
+  const { loggedUser, onLineUsers } = useSelector((store) => store.currentUser);
+  //const { targets } = useSelector((store) => store.messages);
+  const { myStatus, activeStatuses } = useSelector((store) => store.statuses);
   const [seenStatuses, setSeenStatuses] = useState([]);
   const [notSeenStatuses, setNotSeenStatuses] = useState([]);
 
-  const fetchMyStatus = useCallback(async () => {
-    try {
-      const { data } = await axios.get("/status/my_status");
-
-      console.log(data);
-      dispatch(reduxSetMyStatus(data));
-    } catch (error) {
-      toast.error(error.response.data?.message);
-    }
-  }, [dispatch]);
-
   useEffect(() => {
-    fetchMyStatus();
     dispatch(reduxRESetViewedStatus());
-  }, [fetchMyStatus, dispatch]);
+  }, [dispatch]);
 
   useEffect(() => {
     activeStatuses.forEach((sts) => {
@@ -80,7 +66,7 @@ const SideBarStatus = ({
     const { data } = await axios.get(`/status/see/${id}`);
     dispatch(reduxUpdateActiveStatuses(data));
 
-    makeStatusSeen(data.owner._id, id, loggedUser);
+    makeStatusSeen(data.owner._id, loggedUser);
   };
   console.log(notSeenStatuses);
   // console.log(seenStatuses);
@@ -129,13 +115,24 @@ const SideBarStatus = ({
               <hr className="hr_status" />
               {seenStatuses.map((sts) => (
                 <div key={sts._id} className="w-full pt-6 pl-4 flex gap-4">
-                  <img
-                    src={sts.owner.picture}
-                    alt=""
-                    className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200"
-                    onClick={() => handleView(sts._id)}
-                  />
-                  <span className="text-gray-400">{sts.text}</span>
+                  <div className="w-[40px] h-[40px] relative">
+                    <img
+                      src={sts.owner.picture}
+                      alt=""
+                      className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200 "
+                      onClick={() => handleViewAndSee(sts._id)}
+                    />
+                  </div>
+                  <div>
+                    <h1 className="dark:text-white capitalize text-sm font-bold">
+                      {sts.owner.name}
+                    </h1>
+                    <span className="text-xs dark:text-dark_svg_2">
+                      {onLineUsers.find((usr) => usr.id === sts.owner?._id)
+                        ? "online"
+                        : "Last online " + dateHandler2(sts.owner?.lastSeen)}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
@@ -146,13 +143,24 @@ const SideBarStatus = ({
               <hr className="hr_status" />
               {notSeenStatuses.map((sts) => (
                 <div key={sts._id} className="w-full pt-6 pl-4 flex gap-4">
-                  <img
-                    src={sts.owner.picture}
-                    alt=""
-                    className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200"
-                    onClick={() => handleViewAndSee(sts._id)}
-                  />
-                  <span className="text-gray-400">{sts.text}</span>
+                  <div className="w-[40px] h-[40px] relative">
+                    <img
+                      src={sts.owner.picture}
+                      alt=""
+                      className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200 "
+                      onClick={() => handleViewAndSee(sts._id)}
+                    />
+                  </div>
+                  <div>
+                    <h1 className="dark:text-white capitalize text-sm font-bold">
+                      {sts.owner.name}
+                    </h1>
+                    <span className="text-xs dark:text-dark_svg_2">
+                      {onLineUsers.find((usr) => usr.id === sts.owner?._id)
+                        ? "online"
+                        : "Last online " + dateHandler2(sts.owner?.lastSeen)}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>
