@@ -2,6 +2,7 @@ const MessageModel = require("../models/messageModel");
 const ConversationModel = require("../models/conversationModel.js");
 const User = require("../models/userModel");
 const { uploadImageToCloduinary } = require("../services/cloudinaryActions");
+const { isConversationExist } = require("../services/conversationServices");
 
 const messageCtrl = {
   send_create_message: async (req, res) => {
@@ -238,6 +239,52 @@ const messageCtrl = {
       const populatedMessage = await MessageModel.findById(createdMessage._id)
         .populate("sender", "-password")
         .populate("recipients", "-password")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
+      res.status(201).json({ populatedMessage });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  send_create_status_reply: async (req, res) => {
+    try {
+      const my_id = req.user._id;
+      const { message, recipient, file } = req.body;
+      const exist_conversation = await isConversationExist(my_id, recipient);
+
+      if (!exist_conversation) {
+        return;
+      }
+      //1-Create message document in DB
+      const createdMessage = await MessageModel.create({
+        message,
+        sender: my_id,
+        recipient,
+        conversation: exist_conversation._id,
+        replyFile: file,
+      });
+      //2. Update relevant conversation's latestMessage (each new message will be the latestMessage)
+      await ConversationModel.findByIdAndUpdate(exist_conversation._id, {
+        latestMessage: createdMessage,
+      });
+      //4 -update and Populate related message before send
+      const populatedMessage = await MessageModel.findById(createdMessage._id)
+        .populate("sender", "-password")
+        .populate("recipient", "-password")
         .populate({
           path: "repliedMessage",
           model: "Message",

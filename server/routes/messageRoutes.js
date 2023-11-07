@@ -4,6 +4,11 @@ const messageCtrl = require("../controllers/messageController");
 
 router.post("/send", protect, messageCtrl.send_create_message);
 router.post("/send_reply", protect, messageCtrl.send_create_message_reply);
+router.post(
+  "/send_status_reply",
+  protect,
+  messageCtrl.send_create_status_reply
+);
 router.post("/send_group", protect, messageCtrl.send_create_message_group);
 router.post(
   "/send_group_reply",

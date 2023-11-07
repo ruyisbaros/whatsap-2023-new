@@ -48,8 +48,8 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   useEffect(() => {
     fetchRelevantMessages();
   }, [fetchRelevantMessages]);
-  console.log(replyMessageId);
-  console.log(replyMessageContent);
+  //console.log(replyMessageId);
+  //console.log(replyMessageContent);
 
   const getRepliedMessageInfo = (msg) => {
     if (replyMessageId.length <= 0) {

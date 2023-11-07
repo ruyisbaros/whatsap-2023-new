@@ -165,6 +165,15 @@ const SingleMessage = ({
                 <span className="flex items-center gap-1 text-gray-400">
                   <MdNotInterested /> {msg.message}
                 </span>
+              ) : msg.replyFile && JSON.stringify(msg.replyFile) !== "{}" ? (
+                <div>
+                  <img
+                    src={msg.replyFile?.url}
+                    alt=""
+                    className="w-full h-[100px] object-cover"
+                  />
+                  <span>{msg.message}</span>
+                </div>
               ) : (
                 <span>{msg.message}</span>
               )}

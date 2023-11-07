@@ -166,3 +166,8 @@
   flex-grow: 1;
   text-align: center;
 }
+.emoji-status {
+  position: absolute;
+  top: -110%;
+  left: 0;
+}

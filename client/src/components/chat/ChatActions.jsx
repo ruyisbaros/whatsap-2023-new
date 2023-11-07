@@ -43,7 +43,7 @@ const ChatActions = ({
   const [showAttachment, setShowAttachment] = useState(false);
   const [msgSended, setMsgSended] = useState(false);
 
-  console.log(replyMessage);
+  //console.log(replyMessage);
   useEffect(() => {
     if (!activeConversation.isGroup) {
       const usr = activeConversation.users.find(
@@ -184,7 +184,7 @@ const ChatActions = ({
       }
     }
   };
-  console.log(msgSended);
+  //console.log(msgSended);
   const handleMessageType = (e) => {
     setMessage(e.target.value);
     setMsgSended(false);

@@ -10,11 +10,11 @@ const conversationCtrl = {
 
       if (!isGroup) {
         if (!receiver_id) {
-          return res.status(500).json({ message: `Something went wrong!` });
+          return;
         }
         const withChatUser = await User.findById(receiver_id);
         if (!withChatUser) {
-          return res.status(500).json({ message: `Something went wrong!` });
+          return;
         }
         //1.) Check if we have a conversation yet
         const exist_conversation = await isConversationExist(

@@ -41,6 +41,7 @@ const messageSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    replyFile: {},
     haveStar: {
       type: Boolean,
       default: false,

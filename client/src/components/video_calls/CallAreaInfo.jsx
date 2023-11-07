@@ -18,7 +18,7 @@ const CallAreaInfo = ({ name }) => {
     }
     return () => clearTimeout(timer);
   }, [current]);
-  console.log(callSeconds);
+  // console.log(callSeconds);
   return (
     <div className="absolute top-12 z40 w-full p-1">
       <div className="flex flex-col items-center">
