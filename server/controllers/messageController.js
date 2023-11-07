@@ -310,12 +310,15 @@ const messageCtrl = {
     try {
       const { convId } = req.params;
       if (!convId) {
-        return res.status(500).json({ message: `Something went wrong!` });
+        return;
       }
       const messages = await MessageModel.find({
         conversation: convId,
       })
-        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate(
+          "sender recipient recipients idForDeleted whoSaw",
+          "-password"
+        )
         .populate({
           path: "repliedMessage",
           model: "Message",
@@ -507,19 +510,48 @@ const messageCtrl = {
   make_seen: async (req, res) => {
     try {
       const { convId } = req.params;
+      if (!convId) {
+        return;
+      }
       const notSeenMessages = await MessageModel.find({
         $and: [
-          { seen: { $eq: false } },
+          { whoSaw: { $nin: [req.user._id] } },
           { conversation: { $eq: convId } },
           { sender: { $ne: req.user._id } },
         ],
       });
+      //console.log(notSeenMessages);
       const promises = notSeenMessages.map(
         async (msg) =>
-          await MessageModel.findByIdAndUpdate(msg._id, { seen: true })
+          await MessageModel.findByIdAndUpdate(msg._id, {
+            $push: { whoSaw: req.user._id },
+          })
       );
       await Promise.all(promises);
-      res.status(200).json({ message: "updated" });
+      const messages = await MessageModel.find({
+        conversation: convId,
+      })
+        .populate(
+          "sender recipient recipients idForDeleted whoSaw",
+          "-password"
+        )
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
+      res.status(200).json(messages);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

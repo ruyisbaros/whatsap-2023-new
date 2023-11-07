@@ -24,11 +24,12 @@ const messageSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "Conversation",
     },
-    seen: {
-      type: Boolean,
-      default: false,
-    },
-
+    whoSaw: [
+      {
+        type: ObjectId,
+        ref: "User",
+      },
+    ],
     emojiBox: {
       type: Array,
       default: [],

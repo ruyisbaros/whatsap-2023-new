@@ -48,8 +48,21 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   useEffect(() => {
     fetchRelevantMessages();
   }, [fetchRelevantMessages]);
-  //console.log(replyMessageId);
-  //console.log(replyMessageContent);
+
+  const handleMakeSeen = useCallback(async () => {
+    try {
+      const { data } = await axios.get(
+        `/message/make_seen/${activeConversation._id}`
+      );
+      dispatch(reduxGetMyMessages(data));
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
+  }, [activeConversation, dispatch]);
+
+  useEffect(() => {
+    handleMakeSeen();
+  }, [handleMakeSeen]);
 
   const getRepliedMessageInfo = (msg) => {
     if (replyMessageId.length <= 0) {
