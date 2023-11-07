@@ -89,16 +89,18 @@ const statusCtrl = {
     try {
       const { statusId } = req.params;
       if (!statusId) {
-        return res.status(500).json({ message: "Wrong credentials!" });
+        return;
       }
       let targetStatus = await Status.findById(statusId);
       if (!targetStatus) {
         return;
       }
       //First delete related media through cloudinary
-      targetStatus.files.map(async (file) => {
-        await deleteImage(file.public._id);
-      });
+      await Promise.all(
+        targetStatus.files.map(async (file) => {
+          await deleteImage(file.public_id);
+        })
+      );
       await Status.findByIdAndDelete(statusId);
       res.status(200).json("deleted");
     } catch (error) {

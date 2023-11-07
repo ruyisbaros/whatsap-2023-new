@@ -29,7 +29,7 @@ const ViewMyStatus = ({ setShowMyStatus }) => {
       } else if (myStatus.files.length - 1 >= activeIndex) {
         setShowMyStatus(false);
       }
-    }, 5000);
+    }, 15000);
     return () => clearTimeout(timer);
   }, [activeIndex, myStatus.files.length]);
 

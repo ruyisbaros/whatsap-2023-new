@@ -31,7 +31,7 @@ const ViewStatus = ({ setShowViewStatus }) => {
       } else if (viewedStatus?.files?.length - 1 >= activeIndex) {
         setShowViewStatus(false);
       }
-    }, 5000);
+    }, 15000);
     return () => clearTimeout(timer);
   }, [activeIndex, viewedStatus]);
 

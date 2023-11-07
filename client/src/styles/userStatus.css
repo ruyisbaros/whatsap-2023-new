@@ -113,7 +113,7 @@
   width: 0;
   height: 100%;
   background: #008069;
-  animation: doldur 5s;
+  animation: doldur 15s;
 }
 @keyframes doldur {
   0% {

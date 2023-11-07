@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {
+  reduxDeleteMyStatus,
   reduxRESetViewedStatus,
   reduxSetViewedStatus,
   reduxUpdateActiveStatuses,
 } from "../../redux/statusSlicer";
-import { makeStatusSeen } from "../../SocketIOConnection";
+import { deleteStatus, makeStatusSeen } from "../../SocketIOConnection";
 import { dateHandler2 } from "../../utils/momentHandler";
 import SeenBy from "./SeenBy";
 import StatusCtrlBox from "./StatusCtrlBox";
@@ -79,8 +80,16 @@ const SideBarStatus = ({
     setShowStatusCtrlBox(false);
   });
 
-  //console.log(notSeenStatuses);
-  // console.log(seenStatuses);
+  const handleDeleteStory = async () => {
+    const { data } = await axios.get(`/status/delete/${myStatus._id}`);
+    if (data === "deleted") {
+      dispatch(reduxDeleteMyStatus());
+
+      //Emit deleted status
+      deleteStatus(myStatus?.targets, myStatus?._id);
+    }
+  };
+
   return (
     <div className="flex0030 w-[30%] h-full overflow-hidden select-none borderC relative">
       <div className="status_banner">
@@ -132,6 +141,7 @@ const SideBarStatus = ({
             <StatusCtrlBox
               setShowStatusCtrlBox={setShowStatusCtrlBox}
               setShowSeeUsers={setShowSeeUsers}
+              handleDeleteStory={handleDeleteStory}
               menuRef={menuRef}
             />
           )}
@@ -232,27 +242,3 @@ const SideBarStatus = ({
 };
 
 export default SideBarStatus;
-
-/* 
-
-<div>
-            <div className="uppercase text-[#008069] ml-8 mb-4">Recent</div>
-            <hr className="hr_status" />
-            {activeStatuses
-              .filter((st) => st.isSeen === false)
-              .map((sts, idx) => (
-                <div key={sts._id} className="w-full pt-6 pl-4 flex gap-4">
-                  <img
-                    src={sts.owner.picture}
-                    alt=""
-                    className="w-[40px] h-[40px] rounded-full cursor-pointer transition-all duration-200"
-                    onClick={() => handleViewAndSee(sts._id)}
-                  />
-                  <span className="text-gray-400">{sts.text}</span>
-                </div>
-              ))}
-          </div>
-
-
-
-*/
