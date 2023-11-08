@@ -80,7 +80,7 @@ const Home = () => {
   useEffect(() => {
     fetchMyConversations();
   }, [fetchMyConversations]);
-  console.log(targets);
+  //console.log(targets);
   const startVideoCall = async () => {
     try {
       dispatch(reduxUpdateCallStatus({ cst: "videoScreen", value: true }));

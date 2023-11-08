@@ -66,6 +66,7 @@ const ChatMessages = ({
                 : null}
               {message.message !== "" && (
                 <SingleMessage
+                  key={message._id}
                   msg={message}
                   me={loggedUser.id === message?.sender?._id}
                   sameUser={

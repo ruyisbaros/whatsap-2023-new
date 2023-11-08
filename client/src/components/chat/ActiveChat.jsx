@@ -4,10 +4,7 @@ import ChatMessages from "./ChatMessages";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "../../axios";
-import {
-  reduxGetMyMessages,
-  reduxMakeMessagesSeen,
-} from "../../redux/chatSlice";
+import { reduxGetMyMessages } from "../../redux/chatSlice";
 import ChatActions from "./ChatActions";
 import FilePreview from "../previews/file/FilePreview";
 import ActionHeader from "./ActionHeader";
@@ -48,21 +45,6 @@ const ActiveChat = ({ startVideoCall, setShowGroupInfo }) => {
   useEffect(() => {
     fetchRelevantMessages();
   }, [fetchRelevantMessages]);
-
-  const handleMakeSeen = useCallback(async () => {
-    try {
-      const { data } = await axios.get(
-        `/message/make_seen/${activeConversation._id}`
-      );
-      dispatch(reduxGetMyMessages(data));
-    } catch (error) {
-      toast.error(error.response.data.message);
-    }
-  }, [activeConversation, dispatch]);
-
-  useEffect(() => {
-    handleMakeSeen();
-  }, [handleMakeSeen]);
 
   const getRepliedMessageInfo = (msg) => {
     if (replyMessageId.length <= 0) {

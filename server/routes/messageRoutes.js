@@ -18,6 +18,7 @@ router.post(
 router.get("/chat_users", protect, messageCtrl.searchChatUsers);
 router.get("/get_messages/:convId", protect, messageCtrl.get_messages);
 router.get("/make_seen/:convId", protect, messageCtrl.make_seen);
+router.post("/make_seen_for_user", protect, messageCtrl.make_seen_for_user);
 router.get("/delete_for_me/:id", protect, messageCtrl.delete_for_me);
 router.post("/delete_for_all", protect, messageCtrl.delete_for_all);
 router.get("/give_star/:id", protect, messageCtrl.give_star);

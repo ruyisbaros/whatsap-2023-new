@@ -644,6 +644,9 @@ img {
   top: 0;
   right: 0;
 }
-
+.not-read-msg {
+  padding: 3px;
+  border: 2px solid #00a884;
+}
 @import url("./styles/groupInfo.css");
 @import url("./styles/userStatus.css");

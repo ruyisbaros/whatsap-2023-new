@@ -54,6 +54,14 @@ const chatSlicer = createSlice({
       if (!newConversation) {
         state.conversations.push(action.payload);
       }
+      state.conversations = state.conversations.map((c) =>
+        c._id === action.payload._id
+          ? {
+              ...c,
+              latestMessage: action.payload.latestMessage,
+            }
+          : c
+      );
       let users = [];
       state.conversations.forEach((cnv) => {
         users = [...users, ...cnv.users];
@@ -80,17 +88,21 @@ const chatSlicer = createSlice({
     },
 
     reduxAddMyMessages: (state, action) => {
-      console.log(action.payload);
+      //console.log(action.payload);
       state.messages.push(action.payload);
       //Update latest message
       state.conversations = state.conversations.map((c) =>
         c._id === action.payload.conversation._id
           ? {
               ...c,
-              latestMessage: { ...action.payload.conversation.latestMessage },
+              latestMessage: action.payload.conversation.latestMessage,
             }
           : c
       );
+      state.activeConversation = {
+        ...state.activeConversation,
+        latestMessage: action.payload.conversation.latestMessage,
+      };
     },
     reduxAddReplyToMessage: (state, action) => {
       state.messages = state.messages.map((msg) =>
@@ -98,21 +110,19 @@ const chatSlicer = createSlice({
       );
     },
     reduxAddMyMessagesFromSocket: (state, action) => {
+      console.log(action.payload);
       state.messages.push(action.payload);
       //Update latest message
       state.conversations = state.conversations.map((c) =>
         c._id === action.payload.conversation._id
           ? {
               ...c,
-              latestMessage: {
-                ...c.latestMessage,
-                message: action.payload.message,
-                files: action.payload.files,
-              },
+              latestMessage: action.payload.conversation.latestMessage,
             }
           : c
       );
     },
+
     reduxRemoveFromMyMessages: (state, action) => {
       state.messages.pop(action.payload);
     },
@@ -122,16 +132,6 @@ const chatSlicer = createSlice({
       );
     },
 
-    reduxMakeMessagesSeen: (state, action) => {
-      const { logId, convoId } = action.payload;
-      state.messages = state.messages.map((msg) =>
-        msg.sender._id !== logId &&
-        !msg.seen &&
-        msg.conversation._id === convoId
-          ? { ...msg, seen: true }
-          : msg
-      );
-    },
     reduxStartTyping: (state, action) => {
       //console.log(action.payload);
       state.isTyping = action.payload.situation;
@@ -160,6 +160,15 @@ const chatSlicer = createSlice({
             ? { ...c, latestMessage: action.payload.convo.latestMessage }
             : c
         );
+      } else if (action.payload.message) {
+        state.conversations = state.conversations.map((c) =>
+          c._id === action.payload.message.conversation._id
+            ? {
+                ...c,
+                latestMessage: action.payload.message,
+              }
+            : c
+        );
       }
     },
     reduxUpdateLatestMessage: (state, action) => {
@@ -169,8 +178,7 @@ const chatSlicer = createSlice({
           c._id === action.payload.message.conversation._id
             ? {
                 ...c,
-                latestMessage:
-                  action.payload.message.conversation.latestMessage,
+                latestMessage: action.payload.message,
               }
             : c
         );
@@ -200,7 +208,6 @@ export const {
   reduxGetMyMessages,
   reduxAddMyMessages,
   reduxRemoveFromMyMessages,
-  reduxMakeMessagesSeen,
   reduxAddMyMessagesFromSocket,
   reduxSetChattedUser,
   reduxRemoveActiveConversation,

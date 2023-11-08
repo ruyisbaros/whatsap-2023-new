@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 import { store } from "./redux/store";
 import { BACKEND_URL } from "./axios";
+import axios from "./axios";
 import {
   reduxAddUpdateMessage,
   reduxAddMyConversations,
@@ -42,25 +43,6 @@ socket.on("connect", () => {
   console.log("Connected to socket io server");
   store.dispatch(createSocket(socket));
 });
-socket.on("setup socketId", (id) => {
-  //console.log("remote socket id ", id);
-  store.dispatch(reduxSetMySocketId(id));
-});
-socket.on("new message", (msg) => {
-  store.dispatch(reduxAddMyMessagesFromSocket(msg));
-});
-socket.on("new message group", (msg) => {
-  store.dispatch(reduxAddMyMessagesFromSocket(msg));
-});
-socket.on("deleted message", ({ msgId, data }) => {
-  store.dispatch(reduxAddUpdateMessage({ data, msgId }));
-});
-socket.on("update conversationList", (convo) => {
-  store.dispatch(reduxAddMyConversations(convo));
-});
-socket.on("new Group", (convo) => {
-  store.dispatch(reduxAddMyConversations(convo));
-});
 socket.on("onlineUsers", (users) => {
   //console.log(users);
   window.localStorage.setItem("onlineUsers", JSON.stringify(users));
@@ -73,21 +55,42 @@ socket.on("offlineUsers", (id) => {
   window.localStorage.setItem("onlineUsers", JSON.stringify(onUsers));
   store.dispatch(reduxAUserBecameOffline(id));
 });
+socket.on("setup socketId", (id) => {
+  //console.log("remote socket id ", id);
+  store.dispatch(reduxSetMySocketId(id));
+});
+socket.on("new message", async ({ msg }) => {
+  //console.log("single chat");
+  store.dispatch(reduxAddMyMessagesFromSocket(msg));
+});
+socket.on("new message group", async ({ msg }) => {
+  //console.log("group chat");
+  store.dispatch(reduxAddMyMessagesFromSocket(msg));
+});
+socket.on("deleted message", ({ msgId, data }) => {
+  store.dispatch(reduxAddUpdateMessage({ data, msgId }));
+});
+socket.on("update latest message", ({ message }) => {
+  store.dispatch(reduxUpdateLatestMessage({ situation: false, message }));
+});
+socket.on("update conversationList", (convo) => {
+  store.dispatch(reduxAddMyConversations(convo));
+});
+socket.on("new Group", (convo) => {
+  store.dispatch(reduxAddMyConversations(convo));
+});
 
 socket.on("openTypingToClient", ({ typeTo, convo }) => {
   store.dispatch(reduxStartTyping({ situation: true, id: typeTo, convo }));
 });
-socket.on("closeTypingToClient", ({ convo }) => {
-  store.dispatch(reduxStopTyping({ situation: false, convo }));
+socket.on("closeTypingToClient", ({ convo, message }) => {
+  store.dispatch(reduxStopTyping({ situation: false, convo, message }));
 });
 socket.on("typing group", ({ typer, convo }) => {
   store.dispatch(reduxStartTyping({ situation: true, id: typer, convo }));
 });
-socket.on("stop typing group", ({ convo }) => {
-  store.dispatch(reduxStopTyping({ situation: false, convo }));
-});
-socket.on("update latest message", ({ message }) => {
-  store.dispatch(reduxUpdateLatestMessage({ situation: false, message }));
+socket.on("stop typing group", ({ convo, message }) => {
+  store.dispatch(reduxStopTyping({ situation: false, convo, message }));
 });
 
 socket.on("add emoji", ({ msgId, data }) => {
@@ -199,15 +202,15 @@ export const userStartMessageTyping = (chattedUserId, typeTo, convo) => {
   socket?.emit("typing", { chattedUserId, typeTo, convo });
 };
 
-export const userStopMessageTyping = (chattedUserId, convo) => {
-  socket?.emit("stop typing", { chattedUserId, convo });
+export const userStopMessageTyping = (chattedUserId, convo, message) => {
+  socket?.emit("stop typing", { chattedUserId, convo, message });
 };
 export const groupStartMessageTyping = (recipients, typer, convo) => {
   socket?.emit("typing group", { recipients, typer, convo });
 };
 
-export const groupStopMessageTyping = (recipients, convo) => {
-  socket?.emit("stop typing group", { recipients, convo });
+export const groupStopMessageTyping = (recipients, convo, message) => {
+  socket?.emit("stop typing group", { recipients, convo, message });
 };
 export const userUpdateLatestMessage = (chattedUserId, message) => {
   socket?.emit("update latest message", { chattedUserId, message });
@@ -248,4 +251,34 @@ export const makeStatusSeen = (ownerId, seenBy) => {
 };
 export const deleteStatus = (targets, statusId) => {
   socket?.emit("status deleted", { targets, statusId });
+};
+
+/* Async Handlers */
+
+const asyncMakeMsgSeenSingle = async (msg, id) => {
+  const activeConversation = store.getState().messages.activeConversation;
+
+  if (activeConversation && activeConversation?._id === msg.conversation._id) {
+    const { data } = await axios.post("/message/make_seen_for_user", {
+      msgId: msg._id,
+      id,
+    });
+    store.dispatch(reduxAddMyMessagesFromSocket(data));
+  } else {
+    store.dispatch(reduxAddMyMessagesFromSocket(msg));
+  }
+};
+const asyncMakeMsgSeenGroup = async (msg, id) => {
+  const activeConversation = store.getState().messages.activeConversation;
+  //console.log(activeConversation?._id === msg.conversation._id);
+  //console.log("I am trieggered");
+  if (activeConversation?._id === msg.conversation._id) {
+    const { data } = await axios.post("/message/make_seen_for_user", {
+      msgId: msg._id,
+      id,
+    });
+    store.dispatch(reduxAddMyMessagesFromSocket(data));
+  } else {
+    store.dispatch(reduxAddMyMessagesFromSocket(msg));
+  }
 };

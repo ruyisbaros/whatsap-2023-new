@@ -8,31 +8,11 @@ exports.socketServer = (socket, io) => {
   if (!user) {
     users.push({ socketId: socket.id, id });
     socket.broadcast.emit("onlineUsers", users);
+  } else {
+    socket.broadcast.emit("onlineUsers", users);
   }
   console.log(users);
-  /* socket.on("joinUser", (id) => {
-    const user = users.find((user) => user.id === id);
-    if (!user) {
-      users.push({ id, socketId: socket.id });
-      socket.broadcast.emit("onlineUsers", users);
-    }
-    socket.emit("setup socketId", socket.id);
-    //console.log(users);
-  }); */
 
-  socket.on("disconnect", async () => {
-    const user = users.find((u) => u.socketId === socket.id);
-    users = users.filter((user) => user.socketId !== socket.id);
-    //console.log(users);
-    //console.log(user);
-    const date = new Date();
-    if (user) {
-      await User.findByIdAndUpdate(user.id, {
-        lastSeen: date,
-      });
-    }
-    socket.broadcast.emit("offlineUsers", user?.id);
-  });
   socket.on("logout", async (id) => {
     const user = users.find((u) => u.id === id);
     users = users.filter((user) => user.socketId !== socket.id);
@@ -56,24 +36,21 @@ exports.socketServer = (socket, io) => {
   //Send receive messages
   socket.on("new message", ({ msg, id }) => {
     const user = users.find((user) => user.id === id);
-    //console.log("Users: ", users);
-    //console.log("User: ", user);
-
     if (user) {
-      socket.to(`${user.socketId}`).emit("new message", msg);
+      socket.to(`${user.socketId}`).emit("new message", { msg });
     }
   });
   socket.on("new message group", ({ msg, recipients }) => {
     //console.log(recipients);
-    let usersToSend = recipients.map((rcp) =>
-      users.find((usr) => usr.id === rcp._id)
-    );
+    let usersToSend = recipients
+      .map((rcp) => users.find((usr) => usr.id === rcp._id))
+      .filter((el) => el !== undefined);
 
     //console.log(usersToSend);
 
     if (usersToSend.length > 0) {
       usersToSend.forEach((user) => {
-        socket.to(user.socketId).emit("new message group", msg);
+        socket.to(user.socketId).emit("new message group", { msg });
       });
     }
   });
@@ -129,16 +106,18 @@ exports.socketServer = (socket, io) => {
     }
   });
   //Stop Typing
-  socket.on("stop typing", ({ chattedUserId, convo }) => {
+  socket.on("stop typing", ({ chattedUserId, convo, message }) => {
     //console.log(userId);
     //console.log(convo);
     const user = users.find((user) => user.id === chattedUserId);
     //console.log(user);
     if (user) {
-      socket.to(`${user.socketId}`).emit("closeTypingToClient", { convo });
+      socket
+        .to(`${user.socketId}`)
+        .emit("closeTypingToClient", { convo, message });
     }
   });
-  socket.on("stop typing group", ({ recipients, convo }) => {
+  socket.on("stop typing group", ({ recipients, convo, message }) => {
     let usersToSend = recipients
       .map((rcp) => users.find((usr) => usr.id === rcp._id))
       .filter((el) => el !== undefined);
@@ -146,7 +125,7 @@ exports.socketServer = (socket, io) => {
 
     if (usersToSend.length > 0) {
       usersToSend.forEach((user) => {
-        socket.to(user.socketId).emit("stop typing group", { convo });
+        socket.to(user.socketId).emit("stop typing group", { convo, message });
       });
     }
   });
@@ -339,5 +318,19 @@ exports.socketServer = (socket, io) => {
     if (user) {
       io.to(user.socketId).emit("status seen", seenBy);
     }
+  });
+
+  socket.on("disconnect", async () => {
+    const user = users.find((u) => u.socketId === socket.id);
+    users = users.filter((user) => user.socketId !== socket.id);
+    //console.log(users);
+    //console.log(user);
+    const date = new Date();
+    if (user) {
+      await User.findByIdAndUpdate(user.id, {
+        lastSeen: date,
+      });
+    }
+    socket.broadcast.emit("offlineUsers", user?.id);
   });
 };

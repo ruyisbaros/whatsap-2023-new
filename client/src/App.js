@@ -47,7 +47,7 @@ const App = () => {
   const fetchActiveStatuses = useCallback(async () => {
     try {
       const { data } = await axios.get("/status/active_sts");
-      console.log(data);
+      //console.log(data);
       dispatch(reduxGetActiveStatuses(data));
     } catch (error) {
       toast.error(error.response.data.message);
@@ -62,7 +62,7 @@ const App = () => {
     try {
       const { data } = await axios.get("/status/my_status");
 
-      console.log(data);
+      //console.log(data);
       dispatch(reduxSetMyStatus(data));
     } catch (error) {
       toast.error(error.response.data?.message);

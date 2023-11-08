@@ -315,10 +315,7 @@ const messageCtrl = {
       const messages = await MessageModel.find({
         conversation: convId,
       })
-        .populate(
-          "sender recipient recipients idForDeleted whoSaw",
-          "-password"
-        )
+        .populate("sender recipient recipients idForDeleted", "-password")
         .populate({
           path: "repliedMessage",
           model: "Message",
@@ -519,7 +516,24 @@ const messageCtrl = {
           { conversation: { $eq: convId } },
           { sender: { $ne: req.user._id } },
         ],
-      });
+      })
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
       //console.log(notSeenMessages);
       const promises = notSeenMessages.map(
         async (msg) =>
@@ -551,7 +565,40 @@ const messageCtrl = {
             model: "Message",
           },
         });
-      res.status(200).json(messages);
+      res.status(200).json({ messages, notSeenMessages });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
+  make_seen_for_user: async (req, res) => {
+    try {
+      const { msgId, id } = req.body;
+      if (!msgId || !id) {
+        return;
+      }
+      const updatedMessage = await MessageModel.findByIdAndUpdate(
+        msgId,
+        { $push: { whoSaw: id } },
+        { new: true }
+      )
+        .populate("sender recipient recipients idForDeleted", "-password")
+        .populate({
+          path: "repliedMessage",
+          model: "Message",
+          populate: {
+            path: "sender",
+            model: "User",
+          },
+        })
+        .populate({
+          path: "conversation",
+          model: "Conversation",
+          populate: {
+            path: "latestMessage",
+            model: "Message",
+          },
+        });
+      res.status(200).json(updatedMessage);
     } catch (error) {
       res.status(500).json({ message: error.message });
     }

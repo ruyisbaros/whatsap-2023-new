@@ -20,7 +20,6 @@ const SingleConversation = ({ convo }) => {
 
   const [YOU, setYOU] = useState("");
   const [typer, setTyper] = useState("");
-  const [countOfNotReadMessage, setCountOfNotReadMessage] = useState(0);
 
   const findMeAndYou = useCallback(() => {
     if (!convo.isGroup) {
@@ -51,22 +50,8 @@ const SingleConversation = ({ convo }) => {
       toast.error(error.response.data.message);
     }
   };
-  const countMyNotSeenMessages = useCallback(() => {
-    setCountOfNotReadMessage((prev) =>
-      messages.reduce((ac, item) => {
-        if (item.sender._id !== loggedUser.id && !item.seen) {
-          return (ac += 1);
-        } else {
-          return 0;
-        }
-      }, prev)
-    );
-  }, [messages, loggedUser]);
 
-  useEffect(() => {
-    countMyNotSeenMessages();
-  }, [countMyNotSeenMessages]);
-  // console.log(countOfNotReadMessage);
+  //console.log(countOfNotReadMessage);
   return (
     <li
       className={`list-none h-[72px] w-full dark:bg-dark_bg_1 hover:dark:bg-dark_bg_2 cursor-pointer dark:text-dark_text_1 px-[10px] rounded-lg mb-1 ${
@@ -77,11 +62,13 @@ const SingleConversation = ({ convo }) => {
       <div className="relative w-full flex items-center justify-between py-[10px]">
         {/* Left side (photo latest message etc) */}
         <div className="flex items-center gap-x-3">
-          <div className="relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden">
+          <div
+            className={`relative min-w-[50px] max-w-[50px] h-[50px] rounded-full overflow-hidden`}
+          >
             <img
               src={convo.isGroup ? convo.picture : YOU.picture}
               alt=""
-              className="w-full h-full object-cover"
+              className={`w-full h-full object-cover `}
             />
           </div>
           <div className="w-full flex flex-col">
@@ -161,39 +148,3 @@ const SingleConversation = ({ convo }) => {
 };
 
 export default SingleConversation;
-{
-  /*  {convo.latestMessage &&
-                    convo.latestMessage?.message &&
-                    convo.latestMessage?.files.length > 0 ? (
-                      convo.latestMessage.message.length > 20 ? (
-                        <p className="w-full flex items-center justify-between">
-                          <span>
-                            {convo.latestMessage.message.slice(0, 20) + "..."}
-                          </span>
-                          <span className="ml-8">
-                            <MdPermMedia color="#00a884" />
-                          </span>
-                        </p>
-                      ) : (
-                        <p className="w-full flex items-center justify-between">
-                          <span>{convo.latestMessage.message}</span>
-                          <span className="ml-8">
-                            <MdPermMedia color="#00a884" />
-                          </span>
-                        </p>
-                      )
-                    ) : (
-                      ""
-                    )} */
-}
-{
-  /*  {convo.latestMessage &&
-                      !convo.latestMessage?.message &&
-                      convo.latestMessage?.files.length > 0 && (
-                        <p className="mt-2">
-                          <span>
-                            <MdPermMedia color="#00a884" />
-                          </span>
-                        </p>
-                      )} */
-}

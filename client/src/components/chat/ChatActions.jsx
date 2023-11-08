@@ -86,13 +86,15 @@ const ChatActions = ({
               (cnv) => cnv._id === activeConversation._id
             );
             createNewConversation(convo, chattedUser._id);
+            userUpdateLatestMessage(chattedUser._id, data.populatedMessage);
           }
 
           dispatch(reduxAddMyMessages(data.populatedMessage));
 
           //Socket send message convo,message
           sendNewMessage(data.populatedMessage, chattedUser._id);
-          userUpdateLatestMessage(chattedUser._id, data.populatedMessage);
+          // userUpdateLatestMessage(chattedUser._id, data.populatedMessage);
+          userStopMessageTyping(chattedUser._id, null, data.populatedMessage);
 
           setMessage("");
           setStatus(false);
@@ -114,7 +116,8 @@ const ChatActions = ({
 
           //Socket send message convo,message
           sendNewMessageToGroup(data.populatedMessage, grpChatUsers);
-          groupUpdateLatestMessage(grpChatUsers, data.populatedMessage);
+          // groupUpdateLatestMessage(grpChatUsers, data.populatedMessage);
+          groupStopMessageTyping(grpChatUsers, null, data.populatedMessage);
 
           setMessage("");
           setStatus(false);
@@ -144,7 +147,8 @@ const ChatActions = ({
 
           //Socket send message convo,message
           sendNewMessage(data.populatedMessage, chattedUser._id);
-          userUpdateLatestMessage(chattedUser._id, data.populatedMessage);
+          //userUpdateLatestMessage(chattedUser._id, data.populatedMessage);
+          userStopMessageTyping(chattedUser._id, null, data.populatedMessage);
           setMessage("");
           setStatus(false);
           setReplyMessage(false);
@@ -170,7 +174,8 @@ const ChatActions = ({
 
           //Socket send message convo,message
           sendNewMessageToGroup(data.populatedMessage, grpChatUsers);
-          groupUpdateLatestMessage(grpChatUsers, data.populatedMessage);
+          //groupUpdateLatestMessage(grpChatUsers, data.populatedMessage);
+          groupStopMessageTyping(grpChatUsers, null, data.populatedMessage);
 
           setMessage("");
           setStatus(false);
@@ -200,15 +205,15 @@ const ChatActions = ({
     }
 
     let lastTypeTime = new Date().getTime();
-    let timer = 2000;
+    let timer = 500;
     let timers = setTimeout(() => {
       let timeNow = new Date().getTime();
       let tDifference = timeNow - lastTypeTime;
 
       if (tDifference >= timer && !msgSended) {
         !activeConversation.isGroup
-          ? userStopMessageTyping(chattedUser._id, activeConversation)
-          : groupStopMessageTyping(grpChatUsers, activeConversation);
+          ? userStopMessageTyping(chattedUser._id, activeConversation, null)
+          : groupStopMessageTyping(grpChatUsers, activeConversation, null);
       }
     }, timer);
     return () => clearTimeout(timers);

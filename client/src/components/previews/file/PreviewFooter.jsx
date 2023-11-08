@@ -115,7 +115,7 @@ const PreviewFooter = ({
           //Socket send message convo,message
           sendNewMessage(data.populatedMessage, chattedUser._id);
           userUpdateLatestMessage(chattedUser._id, data.populatedMessage);
-
+          userStopMessageTyping(chattedUser._id, null, data.populatedMessage);
           setMessage("");
           setStatus(false);
           //Make files empty
@@ -140,7 +140,7 @@ const PreviewFooter = ({
           //Socket send message convo,message
           sendNewMessageToGroup(data.populatedMessage, grpChatUsers);
           groupUpdateLatestMessage(grpChatUsers, data.populatedMessage);
-
+          groupStopMessageTyping(grpChatUsers, null, data.populatedMessage);
           setMessage("");
           setStatus(false);
         } catch (error) {
