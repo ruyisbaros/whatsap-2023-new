@@ -35,6 +35,12 @@
   .flex0030 {
     flex: 0 0 30%;
   }
+  .flex0040 {
+    flex: 0 0 40%;
+  }
+  .flex0050 {
+    flex: 0 0 50%;
+  }
   .btn {
     @apply w-[40px] h-[40px] rounded-full flex items-center justify-center active:bg-dark_hover_1;
   }

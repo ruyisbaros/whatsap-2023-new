@@ -4,7 +4,9 @@ let users = [];
 exports.socketServer = (socket, io) => {
   console.log(`User with ${socket.id} connected`);
   const id = socket.handshake.auth.id;
+  console.log(id);
   const user = users.find((user) => user.id === id);
+  console.log(user);
   if (!user) {
     users.push({ socketId: socket.id, id });
     socket.broadcast.emit("onlineUsers", users);
@@ -15,6 +17,19 @@ exports.socketServer = (socket, io) => {
 
   socket.on("logout", async (id) => {
     const user = users.find((u) => u.id === id);
+    users = users.filter((user) => user.socketId !== socket.id);
+    //console.log(users);
+    //console.log(user);
+    const date = new Date();
+    if (user) {
+      await User.findByIdAndUpdate(user.id, {
+        lastSeen: date,
+      });
+    }
+    socket.broadcast.emit("offlineUsers", user?.id);
+  });
+  socket.on("disconnect", async () => {
+    const user = users.find((u) => u.socketId === socket.id);
     users = users.filter((user) => user.socketId !== socket.id);
     //console.log(users);
     //console.log(user);
@@ -58,7 +73,7 @@ exports.socketServer = (socket, io) => {
   //Updated conversation list for fresh chat users
   socket.on("update conversationList", ({ newConversation, id }) => {
     const user = users.find((user) => user.id === id);
-    //console.log(user);
+    console.log(user);
     if (user) {
       socket
         .to(`${user.socketId}`)
@@ -318,19 +333,5 @@ exports.socketServer = (socket, io) => {
     if (user) {
       io.to(user.socketId).emit("status seen", seenBy);
     }
-  });
-
-  socket.on("disconnect", async () => {
-    const user = users.find((u) => u.socketId === socket.id);
-    users = users.filter((user) => user.socketId !== socket.id);
-    //console.log(users);
-    //console.log(user);
-    const date = new Date();
-    if (user) {
-      await User.findByIdAndUpdate(user.id, {
-        lastSeen: date,
-      });
-    }
-    socket.broadcast.emit("offlineUsers", user?.id);
   });
 };

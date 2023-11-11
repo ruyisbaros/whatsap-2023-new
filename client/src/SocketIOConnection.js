@@ -74,6 +74,7 @@ socket.on("update latest message", ({ message }) => {
   store.dispatch(reduxUpdateLatestMessage({ situation: false, message }));
 });
 socket.on("update conversationList", (convo) => {
+  console.log("Triggered");
   store.dispatch(reduxAddMyConversations(convo));
 });
 socket.on("new Group", (convo) => {

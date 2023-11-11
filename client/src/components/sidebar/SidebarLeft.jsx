@@ -14,7 +14,7 @@ const SidebarLeft = ({
   const [searchResults, setSearchResults] = useState([]);
   //console.log(searchResults);
   return (
-    <div className="flex0030 w-[30%] h-full overflow-hidden select-none borderC">
+    <div className="flex0040 w-[40%] lg:flex0030 lg:w-[30%] h-full overflow-hidden select-none borderC">
       <SideBarHeader
         setShowStatusInfo={setShowStatusInfo}
         statusCondition={statusCondition}

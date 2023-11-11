@@ -11,11 +11,11 @@ const Menu = ({ menuRef, setShowGroupMenu, setShowMenu }) => {
   const handleLogout = async () => {
     try {
       await axios.get("/auth/logout");
+      logoutDisconnect(loggedUser.id);
       dispatch(reduxLogout());
       dispatch(reduxRemoveActiveConversation());
       window.localStorage.removeItem("registeredUser");
       //socket
-      logoutDisconnect(loggedUser.id);
     } catch (error) {
       toast.error(error?.response?.data?.message);
     }
