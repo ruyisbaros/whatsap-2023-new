@@ -29,15 +29,13 @@ const ViewMyStatus = ({ setShowMyStatus }) => {
       } else if (myStatus.files.length - 1 >= activeIndex) {
         setShowMyStatus(false);
       }
-    }, 15000);
+    }, 5000);
     return () => clearTimeout(timer);
   }, [activeIndex, myStatus.files.length]);
 
-  console.log("document: ", new Date(myStatus.createdAt).getTime());
-  console.log("today: ", new Date().getTime());
   const AnimatedBar = () => {
     return (
-      <div className="animated_line">
+      <div className="animated_lineMe">
         <span></span>
       </div>
     );

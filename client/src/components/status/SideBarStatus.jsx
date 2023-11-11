@@ -52,13 +52,20 @@ const SideBarStatus = ({
 
   useEffect(() => {
     if (notSeenStatuses.length > 0) {
-      let tempNSeen = [...notSeenStatuses];
-      tempNSeen = tempNSeen.filter((el, i) => tempNSeen.indexOf(el) === i);
+      let tempNSeen = [
+        ...notSeenStatuses
+          .reduce((ac, val) => ac.set(val._id, val), new Map())
+          .values(),
+      ];
       setNotSeenStatuses(tempNSeen);
     }
     if (seenStatuses.length > 0) {
-      let tempSeen = [...seenStatuses];
-      tempSeen = tempSeen.filter((el, i) => tempSeen.indexOf(el) === i);
+      let tempSeen = [
+        ...seenStatuses
+          .reduce((ac, val) => ac.set(val._id, val), new Map())
+          .values(),
+      ];
+      console.log(tempSeen);
       setSeenStatuses(tempSeen);
     }
   }, []);
@@ -163,6 +170,7 @@ const SideBarStatus = ({
                       onClick={() => handleView(sts._id)}
                       style={{ borderColor: "gray" }}
                     />
+                    {/* <div className="status-img"></div> */}
                   </div>
                   <div>
                     <h1 className="dark:text-white capitalize text-sm font-bold">

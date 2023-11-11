@@ -180,8 +180,24 @@ const SingleMessage = ({
             </div>
           ) : (
             <div className="float-left h-full text-sm pb-4 pr-8">
-              <div className="inside_replied">
-                <span className="flex text-red-700 font-bold">
+              <div
+                className="inside_replied"
+                style={{
+                  borderLeftColor:
+                    msg?.repliedMessage?.sender?._id === loggedUser.id
+                      ? "#00A884"
+                      : "rgba(255, 0, 0, 0.79)",
+                }}
+              >
+                <span
+                  className="flex text-red-700 font-bold"
+                  style={{
+                    color:
+                      msg?.repliedMessage?.sender?._id === loggedUser.id
+                        ? "#00A884"
+                        : "rgba(255, 0, 0, 0.79)",
+                  }}
+                >
                   {msg?.repliedMessage?.sender?._id === loggedUser.id
                     ? "You"
                     : makeCapital(msg?.repliedMessage?.sender?.name)}
@@ -190,7 +206,10 @@ const SingleMessage = ({
               </div>
               <div className="inside_reply">
                 {activeConversation.isGroup && (
-                  <span className="flex text-green-700 font-bold">
+                  <span
+                    className="flex text-pink-950 font-bold"
+                    style={{ color: me ? "#00A884" : "rgba(255, 0, 0, 0.79)" }}
+                  >
                     {me ? "You" : makeCapital(msg?.sender.name)}
                   </span>
                 )}

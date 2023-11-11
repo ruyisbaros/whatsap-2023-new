@@ -87,7 +87,8 @@
   cursor: pointer;
 }
 
-.animated_line {
+.animated_line,
+.animated_lineMe {
   width: 100%;
   position: absolute;
   top: -100px;
@@ -96,7 +97,8 @@
   align-items: center;
   justify-content: center;
 }
-.animated_line span {
+.animated_line span,
+.animated_lineMe span {
   position: relative;
   width: 80%;
   height: 12px;
@@ -115,6 +117,17 @@
   background: #008069;
   animation: doldur 15s;
 }
+.animated_lineMe span::before {
+  content: "";
+  border-radius: 10px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: #008069;
+  animation: doldur 5s;
+}
 @keyframes doldur {
   0% {
     width: 0;
@@ -123,30 +136,15 @@
     width: 100%;
   }
 }
-.svg-1 {
-  position: absolute;
-  top: -3px;
-  left: -4px;
-}
-.track {
-  stroke: #008069;
-  stroke-width: 2px;
-  fill: none;
-}
-.track2 {
-  stroke: #111b21;
-  stroke-width: 10px;
-  fill: none;
-  stroke-dasharray: 30;
-  stroke-dashoffset: 15;
-}
-.status-img {
-  border: 2px solid #008069;
-  stroke-dasharray: 30;
-  stroke-dashoffset: 15;
-}
-/* Status seen by */
 
+.status-img {
+  width: 100px;
+  height: 100px;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='100' ry='100' stroke='%23EC3463' stroke-width='7' stroke-dasharray='50%25%2c 13%25' stroke-dashoffset='86' stroke-linecap='butt'/%3e%3c/svg%3e");
+  border-radius: 100px;
+}
+
+/* Status seen by */
 .see-users-main {
   width: 100%;
   height: 40%;

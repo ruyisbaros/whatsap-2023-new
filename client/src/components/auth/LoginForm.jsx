@@ -39,7 +39,6 @@ const LoginForm = () => {
         );
         await dispatch(reduxRegisterUser(data.user));
         dispatch(reduxMakeTokenExpiredNone());
-        toast.success(data.message);
       } else {
         toast.error("Something went wrong! Please try again.");
       }

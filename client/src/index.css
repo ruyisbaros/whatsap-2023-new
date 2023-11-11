@@ -552,7 +552,7 @@ img {
 }
 
 .inside_replied {
-  width: 120%;
+  width: 110%;
   border-radius: 8px;
   background: #5c8a5664;
   border-left: 3px solid rgba(255, 0, 0, 0.79);

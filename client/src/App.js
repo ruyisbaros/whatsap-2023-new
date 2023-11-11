@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,7 +27,6 @@ const App = () => {
   const dispatch = useDispatch();
   const { loggedUser } = useSelector((store) => store.currentUser);
   const { myStatus } = useSelector((store) => store.statuses);
-
   const reFreshToken = useCallback(async () => {
     try {
       const { data } = await axios.get("/auth/refresh_token");
@@ -50,7 +49,11 @@ const App = () => {
       //console.log(data);
       dispatch(reduxGetActiveStatuses(data));
     } catch (error) {
-      toast.error(error.response.data.message);
+      if (error?.response?.data?.message === "jwt expired") {
+        dispatch(reduxMakeTokenExpired());
+      } else {
+        toast.error(error.response.data?.message);
+      }
     }
   }, [dispatch]);
 
@@ -65,7 +68,11 @@ const App = () => {
       //console.log(data);
       dispatch(reduxSetMyStatus(data));
     } catch (error) {
-      toast.error(error.response.data?.message);
+      if (error?.response?.data?.message === "jwt expired") {
+        dispatch(reduxMakeTokenExpired());
+      } else {
+        toast.error(error.response.data?.message);
+      }
     }
   }, [dispatch]);
 
@@ -75,7 +82,7 @@ const App = () => {
 
   //DELETE STORIES AUTOMATICALLY
   const deleteExpiredStory = useCallback(async () => {
-    const { data } = await axios.delete(`/status/delete/${myStatus._id}`);
+    const { data } = await axios.get(`/status/delete/${myStatus._id}`);
     if (data === "deleted") {
       dispatch(reduxDeleteMyStatus());
 
@@ -83,6 +90,14 @@ const App = () => {
       deleteStatus(myStatus?.targets, myStatus?._id);
     }
   }, [myStatus, dispatch]);
+  useEffect(() => {
+    if (
+      myStatus &&
+      (new Date().getTime() - Date.parse(myStatus.createdAt)) / 86400000 > 1
+    ) {
+      deleteExpiredStory();
+    }
+  }, [deleteExpiredStory]);
 
   return (
     <div className="dark ">

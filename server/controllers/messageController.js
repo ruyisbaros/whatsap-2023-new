@@ -193,6 +193,10 @@ const messageCtrl = {
             path: "latestMessage",
             model: "Message",
           },
+          populate: {
+            path: "users",
+            model: "User",
+          },
         });
       res.status(201).json({ populatedMessage });
     } catch (error) {
@@ -253,6 +257,10 @@ const messageCtrl = {
           populate: {
             path: "latestMessage",
             model: "Message",
+          },
+          populate: {
+            path: "users",
+            model: "User",
           },
         });
       res.status(201).json({ populatedMessage });
