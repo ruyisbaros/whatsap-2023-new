@@ -72,14 +72,29 @@ const GroupInfo = ({ setShowGroupInfo }) => {
             <div className="group_media_docs">Media, links and docs</div>
             <div className="group_media_imgs">
               {profileFiles.length > 0 &&
-                profileFiles.map((file) => (
-                  <img
-                    key={file.public_id}
-                    src={file.url}
-                    alt="file"
-                    className="profile_files"
-                  />
-                ))}
+                profileFiles.map((file) =>
+                  file.type === "IMAGE" ? (
+                    <img
+                      key={file.public_id}
+                      src={file.url}
+                      alt="file"
+                      className="profile_files"
+                    />
+                  ) : file.type === "VIDEO" ? (
+                    <video
+                      key={file.public_id}
+                      src={file.url}
+                      alt="file"
+                      className="profile_files"
+                    />
+                  ) : (
+                    <img
+                      src={`/file/${file.type}.png`}
+                      alt=""
+                      className="profile_files"
+                    />
+                  )
+                )}
             </div>
           </div>
           <div className="group_settings">

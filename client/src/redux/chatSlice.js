@@ -103,6 +103,13 @@ const chatSlicer = createSlice({
         ...state.activeConversation,
         latestMessage: action.payload.conversation.latestMessage,
       };
+      let tempArr = [];
+      state.messages.forEach((msg) => {
+        if (msg.files.length > 0) {
+          tempArr = [...tempArr, ...msg.files];
+        }
+      });
+      state.profileFiles = tempArr;
     },
     reduxAddReplyToMessage: (state, action) => {
       state.messages = state.messages.map((msg) =>

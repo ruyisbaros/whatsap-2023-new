@@ -4,8 +4,7 @@ let users = [];
 exports.socketServer = (socket, io) => {
   console.log(`User with ${socket.id} connected`);
   const id = socket.handshake.auth.id;
-  console.log(id);
-  const user = users.find((user) => user.id === id);
+  const user = users.find((user) => String(user.id) === String(id));
   console.log(user);
   if (!user) {
     users.push({ socketId: socket.id, id });
@@ -14,7 +13,6 @@ exports.socketServer = (socket, io) => {
     socket.broadcast.emit("onlineUsers", users);
   }
   console.log(users);
-
   socket.on("logout", async (id) => {
     const user = users.find((u) => u.id === id);
     users = users.filter((user) => user.socketId !== socket.id);
