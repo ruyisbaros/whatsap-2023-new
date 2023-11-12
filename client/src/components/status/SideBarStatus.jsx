@@ -98,7 +98,7 @@ const SideBarStatus = ({
   };
 
   return (
-    <div className="flex0040 w-[40%] lg:flex0030 lg:w-[30%] h-full overflow-hidden select-none borderC relative">
+    <div className="flex0040 w-[40%] lgl:flex0030 lgl:w-[30%] h-full overflow-hidden select-none borderC relative">
       <div className="status_banner">
         <button
           className="btn w-6 h-6"

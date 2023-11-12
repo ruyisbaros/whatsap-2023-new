@@ -1,0 +1,148 @@
+"filename", "language", "JavaScript", "JSON", "JavaScript JSX", "CSS", "HTML", "Markdown", "comment", "blank", "total"
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\README.md", "Markdown", 0, 0, 0, 0, 0, 38, 0, 33, 71
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\package-lock.json", "JSON", 0, 31756, 0, 0, 0, 0, 0, 1, 31757
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\package.json", "JSON", 0, 55, 0, 0, 0, 0, 0, 1, 56
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\public\index.html", "HTML", 0, 0, 0, 0, 18, 0, 10, 2, 30
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\public\manifest.json", "JSON", 0, 25, 0, 0, 0, 0, 0, 1, 26
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\App.js", "JavaScript", 104, 0, 0, 0, 0, 0, 14, 13, 131
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\SocketIOConnection.js", "JavaScript", 254, 0, 0, 0, 0, 0, 11, 21, 286
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\AddContact.js", "JavaScript", 24, 0, 0, 0, 0, 0, 0, 1, 25
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Arrow.js", "JavaScript", 21, 0, 0, 0, 0, 0, 0, 1, 22
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Attachment.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 2, 13
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Call.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 2, 13
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Camera.js", "JavaScript", 40, 0, 0, 0, 0, 0, 0, 2, 42
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Chat.js", "JavaScript", 22, 0, 0, 0, 0, 0, 0, 2, 24
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Close.js", "JavaScript", 16, 0, 0, 0, 0, 0, 0, 2, 18
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Community.js", "JavaScript", 18, 0, 0, 0, 0, 0, 0, 1, 19
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Contact.js", "JavaScript", 40, 0, 0, 0, 0, 0, 0, 1, 41
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Dial.js", "JavaScript", 16, 0, 0, 0, 0, 0, 0, 1, 17
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Document.js", "JavaScript", 38, 0, 0, 0, 0, 0, 0, 1, 39
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Dots.js", "JavaScript", 21, 0, 0, 0, 0, 0, 0, 2, 23
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Download.js", "JavaScript", 24, 0, 0, 0, 0, 0, 0, 1, 25
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Emoji.js", "JavaScript", 18, 0, 0, 0, 0, 0, 0, 2, 20
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\FilterIcon.js", "JavaScript", 20, 0, 0, 0, 0, 0, 0, 1, 21
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Lock.js", "JavaScript", 12, 0, 0, 0, 0, 0, 0, 3, 15
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Logo.js", "JavaScript", 105, 0, 0, 0, 0, 0, 0, 1, 106
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Mute.js", "JavaScript", 12, 0, 0, 0, 0, 0, 0, 3, 15
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\NoVideo.js", "JavaScript", 17, 0, 0, 0, 0, 0, 0, 2, 19
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Notification.js", "JavaScript", 20, 0, 0, 0, 0, 0, 0, 1, 21
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Photo.js", "JavaScript", 38, 0, 0, 0, 0, 0, 0, 1, 39
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Poll.js", "JavaScript", 43, 0, 0, 0, 0, 0, 0, 1, 44
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Return.js", "JavaScript", 21, 0, 0, 0, 0, 0, 0, 2, 23
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Search.js", "JavaScript", 21, 0, 0, 0, 0, 0, 0, 1, 22
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\SearchLarge.js", "JavaScript", 12, 0, 0, 0, 0, 0, 0, 3, 15
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Seen.js", "JavaScript", 20, 0, 0, 0, 0, 0, 0, 1, 21
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Send.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 2, 13
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\SmallArrow.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 2, 13
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\SpeakerIcon.js", "JavaScript", 12, 0, 0, 0, 0, 0, 0, 1, 13
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Sticker.js", "JavaScript", 29, 0, 0, 0, 0, 0, 0, 2, 31
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Story.js", "JavaScript", 47, 0, 0, 0, 0, 0, 0, 1, 48
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\TriangleIcon.js", "JavaScript", 18, 0, 0, 0, 0, 0, 0, 2, 20
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Valid.js", "JavaScript", 119, 0, 0, 0, 0, 0, 0, 2, 121
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\VideoCall.js", "JavaScript", 17, 0, 0, 0, 0, 0, 0, 1, 18
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\VideoDeal.jsx", "JavaScript JSX", 0, 0, 13, 0, 0, 0, 0, 1, 14
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\index.js", "JavaScript", 58, 0, 0, 0, 0, 0, 0, 1, 59
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\axios.js", "JavaScript", 13, 0, 0, 0, 0, 0, 9, 4, 26
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\attachments\DocumentAttachment.jsx", "JavaScript JSX", 0, 0, 65, 0, 0, 0, 0, 5, 70
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\attachments\PhotoAttachment.jsx", "JavaScript JSX", 0, 0, 66, 0, 0, 0, 1, 5, 72
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\auth\LoginForm.jsx", "JavaScript JSX", 0, 0, 88, 0, 0, 0, 5, 5, 98
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\auth\Picture.jsx", "JavaScript JSX", 0, 0, 70, 0, 0, 0, 0, 3, 73
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\auth\RegisterForm.jsx", "JavaScript JSX", 0, 0, 108, 0, 0, 0, 6, 4, 118
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ActionHeader.jsx", "JavaScript JSX", 0, 0, 136, 0, 0, 0, 2, 6, 144
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ActiveChat.jsx", "JavaScript JSX", 0, 0, 124, 0, 0, 0, 1, 8, 133
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\AttachmentMenu.jsx", "JavaScript JSX", 0, 0, 43, 0, 0, 0, 0, 3, 46
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ChatActions.jsx", "JavaScript JSX", 0, 0, 275, 0, 0, 0, 22, 16, 313
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ChatHeader.jsx", "JavaScript JSX", 0, 0, 104, 0, 0, 0, 2, 5, 111
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ChatMessages.jsx", "JavaScript JSX", 0, 0, 92, 0, 0, 0, 5, 7, 104
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ChatReply.jsx", "JavaScript JSX", 0, 0, 54, 0, 0, 0, 2, 4, 60
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\DeleteBox.jsx", "JavaScript JSX", 0, 0, 64, 0, 0, 0, 1, 7, 72
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ShowFileInMessage.jsx", "JavaScript JSX", 0, 0, 65, 0, 0, 0, 1, 3, 69
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\SingleMessage.jsx", "JavaScript JSX", 0, 0, 276, 0, 0, 0, 5, 8, 289
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\Typing.jsx", "JavaScript JSX", 0, 0, 17, 0, 0, 0, 0, 3, 20
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\WhatsappHome.jsx", "JavaScript JSX", 0, 0, 22, 0, 0, 0, 0, 3, 25
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\groupChat\CreateGroup.jsx", "JavaScript JSX", 0, 0, 101, 0, 0, 0, 1, 7, 109
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\groupChat\GroupInfo.jsx", "JavaScript JSX", 0, 0, 181, 0, 0, 0, 1, 4, 186
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\groupChat\MultipleSelect.jsx", "JavaScript JSX", 0, 0, 36, 0, 0, 0, 0, 3, 39
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\previews\file\FilePreview.jsx", "JavaScript JSX", 0, 0, 27, 0, 0, 0, 3, 3, 33
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\previews\file\PreviewBody.jsx", "JavaScript JSX", 0, 0, 41, 0, 0, 0, 0, 3, 44
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\previews\file\PreviewFooter.jsx", "JavaScript JSX", 0, 0, 255, 0, 0, 0, 8, 11, 274
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\previews\file\PreviewHeader.jsx", "JavaScript JSX", 0, 0, 25, 0, 0, 0, 0, 3, 28
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\Contacts.jsx", "JavaScript JSX", 0, 0, 53, 0, 0, 0, 2, 3, 58
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\Conversations.jsx", "JavaScript JSX", 0, 0, 17, 0, 0, 0, 0, 4, 21
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\CustomAuthInput.jsx", "JavaScript JSX", 0, 0, 19, 0, 0, 0, 0, 3, 22
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\Menu.jsx", "JavaScript JSX", 0, 0, 57, 0, 0, 0, 1, 2, 60
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\Notifications.jsx", "JavaScript JSX", 0, 0, 28, 0, 0, 0, 2, 3, 33
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SearchBar.jsx", "JavaScript JSX", 0, 0, 61, 0, 0, 0, 3, 5, 69
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SearchResults.jsx", "JavaScript JSX", 0, 0, 20, 0, 0, 0, 2, 3, 25
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SideBarHeader.jsx", "JavaScript JSX", 0, 0, 99, 0, 0, 0, 1, 6, 106
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SidebarLeft.jsx", "JavaScript JSX", 0, 0, 33, 0, 0, 0, 2, 3, 38
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SingleConversation.jsx", "JavaScript JSX", 0, 0, 138, 0, 0, 0, 7, 6, 151
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\CreateStatus.jsx", "JavaScript JSX", 0, 0, 39, 0, 0, 0, 0, 3, 42
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\CreateStatusBody.jsx", "JavaScript JSX", 0, 0, 33, 0, 0, 0, 2, 3, 38
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\CreateStatusFooter.jsx", "JavaScript JSX", 0, 0, 167, 0, 0, 0, 3, 5, 175
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\CreateStatusText.jsx", "JavaScript JSX", 0, 0, 15, 0, 0, 0, 0, 3, 18
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\MediaAttach.jsx", "JavaScript JSX", 0, 0, 66, 0, 0, 0, 1, 5, 72
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\SeenBy.jsx", "JavaScript JSX", 0, 0, 32, 0, 0, 0, 1, 3, 36
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\SideBarStatus.jsx", "JavaScript JSX", 0, 0, 238, 0, 0, 0, 3, 12, 253
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\StatusCtrlBox.jsx", "JavaScript JSX", 0, 0, 36, 0, 0, 0, 0, 3, 39
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\ViewMyStatus.jsx", "JavaScript JSX", 0, 0, 108, 0, 0, 0, 1, 5, 114
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\ViewStatus.jsx", "JavaScript JSX", 0, 0, 228, 0, 0, 0, 4, 10, 242
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\CallAreaActions.jsx", "JavaScript JSX", 0, 0, 54, 0, 0, 0, 0, 3, 57
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\CallAreaInfo.jsx", "JavaScript JSX", 0, 0, 74, 0, 0, 0, 1, 3, 78
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\Calls.jsx", "JavaScript JSX", 0, 0, 84, 0, 0, 0, 3, 4, 91
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\Header.jsx", "JavaScript JSX", 0, 0, 24, 0, 0, 0, 0, 3, 27
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\Ringing.jsx", "JavaScript JSX", 0, 0, 97, 0, 0, 0, 5, 7, 109
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\index.css", "CSS", 0, 0, 0, 600, 0, 0, 29, 30, 659
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\index.js", "JavaScript", 17, 0, 0, 0, 0, 0, 0, 2, 19
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\pages\Home.jsx", "JavaScript JSX", 0, 0, 278, 0, 0, 0, 11, 15, 304
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\pages\Login.jsx", "JavaScript JSX", 0, 0, 12, 0, 0, 0, 2, 3, 17
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\pages\Register.jsx", "JavaScript JSX", 0, 0, 12, 0, 0, 0, 2, 3, 17
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\callStreamSlicer.js", "JavaScript", 49, 0, 0, 0, 0, 0, 0, 5, 54
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\callingsSlice.js", "JavaScript", 27, 0, 0, 0, 0, 0, 0, 4, 31
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\chatSlice.js", "JavaScript", 217, 0, 0, 0, 0, 0, 9, 7, 233
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\currentUserSlice.js", "JavaScript", 50, 0, 0, 0, 0, 0, 1, 4, 55
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\mediaDevicesSlice.js", "JavaScript", 30, 0, 0, 0, 0, 0, 0, 4, 34
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\socketSlicer.js", "JavaScript", 15, 0, 0, 0, 0, 0, 0, 4, 19
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\statusSlicer.js", "JavaScript", 77, 0, 0, 0, 0, 0, 1, 4, 82
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\store.js", "JavaScript", 23, 0, 0, 0, 0, 0, 0, 2, 25
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\ristrict_routes\LoggedInRoutes.jsx", "JavaScript JSX", 0, 0, 11, 0, 0, 0, 1, 3, 15
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\ristrict_routes\NotLoggedInRoutes.jsx", "JavaScript JSX", 0, 0, 8, 0, 0, 0, 0, 4, 12
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\ristrict_routes\RegisteredRoutes.jsx", "JavaScript JSX", 0, 0, 8, 0, 0, 0, 0, 3, 11
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\styles\groupInfo.css", "CSS", 0, 0, 0, 255, 0, 0, 7, 4, 266
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\styles\userStatus.css", "CSS", 0, 0, 0, 164, 0, 0, 1, 7, 172
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\fileTypes.js", "JavaScript", 29, 0, 0, 0, 0, 0, 0, 1, 30
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\helpers.js", "JavaScript", 30, 0, 0, 0, 0, 0, 1, 6, 37
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\momentHandler.js", "JavaScript", 62, 0, 0, 0, 0, 0, 1, 6, 69
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\validadion.js", "JavaScript", 19, 0, 0, 0, 0, 0, 4, 3, 26
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\webRTCUtils.js", "JavaScript", 60, 0, 0, 0, 0, 0, 5, 3, 68
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\tailwind.config.js", "JavaScript", 50, 0, 0, 0, 0, 0, 1, 1, 52
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\SocketServer.js", "JavaScript", 263, 0, 0, 0, 0, 0, 44, 29, 336
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\authController.js", "JavaScript", 130, 0, 0, 0, 0, 0, 10, 10, 150
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\conversationController.js", "JavaScript", 95, 0, 0, 0, 0, 0, 14, 6, 115
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\messageController.js", "JavaScript", 598, 0, 0, 0, 0, 0, 23, 10, 631
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\statusController.js", "JavaScript", 109, 0, 0, 0, 0, 0, 1, 3, 113
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\usersController.js", "JavaScript", 18, 0, 0, 0, 0, 0, 0, 2, 20
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\middleware\isUserExist.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 2, 13
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\middleware\protect.js", "JavaScript", 23, 0, 0, 0, 0, 0, 4, 2, 29
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\middleware\validChecks.js", "JavaScript", 53, 0, 0, 0, 0, 0, 0, 7, 60
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\models\conversationModel.js", "JavaScript", 38, 0, 0, 0, 0, 0, 0, 4, 42
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\models\messageModel.js", "JavaScript", 62, 0, 0, 0, 0, 0, 0, 3, 65
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\models\statusModel.js", "JavaScript", 33, 0, 0, 0, 0, 0, 0, 5, 38
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\models\userModel.js", "JavaScript", 43, 0, 0, 0, 0, 0, 0, 4, 47
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\package-lock.json", "JSON", 0, 4309, 0, 0, 0, 0, 0, 1, 4310
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\package.json", "JSON", 0, 35, 0, 0, 0, 0, 0, 1, 36
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\authRoutes.js", "JavaScript", 16, 0, 0, 0, 0, 0, 1, 4, 21
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\conversationRoutes.js", "JavaScript", 7, 0, 0, 0, 0, 0, 0, 3, 10
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\healthRoutes.js", "JavaScript", 15, 0, 0, 0, 0, 0, 0, 6, 21
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\index.js", "JavaScript", 15, 0, 0, 0, 0, 0, 0, 3, 18
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\messageRoutes.js", "JavaScript", 26, 0, 0, 0, 0, 0, 0, 2, 28
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\statusRoutes.js", "JavaScript", 9, 0, 0, 0, 0, 0, 0, 3, 12
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\usersRoute.js", "JavaScript", 5, 0, 0, 0, 0, 0, 0, 3, 8
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\server.js", "JavaScript", 95, 0, 0, 0, 0, 0, 11, 9, 115
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\services\cloudinaryActions.js", "JavaScript", 39, 0, 0, 0, 0, 0, 1, 3, 43
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\services\conversationServices.js", "JavaScript", 20, 0, 0, 0, 0, 0, 0, 3, 23
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\utils\createToken.js", "JavaScript", 59, 0, 0, 0, 0, 0, 2, 3, 64
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\utils\imageService.js", "JavaScript", 38, 0, 0, 0, 0, 0, 0, 5, 43
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\utils\momentHandler.js", "JavaScript", 35, 0, 0, 0, 0, 0, 1, 3, 39
+"c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\utils\validation.js", "JavaScript", 11, 0, 0, 0, 0, 0, 0, 0, 11
+"Total", "-", 3975, 36180, 4497, 1019, 18, 38, 342, 638, 46707

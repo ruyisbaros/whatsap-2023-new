@@ -1,0 +1,205 @@
+Date : 2023-11-12 17:25:09
+Directory : c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new
+Total : 146 files,  45727 codes, 342 comments, 638 blanks, all 46707 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| JSON           |          5 |     36,180 |          0 |          5 |     36,185 |
+| JavaScript JSX |         56 |      4,497 |        126 |        271 |      4,894 |
+| JavaScript     |         80 |      3,975 |        169 |        286 |      4,430 |
+| CSS            |          3 |      1,019 |         37 |         41 |      1,097 |
+| Markdown       |          1 |         38 |          0 |         33 |         71 |
+| HTML           |          1 |         18 |         10 |          2 |         30 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                   | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                      |        146 |     45,727 |        342 |        638 |     46,707 |
+| client                                                                                                                 |        117 |     39,517 |        230 |        499 |     40,246 |
+| client (Files)                                                                                                         |          4 |     31,899 |          1 |         36 |     31,936 |
+| client\public                                                                                                          |          2 |         43 |         10 |          3 |         56 |
+| client\src                                                                                                             |        111 |      7,575 |        219 |        460 |      8,254 |
+| client\src (Files)                                                                                                     |          5 |        988 |         63 |         70 |      1,121 |
+| client\src\assets                                                                                                      |         36 |        996 |          0 |         56 |      1,052 |
+| client\src\assets\svg                                                                                                  |         36 |        996 |          0 |         56 |      1,052 |
+| client\src\components                                                                                                  |         49 |      4,155 |        110 |        239 |      4,504 |
+| client\src\components\attachments                                                                                      |          2 |        131 |          1 |         10 |        142 |
+| client\src\components\auth                                                                                             |          3 |        266 |         11 |         12 |        289 |
+| client\src\components\chat                                                                                             |         12 |      1,272 |         41 |         73 |      1,386 |
+| client\src\components\groupChat                                                                                        |          3 |        318 |          2 |         14 |        334 |
+| client\src\components\previews                                                                                         |          4 |        348 |         11 |         20 |        379 |
+| client\src\components\previews\file                                                                                    |          4 |        348 |         11 |         20 |        379 |
+| client\src\components\sidebar                                                                                          |         10 |        525 |         20 |         38 |        583 |
+| client\src\components\status                                                                                           |         10 |        962 |         15 |         52 |      1,029 |
+| client\src\components\video_calls                                                                                      |          5 |        333 |          9 |         20 |        362 |
+| client\src\pages                                                                                                       |          3 |        302 |         15 |         21 |        338 |
+| client\src\redux                                                                                                       |          8 |        488 |         11 |         34 |        533 |
+| client\src\ristrict_routes                                                                                             |          3 |         27 |          1 |         10 |         38 |
+| client\src\styles                                                                                                      |          2 |        419 |          8 |         11 |        438 |
+| client\src\utils                                                                                                       |          5 |        200 |         11 |         19 |        230 |
+| server                                                                                                                 |         29 |      6,210 |        112 |        139 |      6,461 |
+| server (Files)                                                                                                         |          4 |      4,702 |         55 |         40 |      4,797 |
+| server\controllers                                                                                                     |          5 |        950 |         48 |         31 |      1,029 |
+| server\middleware                                                                                                      |          3 |         87 |          4 |         11 |        102 |
+| server\models                                                                                                          |          4 |        176 |          0 |         16 |        192 |
+| server\routes                                                                                                          |          7 |         93 |          1 |         24 |        118 |
+| server\services                                                                                                        |          2 |         59 |          1 |          6 |         66 |
+| server\utils                                                                                                           |          4 |        143 |          3 |         11 |        157 |
++------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                                               | language       | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\README.md                                         | Markdown       |         38 |          0 |         33 |         71 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\package-lock.json                                 | JSON           |     31,756 |          0 |          1 |     31,757 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\package.json                                      | JSON           |         55 |          0 |          1 |         56 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\public\index.html                                 | HTML           |         18 |         10 |          2 |         30 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\public\manifest.json                              | JSON           |         25 |          0 |          1 |         26 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\App.js                                        | JavaScript     |        104 |         14 |         13 |        131 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\SocketIOConnection.js                         | JavaScript     |        254 |         11 |         21 |        286 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\AddContact.js                      | JavaScript     |         24 |          0 |          1 |         25 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Arrow.js                           | JavaScript     |         21 |          0 |          1 |         22 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Attachment.js                      | JavaScript     |         11 |          0 |          2 |         13 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Call.js                            | JavaScript     |         11 |          0 |          2 |         13 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Camera.js                          | JavaScript     |         40 |          0 |          2 |         42 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Chat.js                            | JavaScript     |         22 |          0 |          2 |         24 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Close.js                           | JavaScript     |         16 |          0 |          2 |         18 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Community.js                       | JavaScript     |         18 |          0 |          1 |         19 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Contact.js                         | JavaScript     |         40 |          0 |          1 |         41 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Dial.js                            | JavaScript     |         16 |          0 |          1 |         17 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Document.js                        | JavaScript     |         38 |          0 |          1 |         39 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Dots.js                            | JavaScript     |         21 |          0 |          2 |         23 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Download.js                        | JavaScript     |         24 |          0 |          1 |         25 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Emoji.js                           | JavaScript     |         18 |          0 |          2 |         20 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\FilterIcon.js                      | JavaScript     |         20 |          0 |          1 |         21 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Lock.js                            | JavaScript     |         12 |          0 |          3 |         15 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Logo.js                            | JavaScript     |        105 |          0 |          1 |        106 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Mute.js                            | JavaScript     |         12 |          0 |          3 |         15 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\NoVideo.js                         | JavaScript     |         17 |          0 |          2 |         19 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Notification.js                    | JavaScript     |         20 |          0 |          1 |         21 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Photo.js                           | JavaScript     |         38 |          0 |          1 |         39 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Poll.js                            | JavaScript     |         43 |          0 |          1 |         44 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Return.js                          | JavaScript     |         21 |          0 |          2 |         23 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Search.js                          | JavaScript     |         21 |          0 |          1 |         22 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\SearchLarge.js                     | JavaScript     |         12 |          0 |          3 |         15 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Seen.js                            | JavaScript     |         20 |          0 |          1 |         21 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Send.js                            | JavaScript     |         11 |          0 |          2 |         13 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\SmallArrow.js                      | JavaScript     |         11 |          0 |          2 |         13 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\SpeakerIcon.js                     | JavaScript     |         12 |          0 |          1 |         13 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Sticker.js                         | JavaScript     |         29 |          0 |          2 |         31 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Story.js                           | JavaScript     |         47 |          0 |          1 |         48 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\TriangleIcon.js                    | JavaScript     |         18 |          0 |          2 |         20 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\Valid.js                           | JavaScript     |        119 |          0 |          2 |        121 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\VideoCall.js                       | JavaScript     |         17 |          0 |          1 |         18 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\VideoDeal.jsx                      | JavaScript JSX |         13 |          0 |          1 |         14 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\assets\svg\index.js                           | JavaScript     |         58 |          0 |          1 |         59 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\axios.js                                      | JavaScript     |         13 |          9 |          4 |         26 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\attachments\DocumentAttachment.jsx | JavaScript JSX |         65 |          0 |          5 |         70 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\attachments\PhotoAttachment.jsx    | JavaScript JSX |         66 |          1 |          5 |         72 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\auth\LoginForm.jsx                 | JavaScript JSX |         88 |          5 |          5 |         98 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\auth\Picture.jsx                   | JavaScript JSX |         70 |          0 |          3 |         73 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\auth\RegisterForm.jsx              | JavaScript JSX |        108 |          6 |          4 |        118 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ActionHeader.jsx              | JavaScript JSX |        136 |          2 |          6 |        144 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ActiveChat.jsx                | JavaScript JSX |        124 |          1 |          8 |        133 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\AttachmentMenu.jsx            | JavaScript JSX |         43 |          0 |          3 |         46 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ChatActions.jsx               | JavaScript JSX |        275 |         22 |         16 |        313 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ChatHeader.jsx                | JavaScript JSX |        104 |          2 |          5 |        111 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ChatMessages.jsx              | JavaScript JSX |         92 |          5 |          7 |        104 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ChatReply.jsx                 | JavaScript JSX |         54 |          2 |          4 |         60 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\DeleteBox.jsx                 | JavaScript JSX |         64 |          1 |          7 |         72 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\ShowFileInMessage.jsx         | JavaScript JSX |         65 |          1 |          3 |         69 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\SingleMessage.jsx             | JavaScript JSX |        276 |          5 |          8 |        289 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\Typing.jsx                    | JavaScript JSX |         17 |          0 |          3 |         20 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\chat\WhatsappHome.jsx              | JavaScript JSX |         22 |          0 |          3 |         25 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\groupChat\CreateGroup.jsx          | JavaScript JSX |        101 |          1 |          7 |        109 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\groupChat\GroupInfo.jsx            | JavaScript JSX |        181 |          1 |          4 |        186 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\groupChat\MultipleSelect.jsx       | JavaScript JSX |         36 |          0 |          3 |         39 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\previews\file\FilePreview.jsx      | JavaScript JSX |         27 |          3 |          3 |         33 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\previews\file\PreviewBody.jsx      | JavaScript JSX |         41 |          0 |          3 |         44 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\previews\file\PreviewFooter.jsx    | JavaScript JSX |        255 |          8 |         11 |        274 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\previews\file\PreviewHeader.jsx    | JavaScript JSX |         25 |          0 |          3 |         28 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\Contacts.jsx               | JavaScript JSX |         53 |          2 |          3 |         58 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\Conversations.jsx          | JavaScript JSX |         17 |          0 |          4 |         21 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\CustomAuthInput.jsx        | JavaScript JSX |         19 |          0 |          3 |         22 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\Menu.jsx                   | JavaScript JSX |         57 |          1 |          2 |         60 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\Notifications.jsx          | JavaScript JSX |         28 |          2 |          3 |         33 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SearchBar.jsx              | JavaScript JSX |         61 |          3 |          5 |         69 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SearchResults.jsx          | JavaScript JSX |         20 |          2 |          3 |         25 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SideBarHeader.jsx          | JavaScript JSX |         99 |          1 |          6 |        106 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SidebarLeft.jsx            | JavaScript JSX |         33 |          2 |          3 |         38 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\sidebar\SingleConversation.jsx     | JavaScript JSX |        138 |          7 |          6 |        151 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\CreateStatus.jsx            | JavaScript JSX |         39 |          0 |          3 |         42 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\CreateStatusBody.jsx        | JavaScript JSX |         33 |          2 |          3 |         38 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\CreateStatusFooter.jsx      | JavaScript JSX |        167 |          3 |          5 |        175 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\CreateStatusText.jsx        | JavaScript JSX |         15 |          0 |          3 |         18 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\MediaAttach.jsx             | JavaScript JSX |         66 |          1 |          5 |         72 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\SeenBy.jsx                  | JavaScript JSX |         32 |          1 |          3 |         36 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\SideBarStatus.jsx           | JavaScript JSX |        238 |          3 |         12 |        253 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\StatusCtrlBox.jsx           | JavaScript JSX |         36 |          0 |          3 |         39 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\ViewMyStatus.jsx            | JavaScript JSX |        108 |          1 |          5 |        114 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\status\ViewStatus.jsx              | JavaScript JSX |        228 |          4 |         10 |        242 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\CallAreaActions.jsx    | JavaScript JSX |         54 |          0 |          3 |         57 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\CallAreaInfo.jsx       | JavaScript JSX |         74 |          1 |          3 |         78 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\Calls.jsx              | JavaScript JSX |         84 |          3 |          4 |         91 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\Header.jsx             | JavaScript JSX |         24 |          0 |          3 |         27 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\components\video_calls\Ringing.jsx            | JavaScript JSX |         97 |          5 |          7 |        109 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\index.css                                     | CSS            |        600 |         29 |         30 |        659 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\index.js                                      | JavaScript     |         17 |          0 |          2 |         19 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\pages\Home.jsx                                | JavaScript JSX |        278 |         11 |         15 |        304 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\pages\Login.jsx                               | JavaScript JSX |         12 |          2 |          3 |         17 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\pages\Register.jsx                            | JavaScript JSX |         12 |          2 |          3 |         17 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\callStreamSlicer.js                     | JavaScript     |         49 |          0 |          5 |         54 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\callingsSlice.js                        | JavaScript     |         27 |          0 |          4 |         31 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\chatSlice.js                            | JavaScript     |        217 |          9 |          7 |        233 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\currentUserSlice.js                     | JavaScript     |         50 |          1 |          4 |         55 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\mediaDevicesSlice.js                    | JavaScript     |         30 |          0 |          4 |         34 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\socketSlicer.js                         | JavaScript     |         15 |          0 |          4 |         19 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\statusSlicer.js                         | JavaScript     |         77 |          1 |          4 |         82 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\redux\store.js                                | JavaScript     |         23 |          0 |          2 |         25 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\ristrict_routes\LoggedInRoutes.jsx            | JavaScript JSX |         11 |          1 |          3 |         15 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\ristrict_routes\NotLoggedInRoutes.jsx         | JavaScript JSX |          8 |          0 |          4 |         12 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\ristrict_routes\RegisteredRoutes.jsx          | JavaScript JSX |          8 |          0 |          3 |         11 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\styles\groupInfo.css                          | CSS            |        255 |          7 |          4 |        266 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\styles\userStatus.css                         | CSS            |        164 |          1 |          7 |        172 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\fileTypes.js                            | JavaScript     |         29 |          0 |          1 |         30 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\helpers.js                              | JavaScript     |         30 |          1 |          6 |         37 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\momentHandler.js                        | JavaScript     |         62 |          1 |          6 |         69 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\validadion.js                           | JavaScript     |         19 |          4 |          3 |         26 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\src\utils\webRTCUtils.js                          | JavaScript     |         60 |          5 |          3 |         68 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\client\tailwind.config.js                                | JavaScript     |         50 |          1 |          1 |         52 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\SocketServer.js                                   | JavaScript     |        263 |         44 |         29 |        336 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\authController.js                     | JavaScript     |        130 |         10 |         10 |        150 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\conversationController.js             | JavaScript     |         95 |         14 |          6 |        115 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\messageController.js                  | JavaScript     |        598 |         23 |         10 |        631 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\statusController.js                   | JavaScript     |        109 |          1 |          3 |        113 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\controllers\usersController.js                    | JavaScript     |         18 |          0 |          2 |         20 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\middleware\isUserExist.js                         | JavaScript     |         11 |          0 |          2 |         13 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\middleware\protect.js                             | JavaScript     |         23 |          4 |          2 |         29 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\middleware\validChecks.js                         | JavaScript     |         53 |          0 |          7 |         60 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\models\conversationModel.js                       | JavaScript     |         38 |          0 |          4 |         42 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\models\messageModel.js                            | JavaScript     |         62 |          0 |          3 |         65 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\models\statusModel.js                             | JavaScript     |         33 |          0 |          5 |         38 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\models\userModel.js                               | JavaScript     |         43 |          0 |          4 |         47 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\package-lock.json                                 | JSON           |      4,309 |          0 |          1 |      4,310 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\package.json                                      | JSON           |         35 |          0 |          1 |         36 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\authRoutes.js                              | JavaScript     |         16 |          1 |          4 |         21 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\conversationRoutes.js                      | JavaScript     |          7 |          0 |          3 |         10 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\healthRoutes.js                            | JavaScript     |         15 |          0 |          6 |         21 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\index.js                                   | JavaScript     |         15 |          0 |          3 |         18 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\messageRoutes.js                           | JavaScript     |         26 |          0 |          2 |         28 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\statusRoutes.js                            | JavaScript     |          9 |          0 |          3 |         12 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\routes\usersRoute.js                              | JavaScript     |          5 |          0 |          3 |          8 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\server.js                                         | JavaScript     |         95 |         11 |          9 |        115 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\services\cloudinaryActions.js                     | JavaScript     |         39 |          1 |          3 |         43 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\services\conversationServices.js                  | JavaScript     |         20 |          0 |          3 |         23 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\utils\createToken.js                              | JavaScript     |         59 |          2 |          3 |         64 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\utils\imageService.js                             | JavaScript     |         38 |          0 |          5 |         43 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\utils\momentHandler.js                            | JavaScript     |         35 |          1 |          3 |         39 |
+| c:\Users\Win11 Pro\Desktop\FullStackProjects\whatsap-2023-new\server\utils\validation.js                               | JavaScript     |         11 |          0 |          0 |         11 |
+| Total                                                                                                                  |                |     45,727 |        342 |        638 |     46,707 |
++------------------------------------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
